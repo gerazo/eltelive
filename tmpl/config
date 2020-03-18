@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# There are two typical installation scenarios.
+# If you want to run in a container, choose docker and alpine below!
+# If you want to directly install on your system, choose host and debian!
+
+# Containerization to use
+#   docker - Use Docker container to run the installation
+#   host     - Install directly on host (your) system
+EL_CONTAINER="docker"
+
+# Linux distribution family to install on
+#   alpine  - Alpine Linux for making small containers
+#   debian - Any Debian-based system, including Ubuntu and derivatives
+EL_OS="alpine"
