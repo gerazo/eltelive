@@ -13,3 +13,6 @@ EL_CONTAINER="docker"
 #   alpine  - Alpine Linux for making small containers
 #   debian - Any Debian-based system, including Ubuntu and derivatives
 EL_OS="alpine"
+
+# Do not install anything. Synchronize the running service to configuration.
+EL_SYNC_ONLY="no"

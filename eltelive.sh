@@ -6,7 +6,6 @@ echo "ELTE Live Control Script"
 
 if [ "$1"="-h" ] || [ "$1"="--help" ]; then
   echo "Installs and runs the service according to the given configuration."
-  echo "Synchronizes the settings to an already running service."
   echo "   -h --help   Shows this help"
   exit 0
 fi
