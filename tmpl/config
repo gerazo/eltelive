@@ -6,13 +6,10 @@
 
 # Containerization to use
 #   docker - Use Docker container to run the installation
-#   host     - Install directly on host (your) system
+#   host     - Install directly on host (your) system (run as root in this case)
 EL_CONTAINER="docker"
 
 # Linux distribution family to install on
 #   alpine  - Alpine Linux for making small containers
 #   debian - Any Debian-based system, including Ubuntu and derivatives
 EL_OS="alpine"
-
-# Do not install anything. Synchronize the running service to configuration.
-EL_SYNC_ONLY="no"
