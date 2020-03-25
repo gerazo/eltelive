@@ -13,3 +13,9 @@ EL_CONTAINER="docker"
 #   alpine  - Alpine Linux for making small containers
 #   debian - Any Debian-based system, including Ubuntu and derivatives
 EL_OS="alpine"
+
+# Container name in case of using Docker
+EL_CONTAINERNAME="eltelive"
+
+# Restart service automatically if it dies?
+EL_AUTORESTART="no"

@@ -8,7 +8,7 @@ EL_VIDEOS="videos"
 EL_WWW="www"
 EL_LOG="log"
 
-echo "ELTE Live Control Script"
+echo "ELTELive Control Script"
 
 if [ "$1"="-h" ] || [ "$1"="--help" ]; then
   echo "Installs and runs the service according to the given configuration."
@@ -40,7 +40,7 @@ mkdir -p $EL_DEPLOY/$EL_VIDEOS
 mkdir -p $EL_DEPLOY/$EL_WWW
 mkdir -p $EL_DEPLOY/$EL_LOG
 
-cp sh/*.sh $EL_DEPLOY/$EL_CONTROL/
+cp sh/* $EL_DEPLOY/$EL_CONTROL/
 
 cd $EL_DEPLOY/$EL_CONTROL
 case "$EL_CONTAINER" in
@@ -50,11 +50,23 @@ case "$EL_CONTAINER" in
         IMAGE="alpine:latest"
         ;;
       "debian")
-        IMAGE="stable-slim"
+        IMAGE="debian:stable-slim"
         ;;
     esac
     cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/' >Dockerfile
-    # TODO Build Docker image
+    if [ "$( docker ps | grep $EL_CONTAINERNAME )" != "" ]; then
+      docker stop $EL_CONTAINERNAME
+    fi
+    if [ "$( docker images | grep $EL_CONTAINERNAME )" != "" ]; then
+      docker rmi $EL_CONTAINERNAME
+    fi
+    docker build -t $EL_CONTAINERNAME .
+    RESTART=""
+    if [ "$EL_AUTORESTART"="yes" ]; then
+      RESTART="--restart yes"
+    fi
+    docker create $RESTART -h stream --name $EL_CONTAINERNAME $EL_CONTAINERNAME
+    docker start $EL_CONTAINERNAME
     ;;
   "host")
     ./install.sh
