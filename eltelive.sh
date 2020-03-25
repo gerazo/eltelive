@@ -54,8 +54,9 @@ case "$EL_CONTAINER" in
         ;;
     esac
     cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/' >Dockerfile
-    if [ "$( docker ps | grep $EL_CONTAINERNAME )" != "" ]; then
+    if [ "$( docker ps -a | grep $EL_CONTAINERNAME )" != "" ]; then
       docker stop $EL_CONTAINERNAME
+      docker rm $EL_CONTAINERNAME
     fi
     if [ "$( docker images | grep $EL_CONTAINERNAME )" != "" ]; then
       docker rmi $EL_CONTAINERNAME
