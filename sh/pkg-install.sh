@@ -2,8 +2,8 @@
 
 echo "Installing service dependencies..."
 
-ALPINE_PKGS="nginx nginx-mod-rtmp fcgiwrap ffmpeg"
-DEBIAN_PKGS="nginx-light libnginx-mod-rtmp libnginx-mod-http-auth-pam fcgiwrap ffmpeg"
+ALPINE_PKGS="dcron nginx nginx-mod-rtmp fcgiwrap ffmpeg"
+DEBIAN_PKGS="cron nginx-light libnginx-mod-rtmp libnginx-mod-http-auth-pam fcgiwrap ffmpeg"
 
 case "$EL_OS" in
   "alpine")
