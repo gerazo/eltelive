@@ -41,6 +41,7 @@ mkdir -p $EL_DEPLOY/$EL_WWW
 mkdir -p $EL_DEPLOY/$EL_LOG
 
 cp sh/* $EL_DEPLOY/$EL_CONTROL/
+cp config $EL_DEPLOY/$EL_CONTROL/
 
 cd $EL_DEPLOY/$EL_CONTROL
 case "$EL_CONTAINER" in
@@ -67,6 +68,7 @@ case "$EL_CONTAINER" in
       RESTART="--restart yes"
     fi
     docker create $RESTART -h stream --name $EL_CONTAINERNAME $EL_CONTAINERNAME
+    # docker create $RESTART -h stream -i --name $EL_CONTAINERNAME $EL_CONTAINERNAME
     docker start $EL_CONTAINERNAME
     ;;
   "host")
