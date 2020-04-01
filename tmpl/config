@@ -17,5 +17,5 @@ EL_OS="alpine"
 # Container name in case of using Docker
 EL_CONTAINERNAME="eltelive"
 
-# Restart service automatically if it dies?
+# Restart service automatically if it dies (Not fully functional yet)
 EL_AUTORESTART="no"

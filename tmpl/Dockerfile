@@ -8,10 +8,7 @@ EXPOSE 80/tcp
 EXPOSE 443/tcp
 EXPOSE 1935/tcp
 
-VOLUME /var/www/recording
-VOLUME /var/www/videos
-VOLUME /var/www/stream
+VOLUME /var/www
 VOLUME /var/log
 
-CMD /usr/sbin/cron && /usr/bin/spawn-fcgi -s /var/run/fcgiwrap.socket start && /usr/sbin/nginx
-#CMD /bin/sh
+CMD /usr/sbin/cron && /usr/bin/spawn-fcgi -s /var/run/fcgiwrap.socket /usr/sbin/fcgiwrap && mkdir -p /var/log/nginx && /usr/sbin/nginx -g "pid /var/run/nginx.pid;" && /bin/sh
