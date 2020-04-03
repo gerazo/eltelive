@@ -37,6 +37,7 @@ mkdir -p $EL_DEPLOY/$EL_DATA
 mkdir -p $EL_DEPLOY/$EL_LOG
 
 cp sh/* $EL_DEPLOY/$EL_GEN/
+cp tmpl/rtmp.conf $EL_DEPLOY/$EL_GEN/
 cp config $EL_DEPLOY/$EL_GEN/
 
 cd $EL_DEPLOY/$EL_GEN
@@ -45,12 +46,14 @@ case "$EL_CONTAINER" in
     case "$EL_OS" in
       "alpine")
         IMAGE="alpine:latest"
+        FCGIUSER="fcgiwrap"
         ;;
       "debian")
         IMAGE="debian:stable-slim"
+        FCGIUSER="www-data"
         ;;
     esac
-    cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/' >Dockerfile
+    cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/; s/\$FCGIUSERNAME/'"$FCGIUSER"'/' >Dockerfile
     if [ "$( docker ps | grep $EL_CONTAINERNAME )" != "" ]; then
       echo "Stopping running container..."
       docker stop $EL_CONTAINERNAME
