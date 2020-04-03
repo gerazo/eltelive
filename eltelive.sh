@@ -2,7 +2,7 @@
 
 EL_CONFIG="config"
 EL_DEPLOY="deploy"
-EL_CONTROL="control"
+EL_GEN="generated"
 EL_DATA="data"
 EL_LOG="log"
 
@@ -32,14 +32,14 @@ if [ "$EL_CONTAINER" = "docker" ] && [ "$( command -v docker )" = "" ]; then
   exit 3
 fi
 
-mkdir -p $EL_DEPLOY/$EL_CONTROL
+mkdir -p $EL_DEPLOY/$EL_GEN
 mkdir -p $EL_DEPLOY/$EL_DATA
 mkdir -p $EL_DEPLOY/$EL_LOG
 
-cp sh/* $EL_DEPLOY/$EL_CONTROL/
-cp config $EL_DEPLOY/$EL_CONTROL/
+cp sh/* $EL_DEPLOY/$EL_GEN/
+cp config $EL_DEPLOY/$EL_GEN/
 
-cd $EL_DEPLOY/$EL_CONTROL
+cd $EL_DEPLOY/$EL_GEN
 case "$EL_CONTAINER" in
   "docker")
     case "$EL_OS" in

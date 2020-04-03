@@ -6,4 +6,4 @@ if [ -f config ] &&. ./config ; then
   docker rm $EL_CONTAINERNAME
   docker rmi $EL_CONTAINERNAME
 fi
-rm -rf config deploy
+rm -rf deploy/generated
