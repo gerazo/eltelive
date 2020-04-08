@@ -31,3 +31,7 @@ if ! grep -q 'include /etc/nginx/rtmp.conf;' $NGINXCONF ; then
 fi
 
 cp rtmp.conf /etc/nginx/rtmp.conf
+
+# TODO: Copy stream config in place
+# TODO: Customize auth_basic ""; auth_basic_user_file ""; auth_pam ""; aut_pam_service_name "";
+# TODO: Customize ssl_certificate stream_localhost.pem;ssl_certificate_key stream_localhost.key;

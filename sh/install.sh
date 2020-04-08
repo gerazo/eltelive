@@ -9,6 +9,8 @@ set +a
 
 ./pkg-install.sh
 ./nginx-conf.sh
-./www-conf.sh
 ./env-conf.sh
-./auth-conf.sh
+
+if [ $EL_CONTAINER = "host" ]; then
+  ./www-conf.sh
+fi

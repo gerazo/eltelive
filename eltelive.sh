@@ -35,7 +35,7 @@ fi
 
 mkdir -p $EL_DEPLOY/$EL_GEN
 cp sh/* $EL_DEPLOY/$EL_GEN/
-cp tmpl/rtmp.conf $EL_DEPLOY/$EL_GEN/
+cp tmpl/rtmp.conf tmpl/stream $EL_DEPLOY/$EL_GEN/
 cp $EL_DEPLOY/$EL_CONFIG $EL_DEPLOY/$EL_GEN/
 
 case "$EL_CONTAINER" in
