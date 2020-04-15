@@ -32,6 +32,53 @@ fi
 
 cp rtmp.conf /etc/nginx/rtmp.conf
 
-# TODO: Copy stream config in place
-# TODO: Customize auth_basic ""; auth_basic_user_file ""; auth_pam ""; aut_pam_service_name "";
-# TODO: Customize ssl_certificate stream_localhost.pem;ssl_certificate_key stream_localhost.key;
+case "$EL_OS" in
+  "alpine")
+    WWW_CONF="/etc/nginx/conf.d"
+    WWW_CONF_LINK=""
+    WWW_DEFAULT="default.conf"
+    ;;
+  "debian")
+    WWW_CONF="/etc/nginx/sites-available"
+    WWW_CONF_LINK="/etc/nginx/sites-enabled"
+    WWW_DEFAULT="default"
+    ;;
+esac
+
+# TODO: Copy certificate files into place
+# TODO: Generate snakeoil on certificates not given? (if needed)
+
+case "$EL_VIEWERAUTH" in
+  "off")
+    VIEWERLINE1=""
+    VIEWERLINE2=""
+    ;;
+  "basic")
+    VIEWERLINE1="auth_basic \"$EL_VIEWERAUTHMESSA\";"
+    VIEWERLINE2="auth_basic_user_file \"$EL_VIEWERAUTHFILE\";"
+    ;;
+  "pam")
+    VIEWERLINE1="auth_pam \"$EL_VIEWERAUTHMESSA\";"
+    VIEWERLINE2="auth_pam_service_name \"$EL_VIEWERAUTHSERVICE\";"
+    ;;
+esac
+
+case "$EL_PUBLISHERAUTH" in
+  "basic")
+    PUBLISHERLINE1="auth_basic \"$EL_PUBLISHERAUTHMESSA\";"
+    PUBLISHERLINE2="auth_basic_user_file \"$EL_PUBLISHERAUTHFILE\";"
+    ;;
+  "pam")
+    PUBLISHERLINE1="auth_pam \"$EL_PUBLISHERAUTHMESSA\";"
+    PUBLISHERLINE2="auth_pam_service_name \"$EL_PUBLISHERAUTHSERVICE\";"
+    ;;
+esac
+
+cat stream | sed 's/\$SSLCERTIFICATE/'"\"$EL_SSLCERTIFICATE\""'/; s/\$SSLSECRETKEY/'"\"$EL_SSLSECRETKEY\""'/; s/\$VIEWERAUTHMESSA/'"$VIEWERLINE1"'/g; s/\$VIEWERAUTHSERVICE/'"$VIEWERLINE2"'/g; s/\$PUBLISHERAUTHMESSA/'"$PUBLISHERLINE1"'/g; s/\$PUBLISHERAUTHSERVICE/'"$PUBLISHERLINE2"'/g' >"$WWW_CONF/stream"
+
+if [ -n "$WWW_CONF_LINK" ]; then
+  ln -s "$WWW_CONF"/stream "$WWW_CONF_LINK"/stream
+  rm "$WWW_CONF_LINK"/"$WWW_DEFAULT"
+else
+  rm "$WWW_CONF"/"$WWW_DEFAULT"
+fi

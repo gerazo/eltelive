@@ -24,13 +24,13 @@ EL_DOMAINNAME="localhost"
 # You have to authenticate your publishers
 #   basic - Use password file
 #   pam   - Use PAM subsystem, give PAM service name to use
-EL_PUBLISHAUTH="basic"
+EL_PUBLISHERAUTH="basic"
 
 # Authentication message for publishers
-EL_PUBLISHAUTHMESSA="Lecturer account required"
+EL_PUBLISHERAUTHMESSA="Lecturer account required"
 
-EL_PUBLISHAUTHFILE="publisher.passwd"
-EL_PUBLISHAUTHSERVICE="stream_publisher"
+EL_PUBLISHERAUTHFILE="publisher.passwd"
+EL_PUBLISHERAUTHSERVICE="stream_publisher"
 
 # Authentication type for viewers (off, basic, pam)
 #   off   - Content will be open for everyone
@@ -43,3 +43,9 @@ EL_VIEWERAUTHMESSA="Account required"
 
 EL_VIEWERAUTHFILE="viewer.passwd"
 EL_VIEWERAUTHSERVICE="stream_viewer"
+
+# SSL Certificate to be used in PEM format
+EL_SSLCERTIFICATE="stream_localhost.pem"
+
+# SSL Secret Key to be used in PEM format
+EL_SSLSECRETKEY="stream_localhost.key"

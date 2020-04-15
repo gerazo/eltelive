@@ -17,8 +17,8 @@ server {
 server {
     listen 443 ssl default_server;
     listen [::]:443 ssl default_server;
-    ssl_certificate /etc/ssl/private/stream_localhost.pem;
-    ssl_certificate_key /etc/ssl/private/stream_localhost.key;
+    ssl_certificate $SSLCERTIFICATE;
+    ssl_certificate_key $SSLSECRETKEY;
 
     root /var/www/stream;
 
