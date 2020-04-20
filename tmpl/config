@@ -44,8 +44,8 @@ EL_VIEWERAUTHMESSA="Account required"
 EL_VIEWERAUTHFILE="viewer.passwd"
 EL_VIEWERAUTHSERVICE="stream_viewer"
 
-# SSL Certificate to be used in PEM format
-EL_SSLCERTIFICATE="stream_localhost.pem"
+# SSL Certificate to be used in PEM format (leave empty to use snakeoil)
+EL_SSLCERTIFICATE=""
 
-# SSL Secret Key to be used in PEM format
-EL_SSLSECRETKEY="stream_localhost.key"
+# SSL Secret Key to be used in PEM format (leave empty to use snakeoil)
+EL_SSLSECRETKEY=""

@@ -45,8 +45,21 @@ case "$EL_OS" in
     ;;
 esac
 
-# TODO: Copy certificate files into place
-# TODO: Generate snakeoil on certificates not given? (if needed)
+if [ -n "$EL_SSLCERTIFICATE" ] && [ -n "$EL_SSLSECRETKEY" ]; then
+  if [ "$EL_CONTAINER" = "docker" ]; then
+    EL_SSLCERTIFICATE="/etc/ssl/private/$( basename $EL_SSLCERTIFICATE )"
+    EL_SSLSECRETKEY="/etc/ssl/private/$( basename $EL_SSLSECRETKEY )"
+  fi
+else
+  if [ -f "/etc/ssl/private/ssl-cert-snakeoil.key" ] && [ -f "/etc/ssl/certs/ssl-cert-snakeoil.pem" ]; then
+    EL_SSLCERTIFICATE="/etc/ssl/certs/ssl-cert-snakeoil.pem"
+    EL_SSLSECRETKEY="/etc/ssl/private/ssl-cert-snakeoil.key"
+  else
+    openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Localhost/CN=localhost" -addext "subjectAltName=DNS:localhost" -newkey rsa:2048 -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/private/selfsigned.crt >/dev/null 2>&1
+    EL_SSLCERTIFICATE="/etc/ssl/private/selfsigned.crt"
+    EL_SSLSECRETKEY="/etc/ssl/private/selfsigned.key"
+  fi
+fi
 
 case "$EL_VIEWERAUTH" in
   "off")
@@ -74,7 +87,7 @@ case "$EL_PUBLISHERAUTH" in
     ;;
 esac
 
-cat stream | sed 's/\$SSLCERTIFICATE/'"\"$EL_SSLCERTIFICATE\""'/; s/\$SSLSECRETKEY/'"\"$EL_SSLSECRETKEY\""'/; s/\$VIEWERAUTHMESSA/'"$VIEWERLINE1"'/g; s/\$VIEWERAUTHSERVICE/'"$VIEWERLINE2"'/g; s/\$PUBLISHERAUTHMESSA/'"$PUBLISHERLINE1"'/g; s/\$PUBLISHERAUTHSERVICE/'"$PUBLISHERLINE2"'/g' >"$WWW_CONF/stream"
+cat stream | sed 's|\$SSLCERTIFICATE|'"\"$EL_SSLCERTIFICATE\""'|; s|\$SSLSECRETKEY|'"\"$EL_SSLSECRETKEY\""'|; s|\$VIEWERAUTHMESSA|'"$VIEWERLINE1"'|; s|\$VIEWERAUTHSERVICE|'"$VIEWERLINE2"'|; s|\$PUBLISHERAUTHMESSA|'"$PUBLISHERLINE1"'|; s|\$PUBLISHERAUTHSERVICE|'"$PUBLISHERLINE2"'|' >"$WWW_CONF/stream"
 
 if [ -n "$WWW_CONF_LINK" ]; then
   ln -s "$WWW_CONF"/stream "$WWW_CONF_LINK"/stream

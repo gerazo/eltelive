@@ -33,7 +33,14 @@ if [ "$EL_CONTAINER" = "docker" ] && [ "$( command -v docker )" = "" ]; then
   exit 3
 fi
 
+
 mkdir -p $EL_DEPLOY/$EL_GEN
+
+cd $EL_DEPLOY
+EL_SSLCERTIFICATE=$( realpath -q "$EL_SSLCERTIFICATE" )
+EL_SSLSECRETKEY=$( realpath -q "$EL_SSLSECRETKEY" )
+cd ..
+
 cp sh/* $EL_DEPLOY/$EL_GEN/
 cp tmpl/rtmp.conf tmpl/stream $EL_DEPLOY/$EL_GEN/
 cp $EL_DEPLOY/$EL_CONFIG $EL_DEPLOY/$EL_GEN/
@@ -50,12 +57,18 @@ case "$EL_CONTAINER" in
         FCGIUSER="www-data"
         ;;
     esac
+
+    SSLCOPY=""
+    if [ -n "$EL_SSLCERTIFICATE" ] && [ -n "$EL_SSLSECRETKEY" ]; then
+      SSLCOPY='; s|^# COPY SSL.*$|COPY '"$EL_SSLCERTIFICATE $EL_SSLSECRETKEY"' /etc/ssl/private/|'
+    fi
+
     cd $EL_DEPLOY
     mkdir -p $EL_DATA
     mkdir -p $EL_LOG
 
     cd $EL_GEN
-    cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/; s/\$FCGIUSERNAME/'"$FCGIUSER"'/' >Dockerfile
+    cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/; s/\$FCGIUSERNAME/'"$FCGIUSER"'/'"$SSLCOPY" >Dockerfile
 
     if [ "$( docker ps | grep $EL_CONTAINERNAME )" != "" ]; then
       echo "Stopping running container..."

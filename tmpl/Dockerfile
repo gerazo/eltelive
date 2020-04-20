@@ -2,6 +2,7 @@ FROM $IMAGENAME
 
 WORKDIR /root
 COPY config install.sh pkg-install.sh nginx-conf.sh env-conf.sh www-conf.sh convert.sh stream-tokens rtmp.conf stream /root/
+# COPY SSL keys and certificates here
 RUN ./install.sh
 
 EXPOSE 80/tcp
