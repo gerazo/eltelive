@@ -42,7 +42,7 @@ EL_SSLSECRETKEY=$( realpath -q "$EL_SSLSECRETKEY" )
 cd ..
 
 cp sh/* $EL_DEPLOY/$EL_GEN/
-cp tmpl/rtmp.conf tmpl/stream $EL_DEPLOY/$EL_GEN/
+cp tmpl/rtmp.conf tmpl/stream tmpl/*.html tmpl/*.cgi tmpl/*.jpeg $EL_DEPLOY/$EL_GEN/
 cp $EL_DEPLOY/$EL_CONFIG $EL_DEPLOY/$EL_GEN/
 
 case "$EL_CONTAINER" in

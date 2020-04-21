@@ -49,3 +49,6 @@ EL_SSLCERTIFICATE=""
 
 # SSL Secret Key to be used in PEM format (leave empty to use snakeoil)
 EL_SSLSECRETKEY=""
+
+# Site Domain Name
+EL_DOMAINNAME="localhost"
