@@ -37,11 +37,13 @@ case "$EL_OS" in
     WWW_CONF="/etc/nginx/conf.d"
     WWW_CONF_LINK=""
     WWW_DEFAULT="default.conf"
+    WWW_CONF_NAME="stream.conf"
     ;;
   "debian")
     WWW_CONF="/etc/nginx/sites-available"
     WWW_CONF_LINK="/etc/nginx/sites-enabled"
     WWW_DEFAULT="default"
+    WWW_CONF_NAME="stream"
     ;;
 esac
 
@@ -87,10 +89,10 @@ case "$EL_PUBLISHERAUTH" in
     ;;
 esac
 
-cat stream | sed 's|\$SSLCERTIFICATE|'"\"$EL_SSLCERTIFICATE\""'|; s|\$SSLSECRETKEY|'"\"$EL_SSLSECRETKEY\""'|; s|\$VIEWERAUTHMESSA|'"$VIEWERLINE1"'|; s|\$VIEWERAUTHSERVICE|'"$VIEWERLINE2"'|; s|\$PUBLISHERAUTHMESSA|'"$PUBLISHERLINE1"'|; s|\$PUBLISHERAUTHSERVICE|'"$PUBLISHERLINE2"'|' >"$WWW_CONF/stream"
+cat stream | sed 's|\$SSLCERTIFICATE|'"\"$EL_SSLCERTIFICATE\""'|; s|\$SSLSECRETKEY|'"\"$EL_SSLSECRETKEY\""'|; s|\$VIEWERAUTHMESSA|'"$VIEWERLINE1"'|; s|\$VIEWERAUTHSERVICE|'"$VIEWERLINE2"'|; s|\$PUBLISHERAUTHMESSA|'"$PUBLISHERLINE1"'|; s|\$PUBLISHERAUTHSERVICE|'"$PUBLISHERLINE2"'|' >"$WWW_CONF/$WWW_CONF_NAME"
 
 if [ -n "$WWW_CONF_LINK" ]; then
-  ln -s "$WWW_CONF"/stream "$WWW_CONF_LINK"/stream
+  ln -s "$WWW_CONF/$WWW_CONF_NAME" "$WWW_CONF_LINK/$WWW_CONF_NAME"
   rm "$WWW_CONF_LINK"/"$WWW_DEFAULT"
 else
   rm "$WWW_CONF"/"$WWW_DEFAULT"
