@@ -53,3 +53,28 @@ mkdir -p /var/log/rtmp
 mkdir -p /var/log/ffmpeg
 chown root:www-data /var/log/nginx /var/log/rtmp /var/log/ffmpeg
 chmod 775 /var/log/nginx /var/log/rtmp /var/log/ffmpeg
+
+
+if [ "$EL_PUBLISHERAUTH" = "basic" ]; then
+  PASSWDFILENAME="$( basename $EL_PUBLISHERAUTHFILE )"
+  if [ ! -f "$PASSWDFILENAME" ]; then
+    echo "Publisher password file \"$PASSWDFILENAME\" does not exist. Creating one with username and passwd test/test. Use htpasswd to modify!"
+    htpasswd -bc "/var/www/$PASSWDFILENAME" test test
+  elif [ ! -f "/var/www/$PASSWDFILENAME" ]; then
+    cp "$PASSWDFILENAME" "/var/www/$PASSWDFILENAME"
+  fi
+  chown root:www-data "/var/www/$PASSWDFILENAME"
+  chmod 640 "/var/www/$PASSWDFILENAME"
+fi
+
+if [ "$EL_VIEWERAUTH" = "basic" ]; then
+  PASSWDFILENAME="$( basename $EL_VIEWERAUTHFILE )"
+  if [ ! -f "$PASSWDFILENAME" ]; then
+    echo "Viewer password file \"$PASSWDFILENAME\" does not exist. Creating one with username and passwd test/test. Use htpasswd to modify!"
+    htpasswd -bc "/var/www/$PASSWDFILENAME" test test
+  elif [ ! -f "/var/www/$PASSWDFILENAME" ]; then
+    cp "$PASSWDFILENAME" "/var/www/$PASSWDFILENAME"
+  fi
+  chown root:www-data "/var/www/$PASSWDFILENAME"
+  chmod 640 "/var/www/$PASSWDFILENAME"
+fi

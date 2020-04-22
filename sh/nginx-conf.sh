@@ -70,7 +70,7 @@ case "$EL_VIEWERAUTH" in
     ;;
   "basic")
     VIEWERLINE1="auth_basic \"$EL_VIEWERAUTHMESSA\";"
-    VIEWERLINE2="auth_basic_user_file \"$EL_VIEWERAUTHFILE\";"
+    VIEWERLINE2="auth_basic_user_file \"/var/www/$( basename $EL_VIEWERAUTHFILE )\";"
     ;;
   "pam")
     VIEWERLINE1="auth_pam \"$EL_VIEWERAUTHMESSA\";"
@@ -81,7 +81,7 @@ esac
 case "$EL_PUBLISHERAUTH" in
   "basic")
     PUBLISHERLINE1="auth_basic \"$EL_PUBLISHERAUTHMESSA\";"
-    PUBLISHERLINE2="auth_basic_user_file \"$EL_PUBLISHERAUTHFILE\";"
+    PUBLISHERLINE2="auth_basic_user_file \"/var/www/$( basename $EL_PUBLISHERAUTHFILE )\";"
     ;;
   "pam")
     PUBLISHERLINE1="auth_pam \"$EL_PUBLISHERAUTHMESSA\";"

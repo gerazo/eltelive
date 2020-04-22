@@ -37,13 +37,26 @@ fi
 mkdir -p $EL_DEPLOY/$EL_GEN
 
 cd $EL_DEPLOY
+EL_PUBLISHERAUTHFILE=$( realpath -q "$EL_PUBLISHERAUTHFILE" )
+EL_VIEWERAUTHFILE=$( realpath -q "$EL_VIEWERAUTHFILE" )
 EL_SSLCERTIFICATE=$( realpath -q "$EL_SSLCERTIFICATE" )
 EL_SSLSECRETKEY=$( realpath -q "$EL_SSLSECRETKEY" )
 cd ..
 
 cp sh/* $EL_DEPLOY/$EL_GEN/
-cp tmpl/rtmp.conf tmpl/stream tmpl/*.html tmpl/*.cgi tmpl/*.jpeg $EL_DEPLOY/$EL_GEN/
+cp tmpl/rtmp.conf tmpl/stream tmpl/rtmp_stats.xsl tmpl/*.html tmpl/*.cgi tmpl/*.jpeg $EL_DEPLOY/$EL_GEN/
 cp $EL_DEPLOY/$EL_CONFIG $EL_DEPLOY/$EL_GEN/
+
+if [ -f "$EL_PUBLISHERAUTHFILE" ]; then
+  cp "$EL_PUBLISHERAUTHFILE" $EL_DEPLOY/$EL_GEN/
+fi
+if [ -f "$EL_VIEWERAUTHFILE" ]; then
+  cp "$EL_VIEWERAUTHFILE" $EL_DEPLOY/$EL_GEN/
+fi
+
+if [ -n "$EL_SSLCERTIFICATE" ] && [ -n "$EL_SSLSECRETKEY" ]; then
+  cp "$EL_SSLCERTIFICATE" "$EL_SSLSECRETKEY" $EL_DEPLOY/$EL_GEN/
+fi
 
 case "$EL_CONTAINER" in
   "docker")
@@ -58,9 +71,18 @@ case "$EL_CONTAINER" in
         ;;
     esac
 
+    PASSWDCOPY=""
+    if [ -f "$EL_PUBLISHERAUTHFILE" ] && [ -f "$EL_VIEWERAUTHFILE" ]; then
+      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_PUBLISHERAUTHFILE ) $( basename $EL_VIEWERAUTHFILE )"' /etc/ssl/private/|'
+    elif [ -f "$EL_PUBLISHERAUTHFILE" ]; then
+      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_PUBLISHERAUTHFILE )"' /etc/ssl/private/|'
+    elif [ -f "$EL_VIEWERAUTHFILE" ]; then
+      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_VIEWERAUTHFILE )"' /etc/ssl/private/|'
+    fi
+
     SSLCOPY=""
     if [ -n "$EL_SSLCERTIFICATE" ] && [ -n "$EL_SSLSECRETKEY" ]; then
-      SSLCOPY='; s|^# COPY SSL.*$|COPY '"$EL_SSLCERTIFICATE $EL_SSLSECRETKEY"' /etc/ssl/private/|'
+      SSLCOPY='; s|^# COPY SSL.*$|COPY '"$( basename $EL_SSLCERTIFICATE ) $( basename $EL_SSLSECRETKEY )"' /etc/ssl/private/|'
     fi
 
     cd $EL_DEPLOY
@@ -68,7 +90,7 @@ case "$EL_CONTAINER" in
     mkdir -p $EL_LOG
 
     cd $EL_GEN
-    cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/; s/\$FCGIUSERNAME/'"$FCGIUSER"'/'"$SSLCOPY" >Dockerfile
+    cat ../../tmpl/Dockerfile | sed 's/\$IMAGENAME/'"$IMAGE"'/; s/\$FCGIUSERNAME/'"$FCGIUSER"'/'"$SSLCOPY""$PASSWDCOPY" >Dockerfile
 
     if [ "$( docker ps | grep $EL_CONTAINERNAME )" != "" ]; then
       echo "Stopping running container..."

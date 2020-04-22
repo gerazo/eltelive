@@ -9,7 +9,7 @@ if [ ! "$HTTPS" = "on" ] || [ -z "$HTTP_AUTHORIZATION" ]; then
 else
   METHOD=$( echo "$HTTP_AUTHORIZATION" | cut -d" " -f1 )
   if [ "$METHOD" = "Basic" ]; then
-    USER=$( echo "$HTTP_AUTHORIZATION" | cut -d" " -f2 | base64 -di | cut -d":" -f1 )
+    USER=$( echo "$HTTP_AUTHORIZATION" | cut -d" " -f2 | base64 -d | cut -d":" -f1 )
   else
     USER=""
   fi
