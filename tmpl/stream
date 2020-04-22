@@ -1,0 +1,88 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    root /var/www/stream;
+
+    location = /publish/token/auth_publish.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    ssl_certificate $SSLCERTIFICATE;
+    ssl_certificate_key $SSLSECRETKEY;
+
+    root /var/www/stream;
+
+    index index.html index.htm;
+
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /livehls {
+        types {
+            application/vnd.apple.mpegurl m3u8;
+            video/mp2t ts;
+        }
+        root /tmp;
+        add_header Cache-Control no-cache;
+        $VIEWERAUTHMESSA
+        $VIEWERAUTHSERVICE
+    }
+
+    location /livedash {
+        root /tmp;
+        add_header Cache-Control no-cache;
+        $VIEWERAUTHMESSA
+        $VIEWERAUTHSERVICE
+    }
+
+    location ~ /videos/(.+) {
+        root /var/www/;
+        autoindex on;
+        $VIEWERAUTHMESSA
+        $VIEWERAUTHSERVICE
+    }
+
+    location = /publish/rtmpstats {
+        rtmp_stat all;
+        rtmp_stat_stylesheet /publish/rtmp_stats.xsl;
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location = /publish/token/gen_publish.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location /publish/token {
+        deny all;
+        return 404;
+    }
+
+    location /publish {
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+
+    location = /robots.txt {
+        add_header Content-Type text/plain;
+        return 200 "User-agent: *\nDisallow: /\n";
+    }
+
+}

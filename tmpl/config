@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# There are two typical installation scenarios.
+# If you want to run in a container, choose docker and alpine below!
+# If you want to directly install on your system, choose host and debian!
+
+# Containerization to use
+#   docker - Use Docker container to run the installation
+#   host   - Install directly on host (your) system (run as root in this case)
+EL_CONTAINER="docker"
+
+# Linux distribution family to install on
+#   alpine - Alpine Linux for making small containers
+#   debian - Any Debian-based system, including Ubuntu and derivatives
+EL_OS="alpine"
+
+# Container name in case of using Docker
+EL_CONTAINERNAME="eltelive"
+
+# Service Domain
+EL_DOMAINNAME="localhost"
+
+# Authentication type for publishers (basic, pam)
+# You have to authenticate your publishers
+#   basic - Use password file
+#   pam   - Use PAM subsystem, give PAM service name to use
+EL_PUBLISHERAUTH="basic"
+
+# Authentication message for publishers
+EL_PUBLISHERAUTHMESSA="Lecturer account required"
+
+EL_PUBLISHERAUTHFILE="publisher.passwd"
+EL_PUBLISHERAUTHSERVICE="stream_publisher"
+
+# Authentication type for viewers (off, basic, pam)
+#   off   - Content will be open for everyone
+#   basic - Use password file
+#   pam   - Use PAM subsystem, give PAM service name to use
+EL_VIEWERAUTH="off"
+
+# Authentication message for viewers
+EL_VIEWERAUTHMESSA="Account required"
+
+EL_VIEWERAUTHFILE="viewer.passwd"
+EL_VIEWERAUTHSERVICE="stream_viewer"
+
+# SSL Certificate to be used in PEM format (leave empty to use snakeoil)
+EL_SSLCERTIFICATE=""
+
+# SSL Secret Key to be used in PEM format (leave empty to use snakeoil)
+EL_SSLSECRETKEY=""
+
+# Site Domain Name
+EL_DOMAINNAME="localhost"
