@@ -26,6 +26,10 @@ if grep -q 'gzip \{0,9\}on;' $NGINXCONF ; then
   sed -i 's/gzip \{0,9\}on;/gzip off;/' $NGINXCONF
 fi
 
+if ! grep -q 'pid .*\.pid;' $NGINXCONF ; then
+  echo 'pid /var/run/nginx.pid;' >>$NGINXCONF
+fi
+
 if ! grep -q 'include /etc/nginx/rtmp.conf;' $NGINXCONF ; then
   echo 'include /etc/nginx/rtmp.conf;' >>$NGINXCONF
 fi
