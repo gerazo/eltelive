@@ -1,7 +1,7 @@
 FROM $IMAGENAME
 
 WORKDIR /root
-COPY * /root/
+COPY . /root/
 # COPY passwd files here
 # COPY SSL keys and certificates here
 RUN ./install.sh
