@@ -109,11 +109,11 @@ case "$EL_CONTAINER" in
 
     PASSWDCOPY=""
     if [ -f "$EL_PUBLISHERAUTHFILE" ] && [ -f "$EL_VIEWERAUTHFILE" ]; then
-      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_PUBLISHERAUTHFILE ) $( basename $EL_VIEWERAUTHFILE )"' /etc/ssl/private/|'
+      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_PUBLISHERAUTHFILE ) $( basename $EL_VIEWERAUTHFILE )"' /root/|'
     elif [ -f "$EL_PUBLISHERAUTHFILE" ]; then
-      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_PUBLISHERAUTHFILE )"' /etc/ssl/private/|'
+      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_PUBLISHERAUTHFILE )"' /root/|'
     elif [ -f "$EL_VIEWERAUTHFILE" ]; then
-      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_VIEWERAUTHFILE )"' /etc/ssl/private/|'
+      PASSWDCOPY='; s|^# COPY passwd.*$|COPY '"$( basename $EL_VIEWERAUTHFILE )"' /root/|'
     fi
 
     SSLCOPY=""
