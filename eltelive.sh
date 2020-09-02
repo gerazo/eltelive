@@ -8,12 +8,14 @@ EL_LOG="log"
 
 echo "ELTELive Control Script"
 
+# Help
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   echo "Installs and runs the service according to the given configuration."
   echo "   -h --help   Shows this help"
   exit 0
 fi
 
+# Configuration generation
 if [ ! -f $EL_DEPLOY/$EL_CONFIG ]; then
   echo "No configuration was found, creating a default one..."
   mkdir -p $EL_DEPLOY
@@ -23,17 +25,49 @@ if [ ! -f $EL_DEPLOY/$EL_CONFIG ]; then
   exit 1
 fi
 
+# Reading configuration
 if ! . ./$EL_DEPLOY/$EL_CONFIG ; then
   echo "Could not read configuration. Executable rights problem?"
   exit 2
 fi
 
+# Installing 3rd party libs
+if [ ! -d "3rdparty/videojs" ]; then
+  if [ "$( command -v curl )" = "" ] && [ "$( command -v wget )" = "" ]; then
+    echo "Cannot download 3rd party libraries without curl or wget. Please install on of them!"
+    exit 4
+  fi
+  if [ "$( command -v unzip )" = "" ]; then
+    echo "Cannot unpack downloaded files. Please install unzip!"
+    exit 6
+  fi
+
+  echo "Downloading 3rd party VideoJS library..."
+  mkdir -p "3rdparty/videojs"
+  cd "3rdparty"
+  if [ ! "$( command -v curl )" = "" ]; then
+    DOWNLOAD_COMMAND="curl -sL "$EL_VIDEOJS_VERSION" --output "$( basename $EL_VIDEOJS_VERSION )
+  else
+    DOWNLOAD_COMMAND="wget -q "$EL_VIDEOJS_VERSION
+  fi
+  if ! $DOWNLOAD_COMMAND ; then
+    echo "There was an error downloading 3rd party library from "$EL_VIDEOJS_VERSION "Please download manually!"
+    exit 5
+  fi
+  cd videojs
+  unzip -q ../$( basename $EL_VIDEOJS_VERSION )
+  cd ..
+  rm $( basename $EL_VIDEOJS_VERSION )
+  cd ..
+fi
+
+# Checking docker requirements
 if [ "$EL_CONTAINER" = "docker" ] && [ "$( command -v docker )" = "" ]; then
   echo "You want to create a container and you do not have Docker on your system. Please install it first!"
   exit 3
 fi
 
-
+# Copy raw files to source place of generation and usage
 mkdir -p $EL_DEPLOY/$EL_GEN
 
 cd $EL_DEPLOY
@@ -46,6 +80,7 @@ cd ..
 cp sh/* $EL_DEPLOY/$EL_GEN/
 cp tmpl/rtmp.conf tmpl/stream tmpl/rtmp_stats.xsl tmpl/*.html tmpl/*.cgi tmpl/*.jpeg $EL_DEPLOY/$EL_GEN/
 cp $EL_DEPLOY/$EL_CONFIG $EL_DEPLOY/$EL_GEN/
+cp -r 3rdparty/videojs $EL_DEPLOY/$EL_GEN/
 
 if [ -f "$EL_PUBLISHERAUTHFILE" ]; then
   cp "$EL_PUBLISHERAUTHFILE" $EL_DEPLOY/$EL_GEN/
@@ -58,6 +93,7 @@ if [ -n "$EL_SSLCERTIFICATE" ] && [ -n "$EL_SSLSECRETKEY" ]; then
   cp "$EL_SSLCERTIFICATE" "$EL_SSLSECRETKEY" $EL_DEPLOY/$EL_GEN/
 fi
 
+# Start installation scripts
 case "$EL_CONTAINER" in
   "docker")
     case "$EL_OS" in

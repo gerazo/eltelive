@@ -49,3 +49,6 @@ EL_SSLCERTIFICATE=""
 
 # SSL Secret Key to be used in PEM format (leave empty to use snakeoil)
 EL_SSLSECRETKEY=""
+
+# VideoJS version to be downloaded
+EL_VIDEOJS_VERSION="https://github.com/videojs/video.js/releases/download/v7.8.4/video-js-7.8.4.zip"
