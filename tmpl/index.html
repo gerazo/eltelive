@@ -1,54 +1,73 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Accessing Streams</title>
-<meta name="robots" content="noindex,nofollow" />
-<style>
-    body {
-        width: 40em;
-        margin: 0 auto;
-        font-family: sans-serif;
-    }
-    img {
-	float: left;
-	margin: 2em;
-    }
-    h3 {
-        clear: both;
-    }
-</style>
-</head>
-<body>
-<img src="logosmall.jpeg" alt="Logo Small" width="128" height="128"/><br/>
-<p><ul>
-<li/><a href="publish">Publisher Login</a>
-</ul></p>
-<p><a href="legal.html">Read the Legal Disclaimer</a></p>
+<html lang="en">
 
-<h3>How to use?</h3>
-<p>
-If you have a stream called <em>mylecture</em> which is <b>being streamed</b>, you can join the live stream by
-<ul>
-<li/>using any player which can play RTMP streams, like <a href="https://www.videolan.org/vlc/">VLC</a>.
-Use this URL: <br/><b><big><code>rtmp://$DOMAINNAME/live/mylecture</code></big></b><br/>
-This method is the recommended as it has the lowest delay and is the most reliable of all.<br/><br/>
-<li/>using an <a href="https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP#Clients">MPEG-DASH</a> capable player or browser.
-Use this URL: <br/><b><big><code>https://$DOMAINNAME/livedash/mylecture.mpd</code></big></b><br/>
-Some browsers (<a href="https://addons.mozilla.org/en-US/firefox/addon/native-mpeg-dash-hls-playback/">Firefox</a>,
-<a href="https://chrome.google.com/webstore/detail/native-mpeg-dash-%2B-hls-pl/cjfbmleiaobegagekpmlhmaadepdeedn">Chrome</a>) need a
-<a href="https://github.com/Palethorn/native-adaptive-streaming">plugin</a> to play this. It has higher delay (20sec).<br/><br/>
-<li/>using an <a href="https://en.wikipedia.org/wiki/HTTP_Live_Streaming#Clients">HLS</a> capable player or browser.
-Use this URL: <br/><b><big><code>https://$DOMAINNAME/livehls/mylecture.m3u8</code></big></b><br/>
-Some browsers (<a href="https://addons.mozilla.org/en-US/firefox/addon/native-mpeg-dash-hls-playback/">Firefox</a>,
-<a href="https://chrome.google.com/webstore/detail/native-mpeg-dash-%2B-hls-pl/cjfbmleiaobegagekpmlhmaadepdeedn">Chrome</a>) need a
-<a href="https://github.com/Palethorn/native-adaptive-streaming">plugin</a> to play this. It has higher delay (20sec).
-This format is your best chance for smartphones.<br/><br/>
-</ul>
-</p>
-<p>
-If you are <b>past</b> the live streaming event called <em>mylecture</em>, you can download MP4 videos from
-<b><big><code>https://$DOMAINNAME/videos/mylecture</code></big></b>
-</p>
-<p>Have fun!</p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>ELTE Live Streaming System</title>
+  <link rel="stylesheet" type="text/css" href="landingpage.css" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link href="video-js.min.css" rel="stylesheet">
+  <script src="video.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h1>ELTE Live Streaming System</h1>
+    <div class="box">
+      <noscript>
+        <div style="text-align: left;">
+          <h4>Instructions</h4>
+          <p>
+            If you have a lecture with a key: '<em>mylecture</em>' which is
+            <b>being streamed</b>, you can join the live stream by
+          </p>
+          <ul>
+            <li>
+              Using any player which can play RTMP streams like
+              <a href="https://www.videolan.org/vlc/">VLC</a>. Use this URL:
+              <b>rtmp://$DOMAINNAME/live/mylecture</b><br>
+            </li>
+          </ul>
+          <p>
+            If you are <b>past</b> the lecture called <em>mylecture</em>, you
+            can download MP4 videos from
+            <b>https://$DOMAINNAME/videos/mylecture</b>
+          </p>
+          <p>
+            The form below will * <b>NOT</b> * work as you have disabled
+            javascript in your browser
+          </p>
+          <hr />
+        </div>
+      </noscript>
+      <input type="text" id="streamkey" placeholder="Insert your stream key here and press one of the buttons below"
+        required />
+      <button onclick="registerStreamKey(2);">
+        MPEG-DASH Stream
+      </button>
+      <button onclick="registerStreamKey(3);">
+        HLS Stream
+      </button>
+      <button onclick="registerStreamKey(1);">
+        RTMP
+      </button>
+      <button onclick="registerStreamKey(4);">
+        Recordings
+      </button>
+      <video-js id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
+      </video-js>
+      <hr />
+      <img src="logosmall.jpeg" alt="Logo Small" width="40" height="40"/>
+      <br />
+      <a href="https://$DOMAINNAME/publish">Lecturer Login</a> ||
+      <a href="legal.html">Legal Disclaimer</a> ||
+      <a href="https://gitea.com/gerazo/eltelive/">Code Repository</a>
+    </div>
+  </div>
+
+  <script src="landingpage.js"></script>
 </body>
+
 </html>
