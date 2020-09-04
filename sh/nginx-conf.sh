@@ -34,7 +34,7 @@ if ! grep -q 'include /etc/nginx/rtmp.conf;' $NGINXCONF ; then
   echo 'include /etc/nginx/rtmp.conf;' >>$NGINXCONF
 fi
 
-cp rtmp.conf /etc/nginx/rtmp.conf
+cat rtmp.conf | sed 's/\$VIDEOPRESET/'"$EL_LIVEVIDEOPRESET"'/; s/\$VIDEOLQPRESET/'"$EL_LIVEVIDEOLQPRESET"'/' >/etc/nginx/rtmp.conf
 
 case "$EL_OS" in
   "alpine")

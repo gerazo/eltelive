@@ -23,5 +23,16 @@ function registerStreamKey(type) {
     var streamLink =
       "https://$DOMAINNAME/videos/" + streamKey;
     window.open(streamLink, "_blank");
+  } else if (type == "5") {
+    //RTMP low quality
+    var streamLink = "rtmp://$DOMAINNAME/livelq/" + streamKey;
+    window.open(streamLink, "_blank");
+  } else if (type == "6") {
+    //HLS low quality
+    var streamLink =
+      "https://$DOMAINNAME/livehlslq/" + streamKey + ".m3u8";
+    var player = videojs('stream-player');
+    player.src({src: streamLink, type: 'application/x-mpegURL'});
+    player.play();
   }
 }

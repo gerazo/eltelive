@@ -14,6 +14,7 @@ mkdir -p /var/www/videos
 chown root:www-data /var/www/recording /var/www/videos
 chmod 775 /var/www/recording /var/www/videos
 cp -f convert.sh /var/www/
+sed -i 's/\$VIDEOPRESET/'"$EL_SAVEDVIDEOPRESET"'/' /var/www/convert.sh
 
 mkdir -p /var/www/stream/publish/token/tokendb
 mkdir -p /var/www/stream/token/tokendb

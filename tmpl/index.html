@@ -14,7 +14,7 @@
 
 <body>
   <div class="wrapper">
-    <h1>ELTE Live Streaming System</h1>
+    <h1>ELTE Live Streaming</h1>
     <div class="box">
       <noscript>
         <div style="text-align: left;">
@@ -44,17 +44,24 @@
       </noscript>
       <input type="text" id="streamkey" placeholder="Insert your stream key here and press one of the buttons below"
         required />
-      <button onclick="registerStreamKey(2);">
-        MPEG-DASH Stream
-      </button>
+<!---      <button onclick="registerStreamKey(2);">
+        Listen Live (experimental)
+      </button> --->
       <button onclick="registerStreamKey(3);">
-        HLS Stream
+        - Listen in Browser -
       </button>
       <button onclick="registerStreamKey(1);">
-        RTMP
+        - Listen in App -
       </button>
       <button onclick="registerStreamKey(4);">
-        Recordings
+        - Recordings -
+      </button>
+      <br />
+      <button onclick="registerStreamKey(6);">
+        <small>Listen LQ in Browser</small>
+      </button>
+      <button onclick="registerStreamKey(5);">
+        <small>Listen LQ in App</small>
       </button>
       <video-js id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
       </video-js>
