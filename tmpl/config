@@ -20,6 +20,7 @@ EL_CONTAINERNAME="eltelive"
 # Site Domain Name
 EL_DOMAINNAME="localhost"
 
+
 # Authentication type for publishers (basic, pam)
 # You have to authenticate your publishers
 #   basic - Use password file
@@ -44,11 +45,18 @@ EL_VIEWERAUTHMESSA="Account required"
 EL_VIEWERAUTHFILE="viewer.passwd"
 EL_VIEWERAUTHSERVICE="stream_viewer"
 
+# Authenticate everywhere or only in archive (not live)
+#   all      - Ask password for every viewer content
+#   archive  - Ask password for only archive
+EL_ARCHIVEAUTH="all"
+
+
 # SSL Certificate to be used in PEM format (leave empty to use snakeoil)
 EL_SSLCERTIFICATE=""
 
 # SSL Secret Key to be used in PEM format (leave empty to use snakeoil)
 EL_SSLSECRETKEY=""
+
 
 # Set these to your CPU strength!
 # See x264 and x265 presets: ultrafast, superfast, veryfast, faster, fast, medium
@@ -58,6 +66,7 @@ EL_LIVEVIDEOLQPRESET="ultrafast"
 
 # for saving at the end into H.265, mkv
 EL_SAVEDVIDEOPRESET="ultrafast"
+
 
 # VideoJS version to be downloaded
 EL_VIDEOJS_VERSION="https://github.com/videojs/video.js/releases/download/v7.8.4/video-js-7.8.4.zip"

@@ -34,7 +34,7 @@ fi
 # Installing 3rd party libs
 if [ ! -d "3rdparty/videojs" ]; then
   if [ "$( command -v curl )" = "" ] && [ "$( command -v wget )" = "" ]; then
-    echo "Cannot download 3rd party libraries without curl or wget. Please install on of them!"
+    echo "Cannot download 3rd party libraries without curl or wget. Please install one of them!"
     exit 4
   fi
   if [ "$( command -v unzip )" = "" ]; then

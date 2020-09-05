@@ -37,22 +37,26 @@ server {
         }
         root /tmp;
         add_header Cache-Control no-cache;
-        $VIEWERAUTHMESSA
-        $VIEWERAUTHSERVICE
+        $LIVEAUTHMESSA
+        $LIVEAUTHSERVICE
     }
 
-    location /livedash {
+    location /livehlslq {
+        types {
+            application/vnd.apple.mpegurl m3u8;
+            video/mp2t ts;
+        }
         root /tmp;
         add_header Cache-Control no-cache;
-        $VIEWERAUTHMESSA
-        $VIEWERAUTHSERVICE
+        $LIVEAUTHMESSA
+        $LIVEAUTHSERVICE
     }
 
     location ~ /videos/(.+) {
         root /var/www/;
         autoindex on;
-        $VIEWERAUTHMESSA
-        $VIEWERAUTHSERVICE
+        $ARCHIVEAUTHMESSA
+        $ARCHIVEAUTHSERVICE
     }
 
     location = /publish/rtmpstats {
