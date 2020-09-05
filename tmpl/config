@@ -17,7 +17,7 @@ EL_OS="alpine"
 # Container name in case of using Docker
 EL_CONTAINERNAME="eltelive"
 
-# Service Domain
+# Site Domain Name
 EL_DOMAINNAME="localhost"
 
 # Authentication type for publishers (basic, pam)
@@ -50,5 +50,14 @@ EL_SSLCERTIFICATE=""
 # SSL Secret Key to be used in PEM format (leave empty to use snakeoil)
 EL_SSLSECRETKEY=""
 
-# Site Domain Name
-EL_DOMAINNAME="localhost"
+# Set these to your CPU strength!
+# See x264 and x265 presets: ultrafast, superfast, veryfast, faster, fast, medium
+# for live into H.264, do not go above medium
+EL_LIVEVIDEOPRESET="ultrafast"
+EL_LIVEVIDEOLQPRESET="ultrafast"
+
+# for saving at the end into H.265, mkv
+EL_SAVEDVIDEOPRESET="ultrafast"
+
+# VideoJS version to be downloaded
+EL_VIDEOJS_VERSION="https://github.com/videojs/video.js/releases/download/v7.8.4/video-js-7.8.4.zip"

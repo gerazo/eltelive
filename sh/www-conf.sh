@@ -14,6 +14,7 @@ mkdir -p /var/www/videos
 chown root:www-data /var/www/recording /var/www/videos
 chmod 775 /var/www/recording /var/www/videos
 cp -f convert.sh /var/www/
+sed -i 's/\$VIDEOPRESET/'"$EL_SAVEDVIDEOPRESET"'/' /var/www/convert.sh
 
 mkdir -p /var/www/stream/publish/token/tokendb
 mkdir -p /var/www/stream/token/tokendb
@@ -26,9 +27,21 @@ fi
 if [ ! -f /var/www/stream/logosmall.jpeg ]; then
   cp logosmall.jpeg /var/www/stream/
 fi
+if [ ! -f /var/www/stream/favicon.ico ]; then
+  cp favicon.ico /var/www/stream/
+fi
 if [ ! -f /var/www/stream/index.html ]; then
   cat index.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/index.html
 fi
+if [ ! -f /var/www/stream/landingpage.js ]; then
+  cat landingpage.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/landingpage.js
+fi
+if [ ! -f /var/www/stream/landingpage.css ]; then
+  cp landingpage.css /var/www/stream/
+fi
+
+cp videojs/video-js.min.css /var/www/stream/
+cp videojs/video.min.js /var/www/stream/
 
 if [ ! -f /var/www/stream/publish/rtmp_stats.xsl ]; then
   cp rtmp_stats.xsl /var/www/stream/publish/
