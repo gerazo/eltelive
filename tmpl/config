@@ -56,7 +56,7 @@ EL_SSLSECRETKEY=""
 EL_LIVEVIDEOPRESET="ultrafast"
 EL_LIVEVIDEOLQPRESET="ultrafast"
 
-# for saving at the end into H.265
+# for saving at the end into H.265, mkv
 EL_SAVEDVIDEOPRESET="ultrafast"
 
 # VideoJS version to be downloaded

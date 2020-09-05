@@ -5,14 +5,14 @@ body {
     rgb(240, 250, 243)
   );
   font-family: sans-serif;
-  height: 100vh;
-  width: 100vw;
+  height: 110vh;
+  width: 95vw;
 }
 
 .wrapper {
   width: 50%;
   max-width: 600px;
-  margin: 20% auto;
+  margin: 10% auto;
 }
 
 .box {
