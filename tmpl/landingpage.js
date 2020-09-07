@@ -1,5 +1,7 @@
 function registerStreamKey(type) {
   var streamKey = document.getElementById("streamkey").value;
+  if(!streamKey)
+    return;
   if (type == "1") {
     // RTMP
     var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
