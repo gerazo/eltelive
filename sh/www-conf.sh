@@ -21,6 +21,11 @@ mkdir -p /var/www/stream/token/tokendb
 chown root:www-data /var/www/stream/publish/token/tokendb /var/www/stream/token/tokendb
 chmod 775 /var/www/stream/publish/token/tokendb /var/www/stream/token/tokendb
 
+mkdir -p /var/www/stream/feedback
+mkdir -p /var/www/stream/currentlylive
+chown root:www-data /var/www/stream/feedback /var/www/stream/currentlylive
+chmod 775 /var/www/stream/feedback /var/www/stream/currentlylive
+
 if [ ! -f /var/www/stream/legal.html ]; then
   cp legal.html /var/www/stream/
 fi
@@ -60,6 +65,35 @@ if [ ! -f /var/www/stream/publish/token/gen_publish.cgi ]; then
   chmod +x /var/www/stream/publish/token/gen_publish.cgi
 fi
 
+if [ ! -f /var/www/stream/feedback/feedback_index.html ]; then
+  cat feedback.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/index.html
+fi
+
+if [ ! -f /var/www/stream/feedback/streamstats.html ]; then
+  cat streamstats.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/streamstats.html
+fi
+
+if [ ! -f /var/www/stream/feedback/gettmp.js ]; then
+  cat gettmp.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/gettmp.js
+fi
+
+if [ ! -f /var/www/stream/feedback/gettmpstats.cgi ]; then
+  cat gettmpstats.cgi | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/gettmpstats.cgi
+  chmod +x /var/www/stream/feedback/gettmpstats.cgi
+fi
+
+if [ ! -f /var/www/stream/currentlylive/index.html ]; then
+  cat currentlylive_index.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/currentlylive/index.html
+fi
+
+if [ ! -f /var/www/stream/currentlylive/collecttmp.js ]; then
+  cat collecttmp.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/currentlylive/collecttmp.js
+fi
+
+if [ ! -f /var/www/stream/currentlylive/listoftmps.cgi ]; then
+  cat listoftmps.cgi | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/currentlylive/listoftmps.cgi
+  chmod +x /var/www/stream/currentlylive/listoftmps.cgi
+fi
 
 mkdir -p /var/log/nginx
 mkdir -p /var/log/rtmp

@@ -9,6 +9,16 @@ server {
         fastcgi_pass unix:/var/run/fcgiwrap.socket;
     }
 
+    location = /feedback/gettmpstats.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+    }
+
+    location = /currentlylive/listoftmps.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+    }
+
     location / {
         return 301 https://$host$request_uri;
     }
@@ -69,6 +79,22 @@ server {
     location = /publish/token/gen_publish.cgi {
         include /etc/nginx/fastcgi.conf;
         fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location = /feedback/gettmpstats.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        include /etc/nginx/fastcgi_params;
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location = /currentlylive/listoftmps.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        include /etc/nginx/fastcgi_params;
         $PUBLISHERAUTHMESSA
         $PUBLISHERAUTHSERVICE
     }
