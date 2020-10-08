@@ -19,7 +19,24 @@ function readlog(e) {
     {
         if (xmlhttp.readyState==4 && xmlhttp.status==200)
         {
-            document.getElementById("testdiv").innerHTML = xmlhttp.responseText;
+            var resp = xmlhttp.responseText;
+            resp = resp.substring(resp.indexOf("frame="))
+            if (resp.startsWith("frame="))
+            {
+                document.getElementById("testdiv").innerHTML = resp;
+            }
+            else
+            {
+                resp = resp.substring(resp.indexOf("The requested"))
+                if (resp.startsWith("The requested"))
+                {
+                    document.getElementById("testdiv").innerHTML = resp;
+                }
+                else
+                {
+                    document.getElementById("testdiv").innerHTML = "";
+                }
+            }
             console.log(xmlhttp.responseText);
             
         } else if (xmlhttp.readyState==4)

@@ -22,6 +22,7 @@ function readlog() {
             if (streams[0] === "*-tmp.log" && streams.length === 1)
             {
                 document.getElementById("temptable").innerHTML="No streams are online at the moment."
+                document.getElementById("listofstreams").innerHTML = ""
             }
             else
             {

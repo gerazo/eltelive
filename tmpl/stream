@@ -83,6 +83,16 @@ server {
         $PUBLISHERAUTHSERVICE
     }
 
+    location /feedback {
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location /currentlylive {
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
     location = /feedback/gettmpstats.cgi {
         include /etc/nginx/fastcgi.conf;
         fastcgi_pass unix:/var/run/fcgiwrap.socket;

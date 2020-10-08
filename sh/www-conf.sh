@@ -65,16 +65,16 @@ if [ ! -f /var/www/stream/publish/token/gen_publish.cgi ]; then
   chmod +x /var/www/stream/publish/token/gen_publish.cgi
 fi
 
-if [ ! -f /var/www/stream/feedback/feedback_index.html ]; then
-  cat feedback.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/index.html
+if [ ! -f /var/www/stream/feedback/feedback.html ]; then
+  cat feedback_index.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/index.html
 fi
 
 if [ ! -f /var/www/stream/feedback/streamstats.html ]; then
-  cat streamstats.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/streamstats.html
+  cat feedback_streamstats.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/streamstats.html
 fi
 
 if [ ! -f /var/www/stream/feedback/gettmp.js ]; then
-  cat gettmp.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/gettmp.js
+  cat feedback_gettmp.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/feedback/gettmp.js
 fi
 
 if [ ! -f /var/www/stream/feedback/gettmpstats.cgi ]; then
@@ -87,7 +87,7 @@ if [ ! -f /var/www/stream/currentlylive/index.html ]; then
 fi
 
 if [ ! -f /var/www/stream/currentlylive/collecttmp.js ]; then
-  cat collecttmp.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/currentlylive/collecttmp.js
+  cat currentlylive_collecttmp.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/currentlylive/collecttmp.js
 fi
 
 if [ ! -f /var/www/stream/currentlylive/listoftmps.cgi ]; then
