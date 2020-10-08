@@ -34,7 +34,7 @@ function readlog(e) {
                 }
                 else
                 {
-                    document.getElementById("testdiv").innerHTML = "";
+                    document.getElementById("testdiv").innerHTML = "Stream is currently starting...";
                 }
             }
             console.log(xmlhttp.responseText);

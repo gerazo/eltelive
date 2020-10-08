@@ -54,7 +54,7 @@ function readlog() {
                     var c2 = row.insertCell(1)
                     c1.innerHTML = eacode
                     refLink = "../feedback/streamstats.html?code=" + eacode;
-                    c2.innerHTML = "<a href=\"" + refLink + "\" target=\"blank\">Link</a>"
+                    c2.innerHTML = "<a href=\"" + refLink + "\" target=\"blank\" rel=\"noopener noreferrer\">Link</a>"
                 }
 
                 document.getElementById("temptable").innerHTML=streams
