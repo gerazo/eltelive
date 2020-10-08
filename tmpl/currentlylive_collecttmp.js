@@ -26,38 +26,35 @@ function readlog() {
             }
             else
             {
+                for (i = 0; i < streams.length; i++)
+                {
+                    if (streams[i].includes("-lq-tmp"))
+                    {
+                        streams.splice(i,1);
+                        i--;
+                    }
+                }
                 var table = document.getElementById("listofstreams")
                 table.innerHTML = ""
                 var row = table.insertRow(-1)
                 var c1 = row.insertCell(0)
                 var c2 = row.insertCell(1)
                 c1.innerHTML = "Stream name"
-                c2.innerHTML = "Elapsed time"
+                c2.innerHTML = "Track statistics"
                 for (i = 0; i < streams.length; i++)
                 {
                     
                     var processTheName = streams[i].split("-")
                     var eacode = processTheName[1]
                     console.log(eacode)
-                    
-                    XHR = new XMLHttpRequest();
-                    XHR.onreadystatechange=function()
-                    {
-                        
-                        if (XHR.readyState==4 && XHR.status==200)
-                        {
-                            var table = document.getElementById("listofstreams")
-                            var row = table.insertRow(-1)
-                            var c1 = row.insertCell(0)
-                            var c2 = row.insertCell(1)
-                            c1.innerHTML = eacode
-                            c2.innerHTML = XHR.responseText
-                        }
-                    }
-                    XHR.open("POST","../feedback/gettmpstats.cgi", true);
-                    XHR.setRequestHeader("eacode", eacode);
-                    XHR.send();
-                    console.log("xhr sent")
+
+                    var table = document.getElementById("listofstreams")
+                    var row = table.insertRow(-1)
+                    var c1 = row.insertCell(0)
+                    var c2 = row.insertCell(1)
+                    c1.innerHTML = eacode
+                    refLink = "../feedback/streamstats.html?code=" + eacode;
+                    c2.innerHTML = "<a href=\"" + refLink + "\" target=\"blank\">Link</a>"
                 }
 
                 document.getElementById("temptable").innerHTML=streams
