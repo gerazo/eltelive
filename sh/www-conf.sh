@@ -23,8 +23,9 @@ chmod 775 /var/www/stream/publish/token/tokendb /var/www/stream/token/tokendb
 
 mkdir -p /var/www/stream/feedback
 mkdir -p /var/www/stream/currentlylive
-chown root:www-data /var/www/stream/feedback /var/www/stream/currentlylive
-chmod 775 /var/www/stream/feedback /var/www/stream/currentlylive
+mkdir -p /var/www/stream/paststats
+chown root:www-data /var/www/stream/feedback /var/www/stream/currentlylive /var/www/stream/paststats
+chmod 775 /var/www/stream/feedback /var/www/stream/currentlylive /var/www/stream/paststats
 
 if [ ! -f /var/www/stream/legal.html ]; then
   cp legal.html /var/www/stream/
@@ -93,6 +94,27 @@ fi
 if [ ! -f /var/www/stream/currentlylive/listoftmps.cgi ]; then
   cat listoftmps.cgi | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/currentlylive/listoftmps.cgi
   chmod +x /var/www/stream/currentlylive/listoftmps.cgi
+fi
+
+if [ ! -f /var/www/stream/paststats/index.html ]; then
+  cat paststats_index.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/paststats/index.html
+fi
+
+if [ ! -f /var/www/stream/paststats/datesetter.js ]; then
+  cat paststats_datesetter.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/paststats/datesetter.js
+fi
+
+if [ ! -f /var/www/stream/paststats/paststats.html ]; then
+  cat paststats_paststats.html | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/paststats/paststats.html
+fi
+
+if [ ! -f /var/www/stream/paststats/paststats.js ]; then
+  cat paststats_paststats.js | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/paststats/paststats.js
+fi
+
+if [ ! -f /var/www/stream/paststats/getviewers.cgi ]; then
+  cat getviewers.cgi | sed 's/\$DOMAINNAME/'"$EL_DOMAINNAME"'/g' >/var/www/stream/paststats/getviewers.cgi
+  chmod +x /var/www/stream/paststats/getviewers.cgi
 fi
 
 mkdir -p /var/log/nginx

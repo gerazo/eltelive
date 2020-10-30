@@ -19,6 +19,11 @@ server {
         fastcgi_pass unix:/var/run/fcgiwrap.socket;
     }
 
+    location = /paststats/getviewers.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+    }
+
     location / {
         return 301 https://$host$request_uri;
     }
@@ -89,6 +94,19 @@ server {
     }
 
     location /currentlylive {
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location /paststats {
+        $PUBLISHERAUTHMESSA
+        $PUBLISHERAUTHSERVICE
+    }
+
+    location = /paststats/getviewers.cgi {
+        include /etc/nginx/fastcgi.conf;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        include /etc/nginx/fastcgi_params;
         $PUBLISHERAUTHMESSA
         $PUBLISHERAUTHSERVICE
     }
