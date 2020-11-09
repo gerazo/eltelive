@@ -1,9 +1,6 @@
 <template>
-  <div class="home">
     
       <LandingPage/>
-
-      </div>
 
   
 </template>
@@ -19,6 +16,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

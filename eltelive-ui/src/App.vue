@@ -1,13 +1,10 @@
 <template>
   <div id="app">
-    <div>
+    <div class="nav-router">
     <NavBar></NavBar>
     <router-view/>
-  
     </div>
-      <div>
-        <Footer></Footer>
-  </div>
+    <div><Footer></Footer></div>
   </div>
   
 </template>
@@ -17,6 +14,9 @@
   font-family: "Avenir",Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing : grayscale;
+  min-height:100%;
+  position:relative;
+  padding-bottom: 60px;
   text-align: center;
   color: #2c3e50;
 }
@@ -29,5 +29,8 @@
       color: #42b983;
     }
   }
+}
+.nav-router{
+  padding-bottom: 2%;
 }
 </style>
