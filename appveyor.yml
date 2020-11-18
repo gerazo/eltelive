@@ -46,8 +46,10 @@ install:
 #       build configuration       #
 #---------------------------------#
 
-# to disable automatic builds
-build: off
+build_script:
+- sh: >-
+    ./eltelive.sh
+    ./eltelive.sh
 
 #---------------------------------#
 #       tests configuration       #
@@ -55,8 +57,9 @@ build: off
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - pwd
-  - whoami
+- sh: >-
+    pwd
+    whoami
 
 # #---------------------------------#
 # #      artifacts configuration    #
