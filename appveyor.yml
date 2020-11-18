@@ -20,41 +20,6 @@ branches:
   only:
     - ci
 
-  # blacklist
-  # except:
-    # - gh-pages
-
-# Do not build on tags (GitHub, Bitbucket, GitLab, Gitea)
-# skip_tags: true
-
-# Start builds on tags only (GitHub, BitBucket, GitLab, Gitea)
-# skip_non_tags: true
-
-# Skipping commits with particular message or from specific user
-# skip_commits:
-#   message: /Created.*\.(png|jpg|jpeg|bmp|gif)/      # Regex for matching commit message
-#   author: John                                      # Commit author's username, name, email or regexp maching one of these.
-
-# Including commits with particular message or from specific user
-# only_commits:
-#   message: /build/                # Start a new build if message contains 'build'
-#   author: jack@company.com        # Start a new build for commit of user with email jack@company.com
-
-# Skipping commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
-#skip_commits:
-#  files:
-#    - docs/*
-#    - '**/*.html'
-
-# Including commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
-#only_commits:
-#  files:
-#    - Project-A/
-#    - Project-B/
-
-# Do not build feature branch with open Pull Requests
-# skip_branch_with_pr: true
-
 # Maximum number of concurrent jobs for the project
 max_jobs: 1
 
@@ -88,69 +53,16 @@ build: off
 #       tests configuration       #
 #---------------------------------#
 
-# to run tests against only selected assemblies and/or categories
-test:
-  assemblies:
-    only:
-      - asm1.dll
-      - asm2.dll
-
-  categories:
-    only:
-      - UI
-      - E2E
-
-# to run tests against all except selected assemblies and/or categories
-#test:
-#  assemblies:
-#    except:
-#      - asm1.dll
-#      - asm2.dll
-#
-#  categories:
-#    except:
-#      - UI
-#      - E2E
-
-# to run tests from different categories as separate jobs in parallel
-#test:
-#  categories:
-#    - A            # A category common for all jobs
-#    - [UI]         # 1st job
-#    - [DAL, BL]    # 2nd job
-
-# scripts to run before tests (working directory and environment changes are persisted from the previous steps such as "before_build")
-before_test:
-  - echo script1
-  - ps: Write-Host "script1"
-
 # to run your custom scripts instead of automatic tests
 test_script:
-  - echo This is my custom test script
-
-# scripts to run after tests
-after_test:
-
-# to disable automatic tests
-#test: off
-
+  - pwd
+  - whoami
 
 # #---------------------------------#
 # #      artifacts configuration    #
 # #---------------------------------#
 
-# artifacts:
+artifacts:
 
-#   # pushing a single file
-#   - path: test.zip
-
-#   # pushing a single file with environment variable in path and "Deployment name" specified
-#   - path: MyProject\bin\$(configuration)
-#     name: myapp
-
-#   # pushing entire folder as a zip archive
-#   - path: logs
-
-#   # pushing all *.nupkg files in build directory recursively
-#   - path: '**\*.nupkg'
-
+# pushing entire folder as a zip archive
+  - path: deploy/log
