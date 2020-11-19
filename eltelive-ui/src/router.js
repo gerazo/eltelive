@@ -7,6 +7,7 @@ import SignUp from '@/components/User/SignUp'
 import Guest from '@/components/User/Guest'
 import Profile from '@/components/User/Profile'
 import Login from '@/components/User/Login'
+import LegalDisclaimer from '@/components/LegalDisclaimer'
 import ActiveStreams from '@/components/Stream/ActiveStreams'
 import CreateStream from '@/components/Stream/CreateStream'
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/create-stream',
       name: 'CreateStream',
       component: CreateStream
+    },
+    {
+      path: '/legal-disclaimer',
+      name: 'LegalDisclaimer',
+      component: LegalDisclaimer
     }
   ],
   mode: 'history'

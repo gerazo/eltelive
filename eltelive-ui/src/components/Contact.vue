@@ -1,45 +1,38 @@
 <template>
-<form class="needs-validation" novalidate>
-     <section class="contact">
-         <h1 class="title"> CONTACT US</h1>
-         <div class="container">
-             <div class="contact-form row">
-                 <div class="form-field col-lg-6">
-                     <input id="first-name" class="input-text" type="text" name="" required>
-                     <label for="validationName" class="label">First Name</label>
-                     <div class="invalid-feedback">
-                        Please provide your First Name.
+    <div class="contact">
+        <div class="container" >
+             <h1 class="title text-left">CONTACT US</h1>
+             <div class="row">
+             <div class="side-text-left  border-right">
+                    <div class="side-text-left-p"> 
+                        <h1>LET'S TALK</h1>
+                        <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
                     </div>
-                 </div>
-                 <div class="form-field col-lg-6">
-                     <input id="last-name" class="input-text" type="text" name="" required>
-                     <label for="validationName" class="label">Last Name</label>
-                    <div class="invalid-feedback">
-                        Please provide your Last Name.
-                    </div>
-                 </div>
-                 <div class="form-field col-lg-6">
-                     <input id="email" class="input-text" type="email" name="" required>
-                     <label for="validationEmail" class="label">Email</label>
-                     <div class="valid-feedback">
-                         Looks good!
-                     </div>
-                 </div>
-                 <div class="form-field col-lg-6">
-                     <input id="company" class="input-text" type="text" name="">
-                     <label for="validationCompany" class="label">Company</label>
-                 </div>
-                 <div class="form-field col-lg-12">
-                     <input id="message" b class="input-text" type="text" name="" required>
-                     <label for="message" class="label">Message</label>
-                 </div>
-                 <div class="form-field col-lg-12">
-                     <button class="btn btn-primary btn-lg">Submit</button>
-                 </div>
-             </div>
+            </div>
+            <div class="side-text-right">
+                <div class="col">
+                      <div class="side-text-right-p">   
+                          <div>
+                              <img src="/img/location-graphic.svg" alt="">
+                              Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P. sny. 1/C
+                            </div>
+                          <div>
+                                <img src="/img/phone-graphic.svg" alt="">
+                                TelePhone: ELTELive Team
+                            </div>
+                          <div>
+                                <img class="email-icon" src="/img/email-graphic.svg" alt="">
+                                Email : SomeEmail@someemail.com
+                            </div>
+                      </div>
+                <div class="contact-graphic col">
+                     <img src="/img/contact-graphic.svg" alt="">
+                </div>
+                </div>
+             </div>       
+            </div>
          </div>
-     </section>
-    </form>
+     </div>
 </template>
 
 
@@ -50,78 +43,43 @@
 </script>
 
 <style lang="scss">
-$color : #2C5E82;
+$color:#438bac;
 .contact{
-    max-width: 800px;
+    max-width: 70%;
+    max-height: 70%;
     margin : 50px auto;
-    position:relative;
-    box-shadow: 0 10px 30px 0px rgba(0,0,0,0.1);
+    background-color:#f1f3f5;
+    box-shadow: 0 10px 30px 0px rgba(155, 207, 241, 0.1);
     padding: 30px;
 }
 
-.contact .title{
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-size: 3em;
-    line-height: 48px;
-    padding-bottom: 20px;
-    color: #28BAEE;
-    background: linear-gradient(to right, #2C5E82 0%,#28BAEE 100%);
-    background-clip:text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.contact-form .form-field{
-    position:relative;
-    margin: 32px 0;
+.title{
     color: $color;
 }
 
-.contact-form .input-text{
-    display: block;
-    width: 100%;
-    height: 36px;
-    border-width: 0 0 2px 0;
-    font-size: 18px;
-    line-height: 26px;
-    font-weight: 400;
-    
-}
-.contact-form .input-text:focus + .label,
-.contact-form .input-text.not-empty + .label{
-    transform: translateY(-24px);
-}
-.contact-form .input-text:focus{
-    outline:none;    
+.email-icon{
+    width:20px;
+    height:20px;
 }
 
-.contact-form .label{
-    position:absolute;
-    left: 20px;
-    bottom: 11px;
-    font-size:18px;
-    line-height: 26px;
-    font-weight: 400;
+.side-text-left{
+    padding-top:30%;
+    padding-bottom:5%;
+    width: 40%;
+    text-align: left;
+}
+.side-text-left-p{
     color: $color;
-    cursor:text;
-    transition: transform 0.2s ease-in-out;
+    font-size: 30px;
 }
-
-.contact-form .input-text:focus{
-    outline:none;    
+.side-text-right{
+    padding-top:5%;
+    width: 40%;
+    text-align: left;
 }
-
-.contact-form .label{
-    position:absolute;
-    left: 20px;
-    bottom: 11px;
-    font-size:18px;
-    line-height: 26px;
-    font-weight: 400;
-    color: $color;
-    cursor:text;
-    transition: transform 0.2s ease-in-out;
+.side-text-right-p{
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
 }
 </style>
