@@ -11,7 +11,7 @@
             </div>
             <div class="side-text-right">
                 <div class="col">
-                      <div class="side-text-right-p">   
+                      <div class="side-text-right-p">
                           <div>
                               <img src="/img/location-graphic.svg" alt="">
                               Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P. sny. 1/C
@@ -24,7 +24,7 @@
                                 <img class="email-icon" src="/img/email-graphic.svg" alt="">
                                 Email : SomeEmail@someemail.com
                             </div>
-                      </div>
+                    </div>  
                 <div class="contact-graphic col">
                      <img src="/img/contact-graphic.svg" alt="">
                 </div>
@@ -56,10 +56,12 @@ $color:#438bac;
 .title{
     color: $color;
 }
-
 .email-icon{
     width:20px;
     height:20px;
+}
+.contact-graphic{
+    padding-top:20%;
 }
 
 .side-text-left{
@@ -73,12 +75,11 @@ $color:#438bac;
     font-size: 30px;
 }
 .side-text-right{
-    padding-top:5%;
-    width: 40%;
+    width: 50%;
     text-align: left;
 }
 .side-text-right-p{
-    color: black;
+    color: rgb(128, 125, 125);
     font-size: 15px;
     font-weight: bold;
 }
