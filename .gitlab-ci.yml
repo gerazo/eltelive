@@ -1,0 +1,16 @@
+stages:
+  - building
+
+image: edbizarro/gitlab-ci-pipeline-php:7.4-alpine
+
+dockerdeploy:
+  stage: building
+  script:
+    - ./eltelive.sh
+    - ./eltelive.sh
+    - ls deploy/log
+  artifacts:
+    paths:
+      - deploy/log
+    expire_in: 1 days
+    when: always
