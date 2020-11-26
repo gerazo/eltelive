@@ -86,7 +86,7 @@ function lookForCode(e, str) {
                 for (var i = 0; i < l; i++)
                 {
                     var ip = ip_raw_string[i];
-                    console.log(ip)
+                    //console.log(ip)
                     if ( !(ip_array.includes(ip)) )
                     {
                         ip_array.push(ip);

@@ -8,7 +8,7 @@ function getEaCode()
     var parameters = location.search.substring(1).split("&")
     var temp = parameters[0].split("=");
     lecturename = unescape(temp[1]);
-    console.log(lecturename);
+    //console.log(lecturename);
     //var myvar = setInterval(readlog(lecturename), 1000)
     readlog(lecturename);
 }
@@ -37,7 +37,7 @@ function readlog(e) {
                     document.getElementById("testdiv").innerHTML = "Stream is currently starting...";
                 }
             }
-            console.log(xmlhttp.responseText);
+            //console.log(xmlhttp.responseText);
             
         } else if (xmlhttp.readyState==4)
         {

@@ -46,7 +46,7 @@ function readlog() {
                     
                     var processTheName = streams[i].split("-")
                     var eacode = processTheName[1]
-                    console.log(eacode)
+                    //console.log(eacode)
 
                     var table = document.getElementById("listofstreams")
                     var row = table.insertRow(-1)
@@ -60,7 +60,7 @@ function readlog() {
                 document.getElementById("temptable").innerHTML=streams
             }
             
-            console.log(streams)
+            //console.log(streams)
         } else if (xmlhttp.readyState==4)
         {
             document.getElementById("temptable").innerHTML=(xmlhttp.status + xmlhttp.statusText);
