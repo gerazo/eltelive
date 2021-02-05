@@ -1,76 +1,64 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '@/components/Home'
-import About from '@/components/About'
-import Contact from '@/components/Contact'
-import SignUp from '@/components/User/SignUp'
-import Guest from '@/components/User/Guest'
-import Profile from '@/components/User/Profile'
-import Login from '@/components/User/Login'
-import LegalDisclaimer from '@/components/LegalDisclaimer'
-import ActiveStreams from '@/components/Stream/ActiveStreams'
-import CreateStream from '@/components/Stream/CreateStream'
-
+import Vue from 'vue';
+import Router from 'vue-router';
+import HomePageComponent from '@/components/home';
+import AboutComponent from '@/components/about-us';
+import ContactComponent from '@/components/contact-us';
+import SignUpComponent from '@/components/user/signUp';
+import GuestComponent from '@/components/user/guest';
+import ProfileComponent from '@/components/user/profile';
+import LoginComponent from '@/components/user/login';
+import LegalDisclaimer from '@/components/legal-disclaimer';
+import ActiveStreamsComponent from '@/components/stream/activeStream'
+import CreateStreamComponent from '@/components/stream/createStream';
+import NotFoundComponent from '@/components/notFoundPage';
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/home',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/',
-      name: 'Home',
-      component: Home
+      path: '',
+      component: HomePageComponent,
     },
     {
       path: '/about',
-      name: 'About',
-      component: About
+      component: AboutComponent,
     },
     {
       path: '/contact',
-      name: 'Contact',
-      component: Contact
+      component: ContactComponent,
     },
     {
       path: '/signup',
-      name: 'SignUp',
-      component: SignUp
+      component: SignUpComponent,
     },
     {
       path: '/guest',
-      name: 'Guest',
-      component: Guest
+      component: GuestComponent,
     },
     {
       path: '/profile',
-      name: 'Profile',
-      component: Profile
+      component: ProfileComponent,
     },
     {
       path: '/login',
-      name: 'Login',
-      component: Login
+      component: LoginComponent,
     },
     {
       path: '/active-stream',
-      name: 'ActiveStream',
-      component: ActiveStreams
+      component: ActiveStreamsComponent,
     },
     {
       path: '/create-stream',
-      name: 'CreateStream',
-      component: CreateStream
+      component: CreateStreamComponent,
     },
     {
       path: '/legal-disclaimer',
-      name: 'LegalDisclaimer',
-      component: LegalDisclaimer
+      component: LegalDisclaimer,
+    },
+    {
+      path: "**",
+      component: NotFoundComponent,
     }
-  ],
-  mode: 'history'
+  ]
 })

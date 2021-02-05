@@ -1,5 +1,5 @@
 <template>
   <div>
-    <p>The Create Stream page</p>
+    <p>Page Not Found</p>
   </div>
 </template>

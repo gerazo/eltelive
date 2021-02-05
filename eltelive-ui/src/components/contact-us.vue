@@ -9,9 +9,9 @@
                         <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
                     </div>
             </div>
-            <div class="side-text-right">
+            <div class="right-side">
                 <div class="col">
-                      <div class="side-text-right-p">
+                      <div class="right-side-p">
                           <div>
                               <img src="/img/location-graphic.svg" alt="">
                               Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P. sny. 1/C
@@ -34,7 +34,6 @@
          </div>
      </div>
 </template>
-
 
 <script>
     export default {
@@ -60,9 +59,6 @@ $color:#438bac;
     width:20px;
     height:20px;
 }
-.contact-graphic{
-    padding-top:20%;
-}
 
 .side-text-left{
     padding-top:30%;
@@ -74,11 +70,12 @@ $color:#438bac;
     color: $color;
     font-size: 30px;
 }
-.side-text-right{
+.right-side{
     width: 50%;
     text-align: left;
+    padding-top:10%;
 }
-.side-text-right-p{
+.right-side-p{
     color: rgb(128, 125, 125);
     font-size: 15px;
     font-weight: bold;

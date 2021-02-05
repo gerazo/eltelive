@@ -6,11 +6,10 @@ import './assets/app.scss';
 Vue.config.productionTip = false
 ;
 
-Vue.component('NavBar',require('./components/NavBar.vue').default);
-Vue.component('Footer',require('./components/Footer.vue').default);
+Vue.component('NavBar',require('./components/common/nav-bar.vue').default);
+Vue.component('Footer',require('./components/common/footer.vue').default);
 
 new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
-
