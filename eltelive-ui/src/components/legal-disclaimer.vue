@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "LegalDisclaimer"
+  name: "legal-disclaimer"
 };
 </script>
 

@@ -7,7 +7,7 @@
 
 <script>
  export default{
-  name:'About',
+  name:'about-us',
   data (){
    return{
     title:'About'

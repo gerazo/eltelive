@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p>The User Page</p>
+    <p>Page Not Found</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "profile"
+  name: "not-found-page"
 };
 </script>
 
