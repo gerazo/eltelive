@@ -1,2 +1,2 @@
 # Ensure that all the sh files are with Line Feed (LF) ending, to avoid line ending errors
-*.txt text eol=lf
+*.sh text eol=lf
