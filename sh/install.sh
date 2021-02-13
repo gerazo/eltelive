@@ -7,10 +7,10 @@ set -a
 set +a
 # env
 
-./pkg-install.sh
-./nginx-conf.sh
-./env-conf.sh
+sh pkg-install.sh
+sh nginx-conf.sh
+sh env-conf.sh
 
 if [ $EL_CONTAINER = "host" ]; then
-  ./www-conf.sh
+  sh www-conf.sh
 fi

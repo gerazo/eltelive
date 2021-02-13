@@ -144,7 +144,7 @@ case "$EL_CONTAINER" in
     echo "Building image..."
     docker build -t $EL_CONTAINERNAME .
     echo "Creating container..."
-    MSYS_NO_PATHCONV=1 docker create -h stream -it --name $EL_CONTAINERNAME -v $( pwd )/../$EL_DATA:/var/www -v $( pwd )/../$EL_LOG:/var/log -p 80:80/tcp -p 443:443/tcp -p 1935:1935/tcp $EL_CONTAINERNAME
+    MSYS_NO_PATHCONV=1 docker create -h stream -it --name $EL_CONTAINERNAME -v "$( pwd )/../$EL_DATA:/var/www" -v "$( pwd )/../$EL_LOG:/var/log" -p 80:80/tcp -p 443:443/tcp -p 1935:1935/tcp $EL_CONTAINERNAME
     echo "Starting container..."
     docker start $EL_CONTAINERNAME
     if [ "$( docker ps | grep $EL_CONTAINERNAME )" = "" ]; then
