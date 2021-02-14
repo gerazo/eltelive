@@ -2,8 +2,8 @@
         <div class="container">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-5">
-              <div class="home-content">
-                <h1 class="home-title">
+              <div>
+                <h1>
                   ELTE LIVEStream
                 </h1>
                 <p>
