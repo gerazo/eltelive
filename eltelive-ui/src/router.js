@@ -22,6 +22,10 @@ export default new Router({
       component: HomePageComponent,
     },
     {
+      path: '/home',
+      component: HomePageComponent,
+    },
+    {
       path: '/about',
       component: AboutComponent,
     },

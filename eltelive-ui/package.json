@@ -5,8 +5,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test",
-    "e2e": "vue-cli-service e2e"
+    "e2e": "vue-cli-service e2e",
+    "test": "vue-cli-service test"
   },
   "dependencies": {
     "@vue/eslint-plugin": "^4.2.0",
@@ -16,7 +16,7 @@
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "stylus-loader": "^4.1.1",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-router": "^3.4.6",
     "vuex": "^4.0.0-beta.4"
   },
@@ -24,12 +24,27 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "bootstrap": "~4.6.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^5.0.0",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.2",
-    "bootstrap": "~4.6.0",
     "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
   }
 }

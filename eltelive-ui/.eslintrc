@@ -1,8 +1,7 @@
 {
     "parser": "vue-eslint-parser",
-    "plugins": ["@vue"],
+    "plugins": ["@vue", "babel"],
     "parserOptions": {
-       "parser": "babel-eslint",
         "ecmaVersion": 2020,
         "sourceType": "module"
     },
