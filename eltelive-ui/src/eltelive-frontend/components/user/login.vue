@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div>
     <h2>Login</h2>
     <form id="login">
@@ -47,3 +47,4 @@
 <style lang="scss">
 
 </style>
+-->

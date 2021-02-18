@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div>
     <h2>Registration</h2>
     <form id="registration">
@@ -40,3 +40,4 @@ const form = document.getElementById("registration");
 <style lang="scss">
 
 </style>
+-->

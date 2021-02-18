@@ -13,6 +13,7 @@
     "axios": "^0.20.0",
     "bootstrap": "^4.6.0",
     "core-js": "^3.6.5",
+    "eslint-plugin-babel": "^5.3.1",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "stylus-loader": "^4.1.1",
