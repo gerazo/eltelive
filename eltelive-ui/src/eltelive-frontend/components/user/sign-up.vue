@@ -2,7 +2,8 @@
   <div>
     <h2>Registration</h2>
     <form id="registration">
-      <input type="text" name="username" id="username" placeholder="Username">
+      <input type="text" id="given-name" placeholder="Given Name">
+      <input type="text" id="family-name" placeholder="Family Name">
       <input type="email" name="email" id="email" placeholder="Email">
       <input type="password" name="password" id="password" placeholder="Password">
       <input type="submit" name="sumbit" value="Submit">
@@ -19,9 +20,10 @@ const form = document.getElementById("registration");
 
   async function registerNewUser(event) {
     event.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const givenName = document.getElementById('given-name').value
+    const familyName= document.getElementById('family-name').value
     const email = document.getElementById("email");
+    const password = document.getElementById('password').value;
 
     const result = await fetch('/api/register', {
       method: 'POST',
@@ -29,9 +31,10 @@ const form = document.getElementById("registration");
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username,
-        password,
-        email
+        givenName,
+        familyName,
+        email,
+        password
       })
     }).then(res => res.json());
     
