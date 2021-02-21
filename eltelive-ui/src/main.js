@@ -6,8 +6,8 @@ import './assets/app.scss';
 Vue.config.productionTip = false
 ;
 
-Vue.component('NavBar',require('./components/common/nav-bar.vue').default);
-Vue.component('Footer',require('./components/common/footer.vue').default);
+Vue.component('NavBar',require('./eltelive-frontend/components/common/nav-bar.vue').default);
+Vue.component('Footer',require('./eltelive-frontend/components/common/footer.vue').default);
 
 new Vue({
   router,
