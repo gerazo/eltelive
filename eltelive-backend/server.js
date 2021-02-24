@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const User = require('./model/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
 
@@ -15,12 +16,10 @@ mongoose.connect('mongodb://localhost:27017/db', {
 })
 
 const app = express()
-app.use('/', express.static(path.join(__dirname, 'static')))
+app.use(cors())
 app.use(bodyParser.json())
 
 app.post('/api/change-password', async (req, res) => {
-	console.log
-
 	const { newPassword: newPlainTextPassword, token } = req.body
 
 	if (!newPlainTextPassword || typeof newPlainTextPassword !== 'string') {
@@ -55,11 +54,11 @@ app.post('/api/change-password', async (req, res) => {
 })
 
 app.post('/api/login', async (req, res) => {
-	const { givenName, familyName, email, password } = req.body
+	const { email, password } = req.body
 	const user = await User.findOne({ email }).lean()
 
 	if (!user) {
-		return res.json({ status: 'error', error: 'Invalid username/password' })
+		return res.json({ status: 'error', error: 'Invalid email/password' })
 	}
 
 	if (await bcrypt.compare(password, user.password)) {
@@ -80,7 +79,6 @@ app.post('/api/login', async (req, res) => {
 })
 
 app.post('/api/register', async (req, res) => {
-	console.log(req.body)
 	const { givenName, familyName, email, password: plainTextPassword } = req.body
 
 	if (!givenName || typeof givenName !== 'string') {
@@ -119,7 +117,7 @@ app.post('/api/register', async (req, res) => {
 	} catch (error) {
 		if (error.code === 11000) {
 			// duplicate key
-			return res.json({ status: 'error', error: 'Username already in use' })
+			return res.json({ status: 'error', error: 'Email already in use' })
 		}
 		throw error
 	}
