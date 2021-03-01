@@ -4,7 +4,8 @@ WORKDIR /root
 COPY . /root/
 # COPY passwd files here
 # COPY SSL keys and certificates here
-RUN ./install.sh
+RUN chmod +x install.sh
+RUN sh install.sh
 
 EXPOSE 80/tcp
 EXPOSE 443/tcp

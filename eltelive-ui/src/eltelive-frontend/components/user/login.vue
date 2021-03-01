@@ -1,53 +1,55 @@
-<!--<template>
+<template>
   <div>
-    <h2>Login</h2>
-    <form id="login">
-			<input type="text" id="given-name" placeholder="Given Name">
-      <input type="text" id="family-name" placeholder="Family Name">
-			<input type="email" name="email" id="email" placeholder="Email">
-      <input type="password" name="password" id="password" placeholder="Password">
-			<input type="submit" value="Submit Form">
-		</form>
-  </div>
+    <h2>Sign in</h2>
+    <form id="login" ref="login">
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <input type="submit" value="Login">
+    </form>
+</div>
 </template>
 
 <script>
   export default {
-    name: "login"
-  };
+    name: "login",
+	mounted(){
+		// Equivalent of it in JavaScript: const form = document.getElementById('login')
+		console.log("LOGIN")
+		const form = this.$refs['login']		
+		form.addEventListener('submit', login)
 
-  const form = document.getElementById('login');
-			form.addEventListener('submit', login);
+		async function login(event) {
+			event.preventDefault()
+			const email = document.getElementById('email').value
+			const password = document.getElementById('password').value
 
-			async function login(event) {
-				event.preventDefault();
-				const givenName = document.getElementById('given-name').value;
-        const familyName= document.getElementById('family-name').value;
-        const email = document.getElementById("email");
-				const password = document.getElementById('password').value;
-				const result = await fetch('/api/login', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						givenName,
-            familyName,
-            email,
-            password
-					})
-				}).then((res) => res.json());
+			const result = await fetch('http://localhost:4000/api/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email,
+					password
+				})
+			}).then((res) => res.json())
 
-				if (result.status === 'ok') {
-					localStorage.setItem('token', result.data)
-				} else {
-					alert(result.error)
-				}
+			if (result.status === 'ok') {
+				// everythign went fine
+				console.log('Got the token: ', result.token)
+				console.log('UserName: ', result.username)
+				localStorage.setItem('token', result.token)
+				alert('Success')
+			} else {
+				alert(result.error)
 			}
-  
+		}
+
+	}
+
+  }
 </script>
 
 <style lang="scss">
 
 </style>
--->
