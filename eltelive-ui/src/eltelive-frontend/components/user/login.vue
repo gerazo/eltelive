@@ -2,7 +2,7 @@
   <div>
     <h2>Sign in</h2>
     <form id="login" ref="login">
-      <input type="email" id="email" placeholder="Email">
+      <input type="text" id="email" placeholder="Email">
       <input type="password" id="password" placeholder="Password">
       <input type="submit" value="Login">
     </form>
@@ -40,6 +40,7 @@
 				console.log('UserName: ', result.username)
 				localStorage.setItem('token', result.token)
 				alert('Success')
+				window.location.href = "/#/home";
 			} else {
 				alert(result.error)
 			}
