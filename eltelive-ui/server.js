@@ -1,5 +1,4 @@
 const express = require('express')
-const path = require('path')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const User = require('./model/user')
@@ -54,14 +53,36 @@ app.post('/api/change-password', async (req, res) => {
 })
 
 app.post('/api/login', async (req, res) => {
-	const { email, password } = req.body
+	const { email, password: plainTextPassword } = req.body
+
+	if (!email || typeof email !== 'string') {
+		return res.json({ status: 'error', error: 'Missing Email Address' })
+	}
+
+	if (!plainTextPassword || typeof plainTextPassword !== 'string') {
+		return res.json({ status: 'error', error: 'Missing password' })
+	}
+
+	// regular expression for matching email addresses
+	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if ( !re.test(email.toLowerCase()) ) {
+		return res.json({ status: 'error', error: 'Email Address is invalid' })
+	}
+
+	if (plainTextPassword.length < 5) {
+		return res.json({
+			status: 'error',
+			error: 'Password is too small. It should be at least 5 characters'
+		})
+	}
+
 	const user = await User.findOne({ email }).lean()
 
 	if (!user) {
 		return res.json({ status: 'error', error: 'Invalid email/password' })
 	}
 
-	if (await bcrypt.compare(password, user.password)) {
+	if (await bcrypt.compare(plainTextPassword, user.password)) {
 		// the username, password combination is successful
 
 		const token = jwt.sign(
@@ -82,25 +103,31 @@ app.post('/api/register', async (req, res) => {
 	const { givenName, familyName, email, password: plainTextPassword } = req.body
 
 	if (!givenName || typeof givenName !== 'string') {
-		return res.json({ status: 'error', error: 'Invalid Given Name' })
+		return res.json({ status: 'error', error: 'Missing Given Name' })
 	}
 
 	if (!familyName || typeof familyName !== 'string') {
-		return res.json({ status: 'error', error: 'Invalid Family Name' })
+		return res.json({ status: 'error', error: 'Missing Family Name' })
 	}
 
 	if (!email || typeof email !== 'string') {
-		return res.json({ status: 'error', error: 'Invalid Email Address' })
+		return res.json({ status: 'error', error: 'Missing Email Address' })
 	}
 
 	if (!plainTextPassword || typeof plainTextPassword !== 'string') {
-		return res.json({ status: 'error', error: 'Invalid password' })
+		return res.json({ status: 'error', error: 'Missing password' })
+	}
+
+	// regular expression for matching email addresses
+	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if ( !re.test(email.toLowerCase()) ) {
+		return res.json({ status: 'error', error: 'Email Address is invalid' })
 	}
 
 	if (plainTextPassword.length < 5) {
 		return res.json({
 			status: 'error',
-			error: 'Password too small. Should be atleast 5 characters'
+			error: 'Password is too small. It should be at least 5 characters'
 		})
 	}
 
@@ -114,17 +141,20 @@ app.post('/api/register', async (req, res) => {
 			password
 		})
 		console.log('User created successfully: ', response)
-	} catch (error) {
-		if (error.code === 11000) {
+	} catch (err) {
+		if (err.code === 11000) {
 			// duplicate key
 			return res.json({ status: 'error', error: 'Email already in use' })
 		}
-		throw error
+		throw err
 	}
 
 	res.json({ status: 'ok' })
 })
 
-app.listen(4000, () => {
-	console.log('Server up at 4000')
+const port = process.env.PORT || 4000;
+
+app.listen(port, (err) => {
+  if (err) return console.log(err);
+  console.log('server running on port ' + port);
 })
