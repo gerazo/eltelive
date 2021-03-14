@@ -17,6 +17,9 @@
         <li class="navbar-brand">
           <router-link to="/login" class="nav-link">Login</router-link>
         </li>
+        <li class="navbar-brand">
+          <router-link to="/signup" class="nav-link">Sign Up</router-link>
+        </li>
       </ul>
    </nav>
   </div>

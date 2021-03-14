@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div>
     <h2>Sign in</h2>
     <form id="login" ref="login">
@@ -7,6 +7,33 @@
       <input type="submit" value="Login">
     </form>
 </div>
+</template>-->
+
+<template>
+  <div class="d-flex justify-content-center pl-5">
+      <div class="sign-in pt-4 pr-5">
+        <h3>Sign in</h3>
+        <form class="pl-5 pt-5" id="login" ref="login">
+          <div class="pb-4">
+            <input type="email" class="form-control" id="email-input" placeholder= "Email" required>
+          </div>
+          <div class="pb-5">
+            <input type="password" class="form-control" id="password-input" placeholder="Password" required>
+          </div>
+          <div>            
+            <input type="submit" value="Login" class="btn btn-primary btn-lg btn-block">
+          </div>
+        </form>
+        </div>
+        <div class="guest text-center pt-4 pl-5">
+          <h3 class="pr-5">Are you a Guest?</h3>
+          <p class="pr-4">Attending a stream? You can go to the guest portal for attending the stream</p>
+          <div class="guest-portal-btn ml-3">
+            <router-link to="/guest" class="btn btn-lg btn-block">Go to Guest Portal</router-link>
+          </div>
+        </div>
+  </div>
+  
 </template>
 
 <script>
@@ -52,5 +79,43 @@
 </script>
 
 <style lang="scss">
+  .sign-in , .guest{
+    margin-top: 8rem;
+    margin-bottom: 5rem;
+    width:35rem;
+    height:25rem;
+    box-shadow: 60px -15px #1862a0;
+  }
+  .sign-in {
+    background-color: #f1f3f5;
+  }
+   .guest {
+    background-color: #349bf0;
+    h3{
+      color: #fff;
+    }
+    p {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-top:4rem;
+    }
+    .guest-portal-btn {
+      margin-top: 5.4rem;
+      margin-right: 3rem;
+      background: #fff;
+      color: black;
+      border-radius: 5px;
+    }
 
+    .guest-portal-btn:hover{
+      background-color: #cae0f5;
+    }
+
+  }
+  #login {
+    justify-content: center;
+    align-items: center;
+  }
 </style>
+
