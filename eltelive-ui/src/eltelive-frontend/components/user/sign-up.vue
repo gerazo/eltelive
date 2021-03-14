@@ -1,16 +1,3 @@
-<!--<template>
-  <div>
-    <h2>Registration</h2>
-    <form id="registration" ref='registration'>
-      <input type="text" id="givenName" placeholder="Given Name">
-      <input type="text" id="familyName" placeholder="Family Name">
-      <input type="text" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <input type="submit" value="Sign Up">
-    </form>
-  </div>
-</template>-->
-
 <template>
   <div class="d-flex justify-content-center pl-5">
       <div class="sign-up pt-4 pr-5">

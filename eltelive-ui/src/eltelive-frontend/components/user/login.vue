@@ -1,14 +1,3 @@
-<!--<template>
-  <div>
-    <h2>Sign in</h2>
-    <form id="login" ref="login">
-      <input type="text" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <input type="submit" value="Login">
-    </form>
-</div>
-</template>-->
-
 <template>
   <div class="d-flex justify-content-center pl-5">
       <div class="sign-in pt-4 pr-5">
@@ -40,7 +29,6 @@
   export default {
     name: "login",
 	mounted(){
-		// Equivalent of it in JavaScript: const form = document.getElementById('login')
 		console.log("LOGIN")
 		const form = this.$refs['login']		
 		form.addEventListener('submit', login)
@@ -62,7 +50,6 @@
 			}).then((res) => res.json())
 
 			if (result.status === 'ok') {
-				// everythign went fine
 				console.log('Got the token: ', result.token)
 				console.log('UserName: ', result.username)
 				localStorage.setItem('token', result.token)
