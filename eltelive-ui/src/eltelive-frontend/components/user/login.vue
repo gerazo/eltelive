@@ -15,10 +15,10 @@
         <h3>Sign in</h3>
         <form class="pl-5 pt-5" id="login" ref="login">
           <div class="pb-4">
-            <input type="email" class="form-control" id="email-input" placeholder= "Email" required>
+            <input type="email" class="form-control" id="email" placeholder= "Email" required>
           </div>
           <div class="pb-5">
-            <input type="password" class="form-control" id="password-input" placeholder="Password" required>
+            <input type="password" class="form-control" id="password" placeholder="Password" required>
           </div>
           <div>            
             <input type="submit" value="Login" class="btn btn-primary btn-lg btn-block">
