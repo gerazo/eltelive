@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer">
+    <footer class="footer pt-3">
       <div class="footer-link">
        <h4 class="f-title f_600 t_color f_size_18">Links</h4>
        <router-link to="/legal-disclaimer" class="badge badge-primary mr-4">Legal Disclaimer</router-link>
