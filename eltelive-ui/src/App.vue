@@ -17,7 +17,6 @@
   min-height:100%;
   position:relative;
   padding-bottom: 60px;
-  text-align: center;
   color: #2c3e50;
 }
 #nav{
