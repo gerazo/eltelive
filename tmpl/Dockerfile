@@ -5,7 +5,7 @@ COPY . /root/
 # COPY passwd files here
 # COPY SSL keys and certificates here
 RUN chmod +x install.sh
-RUN sh install.sh
+RUN ./install.sh
 
 EXPOSE 80/tcp
 EXPOSE 443/tcp
