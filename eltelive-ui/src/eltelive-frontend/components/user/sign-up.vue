@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center pl-5">
       <div class="sign-up pt-4 pr-5">
-        <h3>Sign Up</h3>
+        <h3 class="text-center">Sign Up</h3>
         <form class="pl-5 pt-5" id="registration" ref="registration">
           <div class="pb-4">
             <input type="text" class="form-control" id="givenName" placeholder= "Given Name" required>
@@ -81,7 +81,7 @@
     margin-bottom: 5rem;
     width:35rem;
     height:30rem;
-    box-shadow: 60px -15px #1862a0;
+    box-shadow: 40px -15px #1862a0;
   }
   .sign-up {
     background-color: #f1f3f5;
