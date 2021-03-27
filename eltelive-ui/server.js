@@ -52,6 +52,32 @@ app.post('/api/change-password', async (req, res) => {
 	}
 })
 
+app.get('/api/user', async (req, res) => {
+	const token = req.headers.token
+
+	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+		if (err) return res.status(401).json({
+			title: 'Unauthorized'
+		})
+
+		//token is valid
+		const user = await User.findOne({ _id: decoded.id }).lean()
+
+		if (!user) {
+			return res.json({ status: 'error', error: 'User does not exist' })
+		}
+		return res.status(200).json({
+			title: 'user grabbed',
+			user: {
+				givenName: user.givenName,
+				familyName: user.familyName,
+				email: user.email
+			}
+		})
+	})
+
+})
+
 app.post('/api/login', async (req, res) => {
 	const { email, password: plainTextPassword } = req.body
 
