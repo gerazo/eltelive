@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center pl-5">
       <div class="sign-in pt-4 pr-5">
-        <h3>Sign in</h3>
+        <h3 class="text-center">Sign in</h3>
         <form class="pl-5 pt-5" id="login" ref="login">
           <div class="pb-4">
             <input type="email" class="form-control" id="email" placeholder= "Email" required>
@@ -71,7 +71,7 @@
     margin-bottom: 5rem;
     width:35rem;
     height:25rem;
-    box-shadow: 60px -15px #1862a0;
+    box-shadow: 40px -15px #1862a0;
   }
   .sign-in {
     background-color: #f1f3f5;
