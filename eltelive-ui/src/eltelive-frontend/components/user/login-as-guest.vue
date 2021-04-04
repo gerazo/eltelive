@@ -30,76 +30,73 @@
       </noscript>
       <input type="text" id="streamkey" placeholder="Insert your stream key here and press one of the buttons below"
         required />
-<!---      <button onclick="registerStreamKey(2);">
-        Listen Live (experimental)
-      </button> --->
-      <button onclick="registerStreamKey(3);">
+      <button v-on:click="registerStreamKey(3);">
         - Listen in Browser -
       </button>
-      <button onclick="registerStreamKey(1);">
+      <button v-on:click="registerStreamKey(1);">
         - Listen in App -
       </button>
-      <button onclick="registerStreamKey(4);">
+      <button v-on:click="registerStreamKey(4);">
         - Recordings -
       </button>
       <br />
-      <button onclick="registerStreamKey(6);">
+      <button v-on:click="registerStreamKey(6);">
         <small>Listen LQ in Browser</small>
       </button>
-      <button onclick="registerStreamKey(5);">
+      <button v-on:click="registerStreamKey(5);">
         <small>Listen LQ in App</small>
       </button>
       <video-js id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
       </video-js>
       <hr />
     </div>
-    </div>
+  </div>
 </template>
-
 <script>
 export default {
   name: "login-as-guest",
   methods: {
-      registerStreamKey(type) {
-      var streamKey = document.getElementById("streamkey").value;
-      if(!streamKey)
-        return;
-      if (type == "1") {
-        // RTMP
-        var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
-        window.open(streamLink, "_blank");
-      } else if (type == "2") {
-        //MPEG-DASH
-        var streamLink =
-          "https://$DOMAINNAME/livedash/" + streamKey + ".mpd";
-        var player = videojs('stream-player');
-        player.src({src: streamLink, type: 'application/dash+xml'});
-        player.play();
-      } else if (type == "3") {
-        //HLS
-        var streamLink =
-          "https://$DOMAINNAME/livehls/" + streamKey + ".m3u8";
-        var player = videojs('stream-player');
-        player.src({src: streamLink, type: 'application/x-mpegURL'});
-        player.play();
-      } else if (type == "4") {
-        //Recorded videos
-        var streamLink =
-          "https://$DOMAINNAME/videos/" + streamKey;
-        window.open(streamLink, "_blank");
-      } else if (type == "5") {
-        //RTMP low quality
-        var streamLink = "rtmp://$DOMAINNAME/livelq/" + streamKey;
-        window.open(streamLink, "_blank");
-      } else if (type == "6") {
-        //HLS low quality
-        var streamLink =
-          "https://$DOMAINNAME/livehlslq/" + streamKey + ".m3u8";
-        var player = videojs('stream-player');
-        player.src({src: streamLink, type: 'application/x-mpegURL'});
-        player.play();
-      }
-    }
+    registerStreamKey(type) {
+  var streamKey = document.getElementById("streamkey").value;
+  if(!streamKey)
+    return;
+  if (type == "1") {
+    // RTMP
+    var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
+    window.open(streamLink, "_blank");
+  } else if (type == "2") {
+    //MPEG-DASH
+    var streamLink =
+      "https://$DOMAINNAME/livedash/" + streamKey + ".mpd";
+    var player = videojs('stream-player');
+    player.src({src: streamLink, type: 'application/dash+xml'});
+    player.play();
+  } else if (type == "3") {
+    //HLS
+    var streamLink =
+      "https://$DOMAINNAME/livehls/" + streamKey + ".m3u8";
+    var player = videojs('stream-player');
+    player.src({src: streamLink, type: 'application/x-mpegURL'});
+    player.play();
+  } else if (type == "4") {
+    //Recorded videos
+    var streamLink =
+      "https://$DOMAINNAME/videos/" + streamKey;
+    window.open(streamLink, "_blank");
+  } else if (type == "5") {
+    //RTMP low quality
+    var streamLink = "rtmp://$DOMAINNAME/livelq/" + streamKey;
+    window.open(streamLink, "_blank");
+  } else if (type == "6") {
+    //HLS low quality
+    var streamLink =
+      "https://$DOMAINNAME/livehlslq/" + streamKey + ".m3u8";
+    var player = videojs('stream-player');
+    player.src({src: streamLink, type: 'application/x-mpegURL'});
+    player.play();
+  }
+}
+
   }
 };
 	
