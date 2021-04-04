@@ -4,7 +4,7 @@
       <div class="content d-flex">
         <div class="side-text-left border-right">
           <div class="side-text-left-p"> 
-            <h1>LET'S TALK</h1>
+            <h2 class="display-4">LET'S TALK</h2>
             <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
           </div>
           </div>

@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="first-box pb-5">
-        <h1 class="display-4">Our Story</h1>
+        <h1 class="display-5">Our Story</h1>
         <p class="lead">
           We are students who have new point of view for online streaming.
           Since everyone started to depend more on online platforms, it can be hard for people who are not experienced much with online paltform to 
