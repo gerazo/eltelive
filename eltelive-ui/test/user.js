@@ -26,16 +26,9 @@ describe('Users', () => {
         });
     });
 
-    // afterEach(function(done) {
-    //     // I do stuff like deleting populated db
+    // after(() => {
+    //     mongoose.connection.close();
     // });
-
-    after((done) => {
-        User.deleteMany({}, (err) => {
-            done();
-        });
-        mongoose.connection.close();
-    });
 
     describe('POST /api/register', () => {
         it('it should create a new user', () => {
