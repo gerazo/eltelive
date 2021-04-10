@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
 	password: { 
 		type: String, 
 		required: true
+	},
+	stream_key: {
+		type: String,
+		required: false
 	}
 },{ collection: 'users' })
 

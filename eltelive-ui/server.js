@@ -5,8 +5,26 @@ const User = require('./model/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+shortid = require('shortid');
+const NodeMediaServer = require('node-media-server');
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
+
+const config = {
+	rtmp: {
+		port: 1935,
+		chunk_size: 60000,
+		gop_cache: true,
+		ping: 30,
+		ping_timeout: 60
+	},
+	http: {
+		port: 8000,
+		allow_origin: '*'
+	}
+};
+var nms = new NodeMediaServer(config)
+nms.run();
 
 mongoose.connect('mongodb://localhost:27017/db', {
 	useNewUrlParser: true,
@@ -156,6 +174,30 @@ app.post('/api/register', async (req, res) => {
 	}
 	res.status(200).json({ status: 'ok' })
 })
+
+app.post('/api/generate_token', async(req, res) => {
+	const { token } = req.body
+	if(!token || typeof token !== 'string') {
+		return res.status(400).json({ status: 'error', error: 'Token not provided' })
+	}
+	try {
+		const user = jwt.verify(token, JWT_SECRET)
+		const _id = user.id
+		const stream_key  = shortid.generate();
+		await User.updateOne(
+			{ _id },
+			{
+				$set: { stream_key }
+			}
+		)
+		res.status(201).json({ status: 'ok', title: 'Stream key generated successfully', stream_key : stream_key })
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid stream key' })
+	}
+})
+
+
 
 const port = process.env.PORT || 4000;
 
