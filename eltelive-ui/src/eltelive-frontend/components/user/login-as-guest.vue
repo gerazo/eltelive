@@ -53,8 +53,8 @@
             <small>Listen LQ in App</small>
           </button>
         </div>
-        <video-js id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
-        </video-js>
+          <video v-if="showVideo" id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
+          </video>
       </div>
     </div>
   </div>
@@ -62,51 +62,56 @@
 <script>
 export default {
   name: "login-as-guest",
+  data: function() {
+        return {
+            showVideo: false
+        }
+    },
   methods: {
     registerStreamKey(type) {
-  var streamKey = document.getElementById("streamkey").value;
-  if(!streamKey)
-    return;
-  if (type == "1") {
-    // RTMP
-    var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
-    window.open(streamLink, "_blank");
-  } else if (type == "2") {
-    //MPEG-DASH
-    var streamLink =
-      "https://$DOMAINNAME/livedash/" + streamKey + ".mpd";
-    var player = videojs('stream-player');
-    player.src({src: streamLink, type: 'application/dash+xml'});
-    player.play();
-  } else if (type == "3") {
-    //HLS
-    var streamLink =
-      "https://$DOMAINNAME/livehls/" + streamKey + ".m3u8";
-    var player = videojs('stream-player');
-    player.src({src: streamLink, type: 'application/x-mpegURL'});
-    player.play();
-  } else if (type == "4") {
-    //Recorded videos
-    var streamLink =
-      "https://$DOMAINNAME/videos/" + streamKey;
-    window.open(streamLink, "_blank");
-  } else if (type == "5") {
-    //RTMP low quality
-    var streamLink = "rtmp://$DOMAINNAME/livelq/" + streamKey;
-    window.open(streamLink, "_blank");
-  } else if (type == "6") {
-    //HLS low quality
-    var streamLink =
-      "https://$DOMAINNAME/livehlslq/" + streamKey + ".m3u8";
-    var player = videojs('stream-player');
-    player.src({src: streamLink, type: 'application/x-mpegURL'});
-    player.play();
+      this.showVideo = true;
+      var streamKey = document.getElementById("streamkey").value;
+      if(!streamKey)
+        return;
+      if (type == "1") {
+        // RTMP
+        var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
+        window.open(streamLink, "_blank");
+      } else if (type == "2") {
+        //MPEG-DASH
+        var streamLink =
+          "https://$DOMAINNAME/livedash/" + streamKey + ".mpd";
+        var player = videojs('stream-player');
+        player.src({src: streamLink, type: 'application/dash+xml'});
+        player.play();
+      } else if (type == "3") {
+        //HLS
+        var streamLink =
+          "https://$DOMAINNAME/livehls/" + streamKey + ".m3u8";
+        var player = videojs('stream-player');
+        player.src({src: streamLink, type: 'application/x-mpegURL'});
+        player.play();
+      } else if (type == "4") {
+        //Recorded videos
+        var streamLink =
+          "https://$DOMAINNAME/videos/" + streamKey;
+        window.open(streamLink, "_blank");
+      } else if (type == "5") {
+        //RTMP low quality
+        var streamLink = "rtmp://$DOMAINNAME/livelq/" + streamKey;
+        window.open(streamLink, "_blank");
+      } else if (type == "6") {
+        //HLS low quality
+        var streamLink =
+          "https://$DOMAINNAME/livehlslq/" + streamKey + ".m3u8";
+        var player = videojs('stream-player');
+        player.src({src: streamLink, type: 'application/x-mpegURL'});
+        player.play();
   }
 }
 
   }
 };
-	
 </script>
 
 <style lang="scss">
@@ -127,7 +132,6 @@ export default {
   background-color: #fff;
   padding: 40px;
   border-radius: 0.25rem;
-  height: 350px;
   text-align: center;
 }
 
