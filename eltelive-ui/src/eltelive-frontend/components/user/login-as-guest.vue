@@ -53,15 +53,16 @@
             <small>Listen LQ in App</small>
           </button>
         </div>
-          <video v-if="showVideo" id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
-          </video>
+          <video-js ref="Player" v-if="showVideo" id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
+          </video-js>
       </div>
     </div>
-    <link href="video-js.min.css" rel="stylesheet">
   </div>
 </template>
 <script>
-import videojs from "video.min.js";
+import videojs from "./video.min.js";
+window.videojs = videojs
+
 export default {
   name: "login-as-guest",
   data: function() {
@@ -89,8 +90,8 @@ export default {
       } else if (type == "3") {
         //HLS
         var streamLink =
-          "https://$DOMAINNAME/livehls/" + streamKey + ".m3u8";
-        var player = videojs('stream-player');
+          "http://localhost:8000/live/" + streamKey + ".flv";
+        var player = videojs(this.$refs.Player);
         player.src({src: streamLink, type: 'application/x-mpegURL'});
         player.play();
       } else if (type == "4") {
@@ -118,6 +119,7 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+@import url('video-js.min.css');
   .guest-title {
     text-transform: uppercase;
   }
