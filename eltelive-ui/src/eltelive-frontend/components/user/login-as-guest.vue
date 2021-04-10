@@ -57,9 +57,11 @@
           </video>
       </div>
     </div>
+    <link href="video-js.min.css" rel="stylesheet">
   </div>
 </template>
 <script>
+import videojs from "video.min.js";
 export default {
   name: "login-as-guest",
   data: function() {
