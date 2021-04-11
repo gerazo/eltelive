@@ -57,10 +57,9 @@ app.get('/api/user', async (req, res) => {
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
 	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
-		if (err) return res.status(401).json({
-			status: 'error',
-			title: 'Unauthorized'
-		})
+		if (err) {
+			return res.status(401).json({ status: 'error', title: 'Invalid token'})
+		}
 		//token is valid
 		const user = await User.findOne({ _id: decoded.id }).lean()
 		if (!user) {
@@ -74,6 +73,30 @@ app.get('/api/user', async (req, res) => {
 				familyName: user.familyName,
 				email: user.email
 			}
+		})
+	})
+})
+
+app.get('/api/users', async (req, res) => {
+	const authHeader = req.headers['authorization']
+	const token = authHeader && authHeader.split(' ')[1]
+	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+		if (err){
+			return res.status(401).json({ status: 'error', title: 'Invalid token' })	
+		}
+		//token is valid
+		const user = await User.findOne({ _id: decoded.id }).lean()
+		if (!user) {
+			return res.status(404).json({ status: 'error', error: 'User does not exist' })
+		}
+		// If the user is not the admin, then he's not authorised to access the full list of users
+		if(user.email.localeCompare('admin@admin.com')){
+			return res.status(403).json({ status: 'error', title: 'Only the admin can get the list of users' })	
+		}
+		return res.status(200).json({
+			status: 'ok',
+			title: 'Users details are retrived successfully',
+			users: await User.find({})
 		})
 	})
 })
