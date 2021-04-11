@@ -96,7 +96,7 @@ app.get('/api/users', async (req, res) => {
 		return res.status(200).json({
 			status: 'ok',
 			title: 'Users details are retrived successfully',
-			users: await User.find({})
+			users: await User.find({}).select('givenName familyName email stream_key')
 		})
 	})
 })
