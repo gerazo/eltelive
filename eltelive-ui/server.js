@@ -6,25 +6,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 shortid = require('shortid');
-const NodeMediaServer = require('node-media-server');
+const node_media_server = require('./config/media_server');
 
-const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
+const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk';
 
-const config = {
-	rtmp: {
-		port: 1935,
-		chunk_size: 60000,
-		gop_cache: true,
-		ping: 30,
-		ping_timeout: 60
-	},
-	http: {
-		port: 8000,
-		allow_origin: '*'
-	}
-};
-var nms = new NodeMediaServer(config)
-nms.run();
+node_media_server.run();
 
 mongoose.connect('mongodb://localhost:27017/db', {
 	useNewUrlParser: true,
@@ -36,16 +22,16 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/api/change-password', async (req, res) => {
+app.patch('/api/change-password', async (req, res) => {
 	const { newPassword: newPlainTextPassword, token } = req.body
 	if(!token || typeof token !== 'string') {
-		return res.status(400).json({ status: 'error', error: 'Token not provided' })
+		return res.status(401).json({ status: 'error', error: 'Token not provided' })
 	}
 	if (!newPlainTextPassword || typeof newPlainTextPassword !== 'string') {
-		return res.status(401).json({ status: 'error', error: 'Invalid password' })
+		return res.status(400).json({ status: 'error', error: 'Invalid password' })
 	}
 	if (newPlainTextPassword.length < 5) {
-		return res.status(403).json({
+		return res.status(400).json({
 			status: 'error',
 			error: 'Password too small. It should be at least 5 characters'
 		})
@@ -68,7 +54,8 @@ app.post('/api/change-password', async (req, res) => {
 });
 
 app.get('/api/user', async (req, res) => {
-	const token = req.headers.token
+	const authHeader = req.headers['authorization']
+  	const token = authHeader && authHeader.split(' ')[1]
 	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
 		if (err) return res.status(401).json({
 			status: 'error',
@@ -175,10 +162,10 @@ app.post('/api/register', async (req, res) => {
 	res.status(200).json({ status: 'ok' })
 })
 
-app.post('/api/generate_token', async(req, res) => {
+app.put('/api/generate_key', async(req, res) => {
 	const { token } = req.body
 	if(!token || typeof token !== 'string') {
-		return res.status(400).json({ status: 'error', error: 'Token not provided' })
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
 	}
 	try {
 		const user = jwt.verify(token, JWT_SECRET)
@@ -193,10 +180,30 @@ app.post('/api/generate_token', async(req, res) => {
 		res.status(201).json({ status: 'ok', title: 'Stream key generated successfully', stream_key : stream_key })
 	} catch (error) {
 		console.log(error)
-		res.status(400).json({ status: 'error', error: 'Invalid stream key' })
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
 	}
 })
 
+app.delete('/api/delete_key', async (req, res) => {
+	const { token } = req.body
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user = jwt.verify(token, JWT_SECRET)
+		const _id = user.id
+		await User.updateOne(
+			{ _id },
+			{
+				$unset: { stream_key: 1 }
+			}
+		)
+		res.status(200).json({ status: 'ok', title: 'Stream key deleted successfully'})
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
+})
 
 
 const port = process.env.PORT || 4000;
