@@ -67,11 +67,12 @@ app.get('/api/user', async (req, res) => {
 		}
 		return res.status(200).json({
 			status: 'ok',
-			title: 'User details are retrived successfully',
+			title: 'User details are retrieved successfully',
 			user: {
 				givenName: user.givenName,
 				familyName: user.familyName,
-				email: user.email
+				email: user.email,
+				stream_key: user.stream_key
 			}
 		})
 	})
@@ -95,7 +96,7 @@ app.get('/api/users', async (req, res) => {
 		}
 		return res.status(200).json({
 			status: 'ok',
-			title: 'Users details are retrived successfully',
+			title: 'Users details are retrieved successfully',
 			users: await User.find({}).select('givenName familyName email stream_key')
 		})
 	})
