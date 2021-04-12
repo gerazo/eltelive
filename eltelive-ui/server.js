@@ -63,7 +63,7 @@ app.get('/api/user', async (req, res) => {
 		}
 		return res.status(200).json({
 			status: 'ok',
-			title: 'User details are retrived successfully',
+			title: 'User details are retrieved successfully',
 			user: {
 				givenName: user.givenName,
 				familyName: user.familyName,
