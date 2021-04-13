@@ -1,27 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('./db_connections/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+shortid = require('shortid');
+const node_media_server = require('./config/media_server');
 const User = require('./model/user');
+const mongoose = require('./db_connections/db');
 
-const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
+const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk';
+
+node_media_server.run();
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/api/change-password', async (req, res) => {
+app.patch('/api/change-password', async (req, res) => {
 	const { newPassword: newPlainTextPassword, token } = req.body
 	if(!token || typeof token !== 'string') {
-		return res.status(400).json({ status: 'error', error: 'Token not provided' })
+		return res.status(401).json({ status: 'error', error: 'Token not provided' })
 	}
 	if (!newPlainTextPassword || typeof newPlainTextPassword !== 'string') {
-		return res.status(401).json({ status: 'error', error: 'Invalid password' })
+		return res.status(400).json({ status: 'error', error: 'Invalid password' })
 	}
 	if (newPlainTextPassword.length < 5) {
-		return res.status(403).json({
+		return res.status(400).json({
 			status: 'error',
 			error: 'Password too small. It should be at least 5 characters'
 		})
@@ -44,12 +48,12 @@ app.post('/api/change-password', async (req, res) => {
 });
 
 app.get('/api/user', async (req, res) => {
-	const token = req.headers.token
+	const authHeader = req.headers['authorization']
+  	const token = authHeader && authHeader.split(' ')[1]
 	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
-		if (err) return res.status(401).json({
-			status: 'error',
-			title: 'Unauthorized'
-		})
+		if (err) {
+			return res.status(401).json({ status: 'error', title: 'Invalid token'})
+		}
 		//token is valid
 		const user = await User.findOne({ _id: decoded.id }).lean()
 		if (!user) {
@@ -61,8 +65,33 @@ app.get('/api/user', async (req, res) => {
 			user: {
 				givenName: user.givenName,
 				familyName: user.familyName,
-				email: user.email
+				email: user.email,
+				stream_key: user.stream_key
 			}
+		})
+	})
+})
+
+app.get('/api/users', async (req, res) => {
+	const authHeader = req.headers['authorization']
+	const token = authHeader && authHeader.split(' ')[1]
+	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+		if (err){
+			return res.status(401).json({ status: 'error', title: 'Invalid token' })	
+		}
+		//token is valid
+		const user = await User.findOne({ _id: decoded.id }).lean()
+		if (!user) {
+			return res.status(404).json({ status: 'error', error: 'User does not exist' })
+		}
+		// If the user is not the admin, then he's not authorised to access the full list of users
+		if(user.email.localeCompare('admin@admin.com')){
+			return res.status(403).json({ status: 'error', title: 'Only the admin can get the list of users' })	
+		}
+		return res.status(200).json({
+			status: 'ok',
+			title: 'Users details are retrieved successfully',
+			users: await User.find({}).select('givenName familyName email stream_key')
 		})
 	})
 })
@@ -150,6 +179,50 @@ app.post('/api/register', async (req, res) => {
 	}
 	res.status(200).json({ status: 'ok' })
 })
+
+app.put('/api/generate_key', async(req, res) => {
+	const { token } = req.body
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user = jwt.verify(token, JWT_SECRET)
+		const _id = user.id
+		const stream_key  = shortid.generate();
+		await User.updateOne(
+			{ _id },
+			{
+				$set: { stream_key }
+			}
+		)
+		res.status(201).json({ status: 'ok', title: 'Stream key generated successfully', stream_key : stream_key })
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
+})
+
+app.delete('/api/delete_key', async (req, res) => {
+	const { token } = req.body
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user = jwt.verify(token, JWT_SECRET)
+		const _id = user.id
+		await User.updateOne(
+			{ _id },
+			{
+				$unset: { stream_key: 1 }
+			}
+		)
+		res.status(200).json({ status: 'ok', title: 'Stream key deleted successfully'})
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
+})
+
 
 const port = process.env.PORT || 4000;
 

@@ -29,6 +29,15 @@
     }
   }
 }
+h1 {
+  color: rgb(53, 114, 210);
+  font-size: 25px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
 .nav-router{
   padding-bottom: 2%;
 }

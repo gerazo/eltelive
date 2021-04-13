@@ -1,10 +1,8 @@
-process.env.UNIT_TESTING = true;
-
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 const mongoose = require('../db_connections/test');
-const User = require('../model/user')
+const User = require('../model/user');
 const server = require('../server');
 
 const should = chai.should();
@@ -12,12 +10,7 @@ const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhf
 chai.use(chaiHttp);
 
 describe('Users', () => {
-    before((done) => { 
-        mongoose.connect('mongodb://localhost:27017/test', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true
-        })
+    before((done) => {
         User.deleteMany({}, (err) => {
             done();
         });
@@ -72,7 +65,7 @@ describe('Users', () => {
             )
             chai.request(server)
                 .get('/api/user')
-                .set('token', token)
+                .set({ "Authorization": `Bearer ${token}` })
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
@@ -86,7 +79,7 @@ describe('Users', () => {
         });
     });
     
-    describe('/POST change password', async () => {
+    describe('/PATCH change password', async () => {
         it('it should change the password of the user', async () => {
             const user = await User.findOne({ email: 'test@test.com' }).lean()
             const token = jwt.sign(
@@ -97,7 +90,7 @@ describe('Users', () => {
                 JWT_SECRET
             )
             chai.request(server)
-                .post('/api/change-password')
+                .patch('/api/change-password')
                 .send({newPassword: 'newtest12345', token: token})
                 .end((err, res) => {
                     res.body.should.be.a('object');

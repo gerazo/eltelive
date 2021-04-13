@@ -11,7 +11,7 @@
                 </p>
                 <div class="home-btn mt-5">
                     <button @click="$router.push('login')" class="btn btn-primary mr-4">Login</button>
-                    <button class="btn custom-btn btn-outline-secondary">Join Stream as Guest</button>
+                    <button @click="$router.push('guest')" class="btn custom-btn btn-outline-secondary">Join Stream as Guest</button>
                 </div>
               </div>
             </div>
