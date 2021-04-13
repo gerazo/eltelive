@@ -1,18 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const User = require('./model/user');
+const mongoose = require('./db_connections/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const User = require('./model/user');
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
-
-mongoose.connect('mongodb://localhost:27017/db', {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true
-});
 
 const app = express();
 app.use(cors());
@@ -164,4 +158,4 @@ app.listen(port, (err) => {
   console.log('server running on port ' + port);
 })
 
-module.exports = app
+module.exports = app;

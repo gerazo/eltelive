@@ -1,22 +1,19 @@
-const express = require('express');
+process.env.UNIT_TESTING = true;
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
-
-const server = require('../server');
+const mongoose = require('../db_connections/test');
 const User = require('../model/user')
+const server = require('../server');
 
 const should = chai.should();
-const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
-
-chai.use(chaiHttp)
-
-const app = express();
+const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk';
+chai.use(chaiHttp);
 
 describe('Users', () => {
-    before((done) => {
-        mongoose.connect('mongodb://localhost:27018/db', {
+    before((done) => { 
+        mongoose.connect('mongodb://localhost:27017/test', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
@@ -26,11 +23,7 @@ describe('Users', () => {
         });
     });
 
-    // after(() => {
-    //     mongoose.connection.close();
-    // });
-
-    describe('POST /api/register', () => {
+    describe('POST /api/register', async () => {
         it('it should create a new user', () => {
             const user = {
                 givenName: 'test',
@@ -42,13 +35,13 @@ describe('Users', () => {
                 .post('/api/register')
                 .send(user)
                 .end((err, res) => {
-                    res.should.have.status(200);
                     res.body.should.be.a('object');
+                    res.should.have.status(200);
                 })
         });
     });
-
-    describe('POST /api/login', () => {
+    
+    describe('POST /api/login', async () => {
         it('it should sign in using the user information', () => {
             const user = {
                 email: 'test@test.com',
@@ -58,8 +51,8 @@ describe('Users', () => {
                 .post('/api/login')
                 .send(user)
                 .end((err, res) => {
-                    res.should.have.status(200);
                     res.body.should.be.a('object');
+                    res.should.have.status(200);
                     res.body.should.have.property('token');
                     jwt.verify(res.body.token, JWT_SECRET);
                     res.body.should.have.property('username');
@@ -67,7 +60,7 @@ describe('Users', () => {
         });
     });
 
-    describe('/GET user', () => {
+    describe('/GET user', async () => {
         it('it should return the details of the user', async () => {
             const user = await User.findOne({ email: 'test@test.com' }).lean()
             const token = jwt.sign(
@@ -81,8 +74,8 @@ describe('Users', () => {
                 .get('/api/user')
                 .set('token', token)
                 .end((err, res) => {
-                    res.should.have.status(200);
                     res.body.should.be.a('object');
+                    res.should.have.status(200);
                     res.body.should.have.property('user');
                     res.body.user.should.be.a('object');
                     res.body.user.should.have.property('givenName');
@@ -92,8 +85,8 @@ describe('Users', () => {
                 });
         });
     });
-
-    describe('/POST change password', () => {
+    
+    describe('/POST change password', async () => {
         it('it should change the password of the user', async () => {
             const user = await User.findOne({ email: 'test@test.com' }).lean()
             const token = jwt.sign(
@@ -107,10 +100,9 @@ describe('Users', () => {
                 .post('/api/change-password')
                 .send({newPassword: 'newtest12345', token: token})
                 .end((err, res) => {
-                    res.should.have.status(200);
                     res.body.should.be.a('object');
+                    res.should.have.status(200);
                 });
         });
     });
-
 });

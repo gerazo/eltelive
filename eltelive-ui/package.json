@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^8.3.2",
     "mongoose": "^5.11.17",
+    "npm": "^7.9.0",
     "popper.js": "^1.16.1",
     "stylus-loader": "^4.1.1",
     "vue": "^2.6.12",
