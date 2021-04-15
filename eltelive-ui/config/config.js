@@ -9,6 +9,11 @@ const config = {
 	http: {
 		port: 8000,
 		allow_origin: '*'
+	},
+	auth: {
+		play: false,
+		publish: true,
+		secret: 'ELTE_is_super_awesome'
 	}
 };
 

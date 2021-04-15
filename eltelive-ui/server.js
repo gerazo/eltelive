@@ -4,9 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 shortid = require('shortid');
+const md5 = require('md5')
+const mongoose = require('./db_connections/db');
+config = require('./config/config');
 const node_media_server = require('./config/media_server');
 const User = require('./model/user');
-const mongoose = require('./db_connections/db');
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk';
 
@@ -181,7 +183,8 @@ app.post('/api/register', async (req, res) => {
 })
 
 app.put('/api/generate_key', async(req, res) => {
-	const { token } = req.body
+	const authHeader = req.headers['authorization']
+  	const token = authHeader && authHeader.split(' ')[1]
 	if(!token || typeof token !== 'string') {
 		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
 	}
@@ -195,7 +198,19 @@ app.put('/api/generate_key', async(req, res) => {
 				$set: { stream_key }
 			}
 		)
-		res.status(201).json({ status: 'ok', title: 'Stream key generated successfully', stream_key : stream_key })
+		// Hasing part for generating the server address
+		const day_in_epoch = 86400
+		const current_time_in_epoch = Math.floor(new Date().getTime() / 1000)
+		const stream_expiration_time = current_time_in_epoch + day_in_epoch // After one day
+		const hashValue = md5("/live-" + stream_expiration_time + "-" + config.auth.secret)
+		const stream_address = "rtmp://localhost/live?sign=" + stream_expiration_time + "-" + hashValue 
+		res.status(201).json({ 
+			status: 'ok', 
+			title: 'Stream key generated successfully', 
+			stream_key: stream_key,
+			stream_display_url: "http://localhost:8000/live/" + stream_key + ".flv",
+			stream_address: stream_address
+		})
 	} catch (error) {
 		console.log(error)
 		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
@@ -203,7 +218,8 @@ app.put('/api/generate_key', async(req, res) => {
 })
 
 app.delete('/api/delete_key', async (req, res) => {
-	const { token } = req.body
+	const authHeader = req.headers['authorization']
+  	const token = authHeader && authHeader.split(' ')[1]
 	if(!token || typeof token !== 'string') {
 		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
 	}
