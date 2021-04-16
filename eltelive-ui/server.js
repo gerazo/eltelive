@@ -5,15 +5,14 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 shortid = require('shortid');
 const md5 = require('md5')
+const dotenv = require('dotenv');
 const mongoose = require('./db_connections/db');
 config = require('./config/config');
 const node_media_server = require('./config/media_server');
 const User = require('./model/user');
 
-const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk';
-
+dotenv.config();
 node_media_server.run();
-
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -33,7 +32,7 @@ app.patch('/api/change-password', async (req, res) => {
 		})
 	}
 	try {
-		const user = jwt.verify(token, JWT_SECRET)
+		const user = jwt.verify(token, process.env.JWT_SECRET)
 		const _id = user.id
 		const password = await bcrypt.hash(newPlainTextPassword, 10)
 		await User.updateOne(
@@ -52,7 +51,7 @@ app.patch('/api/change-password', async (req, res) => {
 app.get('/api/user', async (req, res) => {
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
-	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+	jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
 		if (err) {
 			return res.status(401).json({ status: 'error', title: 'Invalid token'})
 		}
@@ -77,7 +76,7 @@ app.get('/api/user', async (req, res) => {
 app.get('/api/users', async (req, res) => {
 	const authHeader = req.headers['authorization']
 	const token = authHeader && authHeader.split(' ')[1]
-	jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+	jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
 		if (err){
 			return res.status(401).json({ status: 'error', title: 'Invalid token' })	
 		}
@@ -128,7 +127,7 @@ app.post('/api/login', async (req, res) => {
 				id: user._id,
 				email: user.email
 			},
-			JWT_SECRET
+			process.env.JWT_SECRET
 		)
 		console.log('User logged in successfully!')
 		console.log('Token: ', token)
@@ -189,7 +188,7 @@ app.put('/api/generate_key', async(req, res) => {
 		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
 	}
 	try {
-		const user = jwt.verify(token, JWT_SECRET)
+		const user = jwt.verify(token, process.env.JWT_SECRET)
 		const _id = user.id
 		const stream_key  = shortid.generate();
 		await User.updateOne(
@@ -224,7 +223,7 @@ app.delete('/api/delete_key', async (req, res) => {
 		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
 	}
 	try {
-		const user = jwt.verify(token, JWT_SECRET)
+		const user = jwt.verify(token, process.env.JWT_SECRET)
 		const _id = user.id
 		await User.updateOne(
 			{ _id },
