@@ -17,9 +17,13 @@ const UserSchema = new mongoose.Schema({
 	password: { 
 		type: String, 
 		required: true
+	},
+	stream_key: {
+		type: String,
+		required: false
 	}
 },{ collection: 'users' })
 
-const model = mongoose.model('UserSchema', UserSchema)
+const model = mongoose.model('UserSchema', UserSchema);
 
 module.exports = model
