@@ -62,7 +62,7 @@
           <div class="card-body">
             <h5 class="card-title">Low Resolution Support</h5>
             <p class="card-text">
-              Our focus is being empathetic as well and we provide our stream to be working on lower resolutions for intrupted internet connections and mobile data. You can attend the stream from your laptop or phone with bad internet connection and you'll still be able to listen and watch the stream.
+              Our focus is being empathetic as well and we provide our stream to be working on lower resolutions for intrrupted internet connections and mobile data. You can attend the stream from your laptop or phone with bad internet connection and you'll still be able to listen and watch the stream.
             </p>
           </div>
         </div>

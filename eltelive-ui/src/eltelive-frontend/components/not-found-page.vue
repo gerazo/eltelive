@@ -1,6 +1,6 @@
 <template>
-  <div class="not-found-container d-flex justify-content-center pt-5 mt-5 pb-5">
-    <div class="content align-items-center">
+  <div class="not-found-container pt-5 mt-5 pb-5">
+    <div class="content text-center">
       <h2>404</h2>
       <h4>Page not found</h4>
       <p>The page you were looking for is not found. Make sure you typed the link address correctly</p>
