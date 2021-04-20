@@ -54,7 +54,7 @@
 				console.log('UserName: ', result.username)
 				localStorage.setItem('token', result.token)
 				alert('Success')
-				window.location.href = "/#/home";
+				window.location.href = "/#/active-streams";
 			} else {
 				alert(result.error)
 			}

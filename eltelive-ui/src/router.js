@@ -9,7 +9,7 @@ import GuestComponent from '@/eltelive-frontend/components/user/login-as-guest';
 import ProfileComponent from '@/eltelive-frontend/components/user/profile';
 import LoginComponent from '@/eltelive-frontend/components/user/login';
 import LegalDisclaimer from '@/eltelive-frontend/components/legal-disclaimer';
-import ActiveStreamsComponent from '@/eltelive-frontend/components/stream/active-stream'
+import ActiveStreamsComponent from '@/eltelive-frontend/components/stream/active-streams'
 import CreateStreamComponent from '@/eltelive-frontend/components/stream/create-stream';
 import NotFoundComponent from '@/eltelive-frontend/components/not-found-page';
 
@@ -50,7 +50,7 @@ export default new Router({
       component: LoginComponent,
     },
     {
-      path: '/active-stream',
+      path: '/active-streams',
       component: ActiveStreamsComponent,
     },
     {
