@@ -6,8 +6,21 @@ const User = require('../model/user');
 const server = require('../server');
 
 const should = chai.should();
-const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk';
 chai.use(chaiHttp);
+
+TEST_USER = {
+    givenName: 'test',
+    familyName: 'test',
+    email: 'test@test.com',
+    password: 'test123'
+}
+
+ADMIN_USER = {
+    givenName: 'admin',
+    familyName: 'admin',
+    email: 'admin@admin.com',
+    password: 'admin'
+}
 
 describe('Users', () => {
     before((done) => {
@@ -16,18 +29,26 @@ describe('Users', () => {
         });
     });
 
-    after(() => {
-        mongoose.connection.close();
+    after((done) => {
+        User.deleteMany({}, (err) => {
+            done();
+        });
     })
 
     describe('POST /api/register', async () => {
-        it('it should create a new user', () => {
-            const user = {
-                givenName: 'test',
-                familyName: 'test',
-                email: 'test@test.com',
-                password: 'test12345'
-            }
+        it('should create a new test user', async () => {
+            const user = TEST_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(200);
+                })
+        });
+
+        it('should create a new admin user', () => {
+            const user = ADMIN_USER
             chai.request(server)
                 .post('/api/register')
                 .send(user)
@@ -39,10 +60,10 @@ describe('Users', () => {
     });
     
     describe('POST /api/login', async () => {
-        it('it should sign in using the user information', () => {
+        it('should sign in using the user information', async () => {
             const user = {
-                email: 'test@test.com',
-                password: 'test12345'
+                email: TEST_USER.email,
+                password: TEST_USER.password
             }
             chai.request(server)
                 .post('/api/login')
@@ -51,21 +72,21 @@ describe('Users', () => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
                     res.body.should.have.property('token');
-                    jwt.verify(res.body.token, JWT_SECRET);
+                    jwt.verify(res.body.token, process.env.JWT_SECRET);
                     res.body.should.have.property('username');
                 })
         });
     });
 
     describe('/GET user', async () => {
-        it('it should return the details of the user', async () => {
-            const user = await User.findOne({ email: 'test@test.com' }).lean()
+        it('should return the details of the user', async () => {
+            const user = await User.findOne({ email: TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
                     email: user.email
                 },
-                JWT_SECRET
+                process.env.JWT_SECRET
             )
             chai.request(server)
                 .get('/api/user')
@@ -74,7 +95,6 @@ describe('Users', () => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
                     res.body.should.have.property('user');
-                    res.body.user.should.be.a('object');
                     res.body.user.should.have.property('givenName');
                     res.body.user.should.have.property('familyName');
                     res.body.user.should.have.property('email');
@@ -82,24 +102,77 @@ describe('Users', () => {
                 });
         });
     });
-    
-    describe('/PATCH change password', async () => {
-        it('it should change the password of the user', async () => {
-            const user = await User.findOne({ email: 'test@test.com' }).lean()
+
+    describe('/GET users', async () => {
+        it('should return the details of all of the users, in case of the admin being signed in', async () => {
+            const user = await User.findOne({ email: ADMIN_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
                     email: user.email
                 },
-                JWT_SECRET
+                process.env.JWT_SECRET
+            )
+            chai.request(server)
+                .get('/api/users')
+                .set({ "Authorization": `Bearer ${token}` })
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(200);
+                    res.body.should.have.property('users');
+                });
+        })
+    });
+    
+    describe('/PATCH change password', async () => {
+        it('should change the password of the user', async () => {
+            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email
+                },
+                process.env.JWT_SECRET
             )
             chai.request(server)
                 .patch('/api/change-password')
-                .send({newPassword: 'newtest12345', token: token})
+                .set({ "Authorization": `Bearer ${token}` })
+                .send({newPassword: 'test123_new'})
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
                 });
         });
+    });
+
+    describe('/PUT generate_key', async () => {
+        it('should generate a new stream key', async () => {
+            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email
+                },
+                process.env.JWT_SECRET
+            )
+            chai.request(server)
+                .put('/api/generate_key')
+                .set({ "Authorization": `Bearer ${token}` })
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(201);
+                    res.body.should.have.property('stream_key');
+                    res.body.should.have.property('stream_display_url');
+                    res.body.should.have.property('stream_address');
+                });
+        })
+    });
+
+    describe('/GET get_key', async () => {
+        
+    });
+
+    describe('/DELETE delete_key', async () => {
+        
     });
 });
