@@ -51,16 +51,17 @@ app.patch('/api/change-password', async (req, res) => {
 app.get('/api/user', async (req, res) => {
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
-	jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-		if (err) {
-			return res.status(401).json({ status: 'error', title: 'Invalid token'})
-		}
-		//token is valid
-		const user = await User.findOne({ _id: decoded.id }).lean()
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user_data = jwt.verify(token, process.env.JWT_SECRET)
+		const _id = user_data.id
+		const user = await User.findOne({ _id: _id }).lean()
 		if (!user) {
-			return res.status(404).json({ status: 'error', error: 'User does not exist' })
+			return res.status(404).json({ status: 'error', error: 'User with this token does not exist' })
 		}
-		return res.status(200).json({
+		res.status(200).json({
 			status: 'ok',
 			title: 'User details are retrieved successfully',
 			user: {
@@ -70,20 +71,24 @@ app.get('/api/user', async (req, res) => {
 				stream_key: user.stream_key
 			}
 		})
-	})
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
 })
 
 app.get('/api/users', async (req, res) => {
 	const authHeader = req.headers['authorization']
 	const token = authHeader && authHeader.split(' ')[1]
-	jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-		if (err){
-			return res.status(401).json({ status: 'error', title: 'Invalid token' })	
-		}
-		//token is valid
-		const user = await User.findOne({ _id: decoded.id }).lean()
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user_data = jwt.verify(token, process.env.JWT_SECRET)
+		const _id = user_data.id
+		const user = await User.findOne({ _id: _id }).lean()
 		if (!user) {
-			return res.status(404).json({ status: 'error', error: 'User does not exist' })
+			return res.status(404).json({ status: 'error', error: 'User with this token does not exist' })
 		}
 		// If the user is not the admin, then he's not authorised to access the full list of users
 		if(user.email.localeCompare('admin@admin.com')){
@@ -94,7 +99,10 @@ app.get('/api/users', async (req, res) => {
 			title: 'Users details are retrieved successfully',
 			users: await User.find({}).select('givenName familyName email stream_key')
 		})
-	})
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
 })
 
 app.post('/api/login', async (req, res) => {
@@ -178,7 +186,47 @@ app.post('/api/register', async (req, res) => {
 		}
 		throw err
 	}
-	res.status(200).json({ status: 'ok' })
+	res.status(200).json({ status: 'ok', title: 'A new user was created successfully' })
+})
+
+app.delete('/api/delete_user', async (req, res) => {
+	const { email_to_be_deleted } = req.body
+	if(!email_to_be_deleted || typeof email_to_be_deleted !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'The email of the user to be deleted is not provided' })
+	}
+	const authHeader = req.headers['authorization']
+	const token = authHeader && authHeader.split(' ')[1]
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user_data = jwt.verify(token, process.env.JWT_SECRET)
+		const _id = user_data.id
+		const user = await User.findOne({ _id: _id }).lean()
+		if (!user) {
+			return res.status(404).json({ status: 'error', error: 'User with this token does not exist' })
+		}
+		// If the user is not the admin or the email address holder,
+		// then he's not authorised to delete any other user from the database
+		if(user.email.localeCompare('admin@admin.com') && user.email.localeCompare(email_to_be_deleted)){
+			return res.status(403).json({ status: 'error', title: 'Only the admin or the email holder can get the list of users' })	
+		}
+		deletion_result = await User.deleteOne({email: email_to_be_deleted})
+		// Check if there was found a user with this email address in the database
+		if(deletion_result.n == 0){
+			return res.status(200).json({
+				status: 'ok',
+				title: 'A user with this email address doesn not exist in the database'
+			})
+		}
+		res.status(200).json({
+			status: 'ok',
+			title: 'The user details with the email address provided was deleted from the database'
+		})
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
 })
 
 app.put('/api/generate_key', async(req, res) => {
@@ -189,6 +237,9 @@ app.put('/api/generate_key', async(req, res) => {
 	}
 	try {
 		const user = jwt.verify(token, process.env.JWT_SECRET)
+		if (!user) {
+			return res.status(404).json({ status: 'error', error: 'User with this token does not exist' })
+		}
 		const _id = user.id
 		const stream_key  = shortid.generate();
 		await User.updateOne(
@@ -216,6 +267,30 @@ app.put('/api/generate_key', async(req, res) => {
 	}
 })
 
+app.get('/api/get_key', async(req, res) => {
+	const authHeader = req.headers['authorization']
+  	const token = authHeader && authHeader.split(' ')[1]
+	if(!token || typeof token !== 'string') {
+		return res.status(401).json({ status: 'error', error: 'JWT Token not provided' })
+	}
+	try {
+		const user = jwt.verify(token, process.env.JWT_SECRET)
+		if (!user) {
+			return res.status(404).json({ status: 'error', error: 'User with this token does not exist' })
+		}
+		const _id = user.id
+		const user_data = await User.findOne({ _id: _id }).lean()
+		res.status(200).json({ 
+			status: 'ok', 
+			title: 'Stream key was retrieved successfully', 
+			stream_key: user_data.stream_key
+		})
+	} catch (error) {
+		console.log(error)
+		res.status(400).json({ status: 'error', error: 'Invalid JWT Token' })
+	}
+})
+
 app.delete('/api/delete_key', async (req, res) => {
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
@@ -224,6 +299,9 @@ app.delete('/api/delete_key', async (req, res) => {
 	}
 	try {
 		const user = jwt.verify(token, process.env.JWT_SECRET)
+		if (!user) {
+			return res.status(404).json({ status: 'error', error: 'User with this token does not exist' })
+		}
 		const _id = user.id
 		await User.updateOne(
 			{ _id },
