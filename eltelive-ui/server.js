@@ -17,7 +17,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.patch('/api/change-password', async (req, res) => {
+app.patch('/api/change_password', async (req, res) => {
 	const { newPassword: newPlainTextPassword } = req.body
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
@@ -50,7 +50,7 @@ app.patch('/api/change-password', async (req, res) => {
 	}
 });
 
-app.get('/api/user', async (req, res) => {
+app.get('/api/get_user', async (req, res) => {
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
 	if(!token || typeof token !== 'string') {
@@ -79,7 +79,7 @@ app.get('/api/user', async (req, res) => {
 	}
 })
 
-app.get('/api/users', async (req, res) => {
+app.get('/api/get_users', async (req, res) => {
 	const authHeader = req.headers['authorization']
 	const token = authHeader && authHeader.split(' ')[1]
 	if(!token || typeof token !== 'string') {
