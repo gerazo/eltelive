@@ -216,7 +216,7 @@ app.delete('/api/delete_user', async (req, res) => {
 		// If the user is not the admin or the email address holder,
 		// then he's not authorised to delete any other user from the database
 		if(user.email.localeCompare('admin@admin.com') && user.email.localeCompare(email_to_be_deleted)){
-			return res.status(403).json({ status: 'error', title: 'Only the admin or the email holder can delete the user of this email' })	
+			return res.status(403).json({ status: 'error', title: 'Only the admin or the email holder can delete the account registered with this email' })	
 		}
 		deletion_result = await User.deleteOne({email: email_to_be_deleted})
 		// Check if there was found a user with this email address in the database

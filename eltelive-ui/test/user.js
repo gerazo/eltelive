@@ -169,10 +169,64 @@ describe('Users', () => {
     });
 
     describe('/GET get_key', async () => {
-        
+        it('should get the stream key if there is a logged-in user', async () => {
+            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email
+                },
+                process.env.JWT_SECRET
+            )
+            chai.request(server)
+                .get('/api/get_key')
+                .set({ "Authorization": `Bearer ${token}` })
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(200);
+                    res.body.should.have.property('stream_key');
+                });
+        })
     });
 
     describe('/DELETE delete_key', async () => {
-        
+        it('should delete the stream key of the logged-in user', async () => {
+            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email
+                },
+                process.env.JWT_SECRET
+            )
+            chai.request(server)
+                .delete('/api/delete_key')
+                .set({ "Authorization": `Bearer ${token}` })
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(200);
+                });
+        })
+    });
+
+    describe('/DELETE delete_user', async () => {
+        it('should delete the account of the logged-in user', async () => {
+            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email
+                },
+                process.env.JWT_SECRET
+            )
+            chai.request(server)
+                .delete('/api/delete_user')
+                .set({ "Authorization": `Bearer ${token}` })
+                .send({ email_to_be_deleted: TEST_USER.email})
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(200);
+                });
+        })
     });
 });
