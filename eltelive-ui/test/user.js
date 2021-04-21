@@ -4,23 +4,10 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('../db_connections/test');
 const User = require('../model/user');
 const server = require('../server');
+const temp_data = require('./temp_data')
 
 const should = chai.should();
 chai.use(chaiHttp);
-
-TEST_USER = {
-    givenName: 'test',
-    familyName: 'test',
-    email: 'test@test.com',
-    password: 'test123'
-}
-
-ADMIN_USER = {
-    givenName: 'admin',
-    familyName: 'admin',
-    email: 'admin@admin.com',
-    password: 'admin'
-}
 
 describe('Users', () => {
     before((done) => {
@@ -36,8 +23,8 @@ describe('Users', () => {
     })
 
     describe('POST /api/register', async () => {
-        it('should create a new test user', async () => {
-            const user = TEST_USER
+        it('should create a new admin user', () => {
+            const user = temp_data.ADMIN_USER
             chai.request(server)
                 .post('/api/register')
                 .send(user)
@@ -47,8 +34,8 @@ describe('Users', () => {
                 })
         });
 
-        it('should create a new admin user', () => {
-            const user = ADMIN_USER
+        it('should create a new test user', async () => {
+            const user = temp_data.TEST_USER
             chai.request(server)
                 .post('/api/register')
                 .send(user)
@@ -57,13 +44,61 @@ describe('Users', () => {
                     res.should.have.status(200);
                 })
         });
+
+        it('should have a "Missing Given Name" error', async () => {
+            const user = temp_data.GIVEN_NAME_MISSING_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Missing Given Name')
+                })
+        });
+
+        it('should have a "Missing Family Name" error', async () => {
+            const user = temp_data.FAMILY_NAME_MISSING_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Missing Family Name')
+                })
+        });
+
+        it('should have a "Missing Email Address" error', async () => {
+            const user = temp_data.EMAIL_MISSING_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Missing Email Address')
+                })
+        });
+
+        it('should have a "Missing password" error', async () => {
+            const user = temp_data.PASSWORD_MISSING_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Missing password')
+                })
+        });
     });
     
     describe('POST /api/login', async () => {
         it('should sign in using the user information', async () => {
             const user = {
-                email: TEST_USER.email,
-                password: TEST_USER.password
+                email: temp_data.TEST_USER.email,
+                password: temp_data.TEST_USER.password
             }
             chai.request(server)
                 .post('/api/login')
@@ -80,7 +115,7 @@ describe('Users', () => {
 
     describe('/GET user', async () => {
         it('should return the details of the user', async () => {
-            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -105,7 +140,7 @@ describe('Users', () => {
 
     describe('/GET users', async () => {
         it('should return the details of all of the users, in case of the admin being signed in', async () => {
-            const user = await User.findOne({ email: ADMIN_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.ADMIN_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -126,7 +161,7 @@ describe('Users', () => {
     
     describe('/PATCH change password', async () => {
         it('should change the password of the user', async () => {
-            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -147,7 +182,7 @@ describe('Users', () => {
 
     describe('/PUT generate_key', async () => {
         it('should generate a new stream key', async () => {
-            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -170,7 +205,7 @@ describe('Users', () => {
 
     describe('/GET get_key', async () => {
         it('should get the stream key if there is a logged-in user', async () => {
-            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -191,7 +226,7 @@ describe('Users', () => {
 
     describe('/DELETE delete_key', async () => {
         it('should delete the stream key of the logged-in user', async () => {
-            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -211,7 +246,7 @@ describe('Users', () => {
 
     describe('/DELETE delete_user', async () => {
         it('should delete the account of the logged-in user', async () => {
-            const user = await User.findOne({ email: TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -222,7 +257,7 @@ describe('Users', () => {
             chai.request(server)
                 .delete('/api/delete_user')
                 .set({ "Authorization": `Bearer ${token}` })
-                .send({ email_to_be_deleted: TEST_USER.email})
+                .send({ email_to_be_deleted: temp_data.TEST_USER.email})
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
