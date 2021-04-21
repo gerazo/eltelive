@@ -64,6 +64,14 @@ TOO_SMALL_PASSWORD_USER = {
     password: 'test'
 }
 
+EMPTY_STRING = ''
+
+DUMMY_STRING = 'DUMMY_STRING'
+
+NEW_PASSWORD = 'test123_new'
+
+TOO_SMALL_PASSWORD = 'test'
+
 module.exports ={ ADMIN_USER,
                   TEST1_USER,
                   TEST2_USER,
@@ -72,4 +80,8 @@ module.exports ={ ADMIN_USER,
                   EMAIL_MISSING_USER,
                   PASSWORD_MISSING_USER,
                   INVALID_EMAIL_USER,
-                  TOO_SMALL_PASSWORD_USER }
+                  TOO_SMALL_PASSWORD_USER,
+                  EMPTY_STRING,
+                  DUMMY_STRING,
+                  NEW_PASSWORD,
+                  TOO_SMALL_PASSWORD }

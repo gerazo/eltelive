@@ -25,7 +25,7 @@ app.patch('/api/change_password', async (req, res) => {
 		return res.status(401).json({ status: 'error', title: 'Token not provided' })
 	}
 	if (!newPlainTextPassword || typeof newPlainTextPassword !== 'string') {
-		return res.status(400).json({ status: 'error', title: 'Invalid password' })
+		return res.status(400).json({ status: 'error', title: 'Missing password' })
 	}
 	if (newPlainTextPassword.length < 5) {
 		return res.status(400).json({
@@ -46,7 +46,7 @@ app.patch('/api/change_password', async (req, res) => {
 		res.status(200).json({ status: 'ok', title: 'Password was changed successfully' })
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid token' })
+		res.status(400).json({ status: 'error', title: 'Invalid JWT token' })
 	}
 });
 

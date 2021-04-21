@@ -30,7 +30,7 @@ describe('/GET get_users', async () => {
     })
 
     it('should return "JWT Token not provided" error, if the token is missing', async () => {
-        const token = ''
+        const token = temp_data.EMPTY_STRING
         chai.request(server)
             .get('/api/get_users')
             .set({ "Authorization": `Bearer ${token}` })
@@ -42,7 +42,7 @@ describe('/GET get_users', async () => {
     })
 
     it('should return "Invalid JWT Token" error, if the token is not in the correct format', async () => {
-        const token = 'DUMMY_TOKEN'
+        const token = temp_data.DUMMY_STRING
         chai.request(server)
             .get('/api/get_users')
             .set({ "Authorization": `Bearer ${token}` })
@@ -56,7 +56,7 @@ describe('/GET get_users', async () => {
     it('should return "User with this token does not exist" error', async () => {
         const token = jwt.sign(
             {
-                id: 'DUMMY_ID',
+                id: DUMMY_STRING,
                 email: temp_data.TEST2_USER.email
             },
             process.env.JWT_SECRET

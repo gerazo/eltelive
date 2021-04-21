@@ -22,10 +22,76 @@ describe('/PATCH change_password', async () => {
         chai.request(server)
             .patch('/api/change_password')
             .set({ "Authorization": `Bearer ${token}` })
-            .send({newPassword: 'test123_new'})
+            .send({newPassword: temp_data.NEW_PASSWORD})
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
+            });
+    });
+
+    it('should return "Token not provided" error', async () => {
+        const token = temp_data.EMPTY_STRING
+        chai.request(server)
+            .patch('/api/change_password')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({newPassword: temp_data.NEW_PASSWORD})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(401);
+                res.body.title.should.be.eql('Token not provided');
+            });
+    });
+
+    it('should return "Missing password" error', async () => {
+        const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
+        const token = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .patch('/api/change_password')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({newPassword: temp_data.EMPTY_STRING})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(400);
+                res.body.title.should.be.eql('Missing password');
+            });
+    });
+
+    it('should return "Password too small. It should be at least 5 characters" error', async () => {
+        const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
+        const token = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .patch('/api/change_password')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({newPassword: temp_data.TOO_SMALL_PASSWORD})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(400);
+                res.body.title.should.be.eql('Password too small. It should be at least 5 characters');
+            });
+    });
+
+    it('should return "Invalid JWT token" error', async () => {
+        const token = temp_data.DUMMY_STRING
+        chai.request(server)
+            .patch('/api/change_password')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({newPassword: temp_data.NEW_PASSWORD})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(400);
+                res.body.title.should.be.eql('Invalid JWT token');
             });
     });
 });
