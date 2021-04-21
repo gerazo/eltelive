@@ -29,7 +29,7 @@ describe('/PATCH change_password', async () => {
             });
     });
 
-    it('should return "Token not provided" error', async () => {
+    it('should return "JWT Token not provided" error', async () => {
         const token = temp_data.EMPTY_STRING
         chai.request(server)
             .patch('/api/change_password')
@@ -38,7 +38,7 @@ describe('/PATCH change_password', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(401);
-                res.body.title.should.be.eql('Token not provided');
+                res.body.title.should.be.eql('JWT Token not provided');
             });
     });
 

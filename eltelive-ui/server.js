@@ -22,7 +22,7 @@ app.patch('/api/change_password', async (req, res) => {
 	const authHeader = req.headers['authorization']
   	const token = authHeader && authHeader.split(' ')[1]
 	if(!token || typeof token !== 'string') {
-		return res.status(401).json({ status: 'error', title: 'Token not provided' })
+		return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
 	}
 	if (!newPlainTextPassword || typeof newPlainTextPassword !== 'string') {
 		return res.status(400).json({ status: 'error', title: 'Missing password' })
@@ -243,11 +243,12 @@ app.put('/api/generate_key', async(req, res) => {
 		return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
 	}
 	try {
-		const user = jwt.verify(token, process.env.JWT_SECRET)
+		const user_data = jwt.verify(token, process.env.JWT_SECRET)
+		const email = user_data.email
+		const user = await User.findOne({ email }).lean()
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
-		const email = user.email
 		const stream_key  = shortid.generate();
 		await User.updateOne(
 			{ email },
@@ -281,16 +282,16 @@ app.get('/api/get_key', async(req, res) => {
 		return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
 	}
 	try {
-		const user = jwt.verify(token, process.env.JWT_SECRET)
+		const user_data = jwt.verify(token, process.env.JWT_SECRET)
+		const email = user_data.email
+		const user = await User.findOne({ email }).lean()
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
-		const email = user.email
-		const user_data = await User.findOne({ email }).lean()
 		res.status(200).json({ 
 			status: 'ok', 
 			title: 'Stream key was retrieved successfully', 
-			stream_key: user_data.stream_key
+			stream_key: user.stream_key
 		})
 	} catch (error) {
 		// console.log(error)
@@ -305,11 +306,12 @@ app.delete('/api/delete_key', async (req, res) => {
 		return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
 	}
 	try {
-		const user = jwt.verify(token, process.env.JWT_SECRET)
+		const user_data = jwt.verify(token, process.env.JWT_SECRET)
+		const email = user_data.email
+		const user = await User.findOne({ email }).lean()
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
-		const email = user.email
 		await User.updateOne(
 			{ email },
 			{
