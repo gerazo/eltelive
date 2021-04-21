@@ -40,9 +40,25 @@ PASSWORD_MISSING_USER = {
     password: ''
 }
 
+INVALID_EMAIL_USER = {
+    givenName: 'test',
+    familyName: 'test',
+    email: 'test',
+    password: 'test123'
+}
+
+TOO_SMALL_PASSWORD_USER = {
+    givenName: 'test',
+    familyName: 'test',
+    email: 'test@test.com',
+    password: 'test'
+}
+
 module.exports ={ ADMIN_USER,
                   TEST_USER,
                   GIVEN_NAME_MISSING_USER,
                   FAMILY_NAME_MISSING_USER, 
                   EMAIL_MISSING_USER,
-                  PASSWORD_MISSING_USER }
+                  PASSWORD_MISSING_USER,
+                  INVALID_EMAIL_USER,
+                  TOO_SMALL_PASSWORD_USER }

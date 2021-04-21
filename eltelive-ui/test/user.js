@@ -31,6 +31,7 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
+                    res.body.title.should.be.eql('A new user was created successfully')
                 })
         });
 
@@ -42,10 +43,11 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
+                    res.body.title.should.be.eql('A new user was created successfully')
                 })
         });
 
-        it('should have a "Missing Given Name" error', async () => {
+        it('should return "Missing Given Name" error', async () => {
             const user = temp_data.GIVEN_NAME_MISSING_USER
             chai.request(server)
                 .post('/api/register')
@@ -57,7 +59,7 @@ describe('Users', () => {
                 })
         });
 
-        it('should have a "Missing Family Name" error', async () => {
+        it('should return "Missing Family Name" error', async () => {
             const user = temp_data.FAMILY_NAME_MISSING_USER
             chai.request(server)
                 .post('/api/register')
@@ -69,7 +71,7 @@ describe('Users', () => {
                 })
         });
 
-        it('should have a "Missing Email Address" error', async () => {
+        it('should return "Missing Email Address" error', async () => {
             const user = temp_data.EMAIL_MISSING_USER
             chai.request(server)
                 .post('/api/register')
@@ -81,7 +83,7 @@ describe('Users', () => {
                 })
         });
 
-        it('should have a "Missing password" error', async () => {
+        it('should return"Missing password" error', async () => {
             const user = temp_data.PASSWORD_MISSING_USER
             chai.request(server)
                 .post('/api/register')
@@ -90,6 +92,42 @@ describe('Users', () => {
                     res.body.should.be.a('object');
                     res.should.have.status(400);
                     res.body.title.should.be.eql('Missing password')
+                })
+        });
+
+        it('should return "Email Address is invalid" error', async () => {
+            const user = temp_data.INVALID_EMAIL_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Email Address is invalid')
+                })
+        });
+
+        it('should return "Password is too small. It should be at least 5 characters" error', async () => {
+            const user = temp_data.TOO_SMALL_PASSWORD_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(403);
+                    res.body.title.should.be.eql('Password is too small. It should be at least 5 characters')
+                })
+        });
+
+        it('should return "Email already in use', async () => {
+            const user = temp_data.TEST_USER
+            chai.request(server)
+                .post('/api/register')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(409);
+                    res.body.title.should.be.eql('Email already in use')
                 })
         });
     });
