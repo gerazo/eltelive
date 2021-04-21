@@ -25,6 +25,7 @@ describe('/GET get_user', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
+                res.body.title.should.be.eql('User details are retrieved successfully');
                 res.body.should.have.property('user');
                 res.body.user.should.have.property('givenName');
                 res.body.user.should.have.property('familyName');

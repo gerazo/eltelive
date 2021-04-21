@@ -25,6 +25,7 @@ describe('/DELETE delete_key', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
+                res.body.title.should.be.eql('Stream key deleted successfully');
             });
     })
 

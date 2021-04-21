@@ -21,6 +21,7 @@ describe('POST /api/login', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
+                res.body.title.should.be.eql('User logged in successfully');
                 res.body.should.have.property('token');
                 jwt.verify(res.body.token, process.env.JWT_SECRET);
                 res.body.should.have.property('username');

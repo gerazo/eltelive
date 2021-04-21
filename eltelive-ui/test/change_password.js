@@ -26,6 +26,7 @@ describe('/PATCH change_password', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
+                res.body.title.should.be.eql('Password was changed successfully');
             });
     });
 

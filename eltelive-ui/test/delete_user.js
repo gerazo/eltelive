@@ -32,6 +32,7 @@ describe('/DELETE delete_user', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
+                res.body.title.should.be.eql('The user details with the email address provided was deleted from the database');
             });
     })
 

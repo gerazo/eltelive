@@ -218,14 +218,7 @@ app.delete('/api/delete_user', async (req, res) => {
 		if(user.email.localeCompare('admin@admin.com') && user.email.localeCompare(email_to_be_deleted)){
 			return res.status(403).json({ status: 'error', title: 'Only the admin or the email holder can delete the account registered with this email' })	
 		}
-		deletion_result = await User.deleteOne({email: email_to_be_deleted})
-		// Check if there was found a user with this email address in the database
-		if(deletion_result.n == 0){
-			return res.status(200).json({
-				status: 'ok',
-				title: 'A user with this email address doesn not exist in the database'
-			})
-		}
+		await User.deleteOne({email: email_to_be_deleted})
 		res.status(200).json({
 			status: 'ok',
 			title: 'The user details with the email address provided was deleted from the database'
