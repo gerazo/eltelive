@@ -28,4 +28,65 @@ describe('/GET get_users', async () => {
                 res.body.should.have.property('users');
             });
     })
+
+    it('should return "JWT Token not provided" error, if the token is missing', async () => {
+        const token = ''
+        chai.request(server)
+            .get('/api/get_users')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(401);
+                res.body.title.should.be.eql('JWT Token not provided');
+            });
+    })
+
+    it('should return "Invalid JWT Token" error, if the token is not in the correct format', async () => {
+        const token = 'DUMMY_TOKEN'
+        chai.request(server)
+            .get('/api/get_users')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(400);
+                res.body.title.should.be.eql('Invalid JWT Token');
+            });
+    })
+
+    it('should return "User with this token does not exist" error', async () => {
+        const token = jwt.sign(
+            {
+                id: 'DUMMY_ID',
+                email: temp_data.TEST2_USER.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .get('/api/get_users')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(404);
+                res.body.title.should.be.eql('User with this token does not exist');
+            });
+    })
+
+    it('should return "Only the admin can get the list of users" error, in case of someone different than the admin being signed in', async () => {
+        const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
+        const token = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .get('/api/get_users')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(403);
+                res.body.title.should.be.eql('Only the admin can get the list of users');
+            });
+    })
 });
