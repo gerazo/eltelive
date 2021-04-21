@@ -35,17 +35,17 @@ app.patch('/api/change_password', async (req, res) => {
 	}
 	try {
 		const user = jwt.verify(token, process.env.JWT_SECRET)
-		const _id = user.id
+		const email = user.email
 		const password = await bcrypt.hash(newPlainTextPassword, 10)
 		await User.updateOne(
-			{ _id },
+			{ email },
 			{
 				$set: { password }
 			}
 		)
 		res.status(200).json({ status: 'ok', title: 'Password was changed successfully' })
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid token' })
 	}
 });
@@ -58,8 +58,8 @@ app.get('/api/get_user', async (req, res) => {
 	}
 	try {
 		const user_data = jwt.verify(token, process.env.JWT_SECRET)
-		const _id = user_data.id
-		const user = await User.findOne({ _id: _id }).lean()
+		const email = user_data.email
+		const user = await User.findOne({ email: email }).lean()
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
@@ -74,7 +74,7 @@ app.get('/api/get_user', async (req, res) => {
 			}
 		})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
 	}
 })
@@ -87,8 +87,8 @@ app.get('/api/get_users', async (req, res) => {
 	}
 	try {
 		const user_data = jwt.verify(token, process.env.JWT_SECRET)
-		const _id = user_data.id
-		const user = await User.findOne({ _id: _id }).lean()
+		const email = user_data.email
+		const user = await User.findOne({ email }).lean()
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
@@ -102,7 +102,7 @@ app.get('/api/get_users', async (req, res) => {
 			users: await User.find({}).select('givenName familyName email stream_key')
 		})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
 	}
 })
@@ -208,8 +208,8 @@ app.delete('/api/delete_user', async (req, res) => {
 	}
 	try {
 		const user_data = jwt.verify(token, process.env.JWT_SECRET)
-		const _id = user_data.id
-		const user = await User.findOne({ _id: _id }).lean()
+		const email = user_data.email
+		const user = await User.findOne({ email }).lean()
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
@@ -231,7 +231,7 @@ app.delete('/api/delete_user', async (req, res) => {
 			title: 'The user details with the email address provided was deleted from the database'
 		})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
 	}
 })
@@ -247,10 +247,10 @@ app.put('/api/generate_key', async(req, res) => {
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
-		const _id = user.id
+		const email = user.email
 		const stream_key  = shortid.generate();
 		await User.updateOne(
-			{ _id },
+			{ email },
 			{
 				$set: { stream_key }
 			}
@@ -269,7 +269,7 @@ app.put('/api/generate_key', async(req, res) => {
 			stream_address: stream_address
 		})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
 	}
 })
@@ -285,15 +285,15 @@ app.get('/api/get_key', async(req, res) => {
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
-		const _id = user.id
-		const user_data = await User.findOne({ _id: _id }).lean()
+		const email = user.email
+		const user_data = await User.findOne({ email }).lean()
 		res.status(200).json({ 
 			status: 'ok', 
 			title: 'Stream key was retrieved successfully', 
 			stream_key: user_data.stream_key
 		})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
 	}
 })
@@ -309,16 +309,16 @@ app.delete('/api/delete_key', async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
 		}
-		const _id = user.id
+		const email = user.email
 		await User.updateOne(
-			{ _id },
+			{ email },
 			{
 				$unset: { stream_key: 1 }
 			}
 		)
 		res.status(200).json({ status: 'ok', title: 'Stream key deleted successfully'})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
 	}
 })

@@ -32,4 +32,46 @@ describe('/GET get_user', async () => {
                 res.body.user.should.have.property('email').eql(user.email);
             });
     });
+
+    it('should return "JWT Token not provided" error, if the token is missing', async () => {
+        const token = ''
+        chai.request(server)
+            .get('/api/get_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(401);
+                res.body.title.should.be.eql('JWT Token not provided');
+            });
+    });
+
+    it('should return "Invalid JWT Token" error, if the token is not in the correct format', async () => {
+        const token = 'DUMMY_TOKEN'
+        chai.request(server)
+            .get('/api/get_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(400);
+                res.body.title.should.be.eql('Invalid JWT Token');
+            });
+    });
+
+    it('should return "User with this token does not exist" error', async () => {
+        const token = jwt.sign(
+            {
+                id: 'DUMMY_ID',
+                email: temp_data.TEST2_USER.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .get('/api/get_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(404);
+                res.body.title.should.be.eql('User with this token does not exist');
+            });
+    });
 });

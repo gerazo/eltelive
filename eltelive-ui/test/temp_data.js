@@ -1,3 +1,6 @@
+// The 'ADMIN_USER' and 'TEST1_USER' will get registered in the database during the execution of the tests,
+// but the rest will be uesd in the error handling parts only
+
 ADMIN_USER = {
     givenName: 'admin',
     familyName: 'admin',
@@ -16,7 +19,7 @@ TEST2_USER = {
     givenName: 'test2',
     familyName: 'test2',
     email: 'test2@test.com',
-    password: 'test4566'
+    password: 'test456'
 }
 
 GIVEN_NAME_MISSING_USER = {
