@@ -5,11 +5,18 @@ ADMIN_USER = {
     password: 'admin'
 }
 
-TEST_USER = {
-    givenName: 'test',
-    familyName: 'test',
-    email: 'test@test.com',
+TEST1_USER = {
+    givenName: 'test1',
+    familyName: 'test1',
+    email: 'test1@test.com',
     password: 'test123'
+}
+
+TEST2_USER = {
+    givenName: 'test2',
+    familyName: 'test2',
+    email: 'test2@test.com',
+    password: 'test4566'
 }
 
 GIVEN_NAME_MISSING_USER = {
@@ -55,7 +62,8 @@ TOO_SMALL_PASSWORD_USER = {
 }
 
 module.exports ={ ADMIN_USER,
-                  TEST_USER,
+                  TEST1_USER,
+                  TEST2_USER,
                   GIVEN_NAME_MISSING_USER,
                   FAMILY_NAME_MISSING_USER, 
                   EMAIL_MISSING_USER,

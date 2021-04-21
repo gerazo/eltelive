@@ -31,19 +31,19 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
-                    res.body.title.should.be.eql('A new user was created successfully')
+                    res.body.title.should.be.eql('A new user was created successfully');
                 })
         });
 
         it('should create a new test user', async () => {
-            const user = temp_data.TEST_USER
+            const user = temp_data.TEST1_USER
             chai.request(server)
                 .post('/api/register')
                 .send(user)
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
-                    res.body.title.should.be.eql('A new user was created successfully')
+                    res.body.title.should.be.eql('A new user was created successfully');
                 })
         });
 
@@ -55,7 +55,7 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(400);
-                    res.body.title.should.be.eql('Missing Given Name')
+                    res.body.title.should.be.eql('Missing Given Name');
                 })
         });
 
@@ -67,7 +67,7 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(400);
-                    res.body.title.should.be.eql('Missing Family Name')
+                    res.body.title.should.be.eql('Missing Family Name');
                 })
         });
 
@@ -79,7 +79,7 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(400);
-                    res.body.title.should.be.eql('Missing Email Address')
+                    res.body.title.should.be.eql('Missing Email Address');
                 })
         });
 
@@ -91,7 +91,7 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(400);
-                    res.body.title.should.be.eql('Missing password')
+                    res.body.title.should.be.eql('Missing password');
                 })
         });
 
@@ -103,7 +103,7 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(400);
-                    res.body.title.should.be.eql('Email Address is invalid')
+                    res.body.title.should.be.eql('Email Address is invalid');
                 })
         });
 
@@ -115,19 +115,19 @@ describe('Users', () => {
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(403);
-                    res.body.title.should.be.eql('Password is too small. It should be at least 5 characters')
+                    res.body.title.should.be.eql('Password is too small. It should be at least 5 characters');
                 })
         });
 
         it('should return "Email already in use', async () => {
-            const user = temp_data.TEST_USER
+            const user = temp_data.TEST1_USER
             chai.request(server)
                 .post('/api/register')
                 .send(user)
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(409);
-                    res.body.title.should.be.eql('Email already in use')
+                    res.body.title.should.be.eql('Email already in use');
                 })
         });
     });
@@ -135,8 +135,8 @@ describe('Users', () => {
     describe('POST /api/login', async () => {
         it('should sign in using the user information', async () => {
             const user = {
-                email: temp_data.TEST_USER.email,
-                password: temp_data.TEST_USER.password
+                email: temp_data.TEST1_USER.email,
+                password: temp_data.TEST1_USER.password
             }
             chai.request(server)
                 .post('/api/login')
@@ -147,13 +147,89 @@ describe('Users', () => {
                     res.body.should.have.property('token');
                     jwt.verify(res.body.token, process.env.JWT_SECRET);
                     res.body.should.have.property('username');
+                    res.body.username.should.eql(temp_data.TEST1_USER.givenName + ' ' + temp_data.TEST1_USER.familyName)
+                })
+        });
+
+        it('should return "Missing Email Address" error', async () => {
+            const user = {
+                email: temp_data.EMAIL_MISSING_USER.email,
+                password: temp_data.EMAIL_MISSING_USER.password
+            }
+            chai.request(server)
+                .post('/api/login')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Missing Email Address');
+                })
+        });
+
+        it('should return "Missing password" error', async () => {
+            const user = {
+                email: temp_data.PASSWORD_MISSING_USER.email,
+                password: temp_data.PASSWORD_MISSING_USER.password
+            }
+            chai.request(server)
+                .post('/api/login')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Missing password');
+                })
+        });
+
+        it('should return "Email Address is invalid" error', async () => {
+            const user = {
+                email: temp_data.INVALID_EMAIL_USER.email,
+                password: temp_data.INVALID_EMAIL_USER.password
+            }
+            chai.request(server)
+                .post('/api/login')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(400);
+                    res.body.title.should.be.eql('Email Address is invalid');
+                })
+        });
+
+        it('should return "Password is too small. It should be at least 5 characters" error', async () => {
+            const user = {
+                email: temp_data.TOO_SMALL_PASSWORD_USER.email,
+                password: temp_data.TOO_SMALL_PASSWORD_USER.password
+            }
+            chai.request(server)
+                .post('/api/login')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(403);
+                    res.body.title.should.be.eql('Password is too small. It should be at least 5 characters');
+                })
+        });
+
+        it('should return "Invalid email/password" error, as this user data is not stored in the database', async () => {
+            const user = {
+                email: temp_data.TEST2_USER.email,
+                password: temp_data.TEST2_USER.password
+            }
+            chai.request(server)
+                .post('/api/login')
+                .send(user)
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.should.have.status(401);
+                    res.body.title.should.be.eql('Invalid email/password');
                 })
         });
     });
 
     describe('/GET user', async () => {
         it('should return the details of the user', async () => {
-            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -199,7 +275,7 @@ describe('Users', () => {
     
     describe('/PATCH change password', async () => {
         it('should change the password of the user', async () => {
-            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -220,7 +296,7 @@ describe('Users', () => {
 
     describe('/PUT generate_key', async () => {
         it('should generate a new stream key', async () => {
-            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -243,7 +319,7 @@ describe('Users', () => {
 
     describe('/GET get_key', async () => {
         it('should get the stream key if there is a logged-in user', async () => {
-            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -264,7 +340,7 @@ describe('Users', () => {
 
     describe('/DELETE delete_key', async () => {
         it('should delete the stream key of the logged-in user', async () => {
-            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -284,7 +360,7 @@ describe('Users', () => {
 
     describe('/DELETE delete_user', async () => {
         it('should delete the account of the logged-in user', async () => {
-            const user = await User.findOne({ email: temp_data.TEST_USER.email }).lean()
+            const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
             const token = jwt.sign(
                 {
                     id: user._id,
@@ -295,7 +371,7 @@ describe('Users', () => {
             chai.request(server)
                 .delete('/api/delete_user')
                 .set({ "Authorization": `Bearer ${token}` })
-                .send({ email_to_be_deleted: temp_data.TEST_USER.email})
+                .send({ email_to_be_deleted: temp_data.TEST1_USER.email})
                 .end((err, res) => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
