@@ -4,10 +4,10 @@
         <h3 class="text-center">Sign Up</h3>
         <form class="pl-5 pt-5" id="registration" ref="registration">
           <div class="pb-4">
-            <input type="text" class="form-control" id="givenName" placeholder= "Given Name" required>
+            <input class="form-control" id="givenName" placeholder= "Given Name" required>
           </div>
           <div class="pb-4">
-            <input type="text" class="form-control" id="familyName" placeholder= "Family Name" required>
+            <input class="form-control" id="familyName" placeholder= "Family Name" required>
           </div>
           <div class="pb-4">
             <input type="email" class="form-control" id="email" placeholder= "Email" required>
@@ -24,7 +24,7 @@
           <h3 class="pr-5">Are you a Guest?</h3>
           <p class="pr-4">Attending a stream? You can go to the guest portal for attending the stream</p>
           <div class="guest-portal-btn">
-            <router-link to="/guest" class="btn btn-lg btn-block">Go to Guest Portal</router-link>
+            <router-link to="/guest" class="btn btn-light btn-lg btn-block">Go to Guest Portal</router-link>
           </div>
         </div>
   </div>
@@ -79,9 +79,10 @@
   .sign-up , .guest-sign-up{
     margin-top: 8rem;
     margin-bottom: 5rem;
-    width:35rem;
+    margin-right:0.1rem;
+    width:600px;
     height:30rem;
-    box-shadow: 40px -15px #1862a0;
+    box-shadow: 0 0 5px 2px rgb(248, 245, 245);
   }
   .sign-up {
     background-color: #f1f3f5;
@@ -100,12 +101,11 @@
     .guest-portal-btn {
       margin-top: 10rem;
       margin-right: 3rem;
-      background: #fff;
       color: black;
     }
 
     .guest-portal-btn:hover{
-      background-color: #cae0f5;
+      background-color: #b1bfcc;
     }
 
   }
