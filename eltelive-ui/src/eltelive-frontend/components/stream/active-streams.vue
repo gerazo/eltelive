@@ -13,8 +13,17 @@
       </p>
       </div>
     </div>
-    <div>
-      
+    <div class="d-flex justify-content-center w-50 pt-5 pl-5">
+      <div>
+        <h6>Stream Key:</h6>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Stream Key" aria-label="Stream Key" readonly="readonly">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Copy</button>
+          <button class="btn btn-primary" type="button">Generate Key</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
