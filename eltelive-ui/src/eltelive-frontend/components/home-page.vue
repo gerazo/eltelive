@@ -1,7 +1,12 @@
 <template>
-        <div class="container">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-md-5">
+        <div>
+          <div class="d-flex justify-content-center align-items-center">
+            <div>
+                <div class="graphic">
+                    <img class= "graphic-image" src="/img/landing-graphic.svg" alt="">
+                </div>
+            </div>
+            <div>
               <div>
                 <h1>
                   ELTE LIVEStream
@@ -15,11 +20,6 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-7">
-                <div class="graphic">
-                    <img src="/img/landing-graphic.svg" alt="">
-                </div>
-            </div>
           </div>
         </div>
 </template>
@@ -31,10 +31,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .container{
-    padding-top: 3rem;
-    width: 100%;
-    height: 100%;
-    text-align: left;
+  .graphic {
+    padding-top: 5rem;
+    margin-right: 5rem;
+
+    img{
+      width: 700px;
+    }
   }
+
 </style>

@@ -18,7 +18,7 @@
           <h3 class="pr-5">Are you a Guest?</h3>
           <p class="pr-4">Attending a stream? You can go to the guest portal for attending the stream</p>
           <div class="guest-portal-btn ml-3">
-            <router-link to="/guest" class="btn btn-lg btn-block">Go to Guest Portal</router-link>
+            <router-link to="/guest" class="btn btn-light btn-lg btn-block">Go to Guest Portal</router-link>
           </div>
         </div>
   </div>
@@ -69,9 +69,8 @@
   .sign-in , .guest{
     margin-top: 8rem;
     margin-bottom: 5rem;
-    width:35rem;
+    width:600px;
     height:25rem;
-    box-shadow: 40px -15px #1862a0;
   }
   .sign-in {
     background-color: #f1f3f5;
@@ -90,9 +89,7 @@
     .guest-portal-btn {
       margin-top: 5.4rem;
       margin-right: 3rem;
-      background: #fff;
       color: black;
-      border-radius: 5px;
     }
 
     .guest-portal-btn:hover{

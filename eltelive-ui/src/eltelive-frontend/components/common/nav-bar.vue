@@ -21,13 +21,31 @@
           <router-link to="/signup" class="nav-link">Sign Up</router-link>
         </li>
       </ul>
+      <button v-if="isLoggedIn" class="btn btn-danger"
+ v-on:click="logout" >Se deconnecter</button>
+<button v-else class="btn btn-primary"
+ v-on:click="login" >Se connecter</button>
    </nav>
   </div>
 </template>
 
 <script>
 export default {
-  name: "NavBar"
+  name: "NavBar",
+  computed: {
+    isLoggedIn() {      
+      return window.localStorage.getItem("username");      
+    }
+  },   
+  methods: {
+    login() {      
+      window.location.replace("http://localhost:4000/api/login")    
+    },
+    logout() {
+      window.localStorage.removeItem("username");
+      window.location.replace("http://localhost:4000")      
+    },
+  }
 };
 </script>
 <style lang="scss">
