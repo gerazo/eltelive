@@ -18,11 +18,11 @@
         <h6>Stream Key:</h6>
       </div>
       <form id="keyGeneration" ref="keyGeneration">
-        <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Stream Key" aria-label="Stream Key" readonly="readonly">
+        <div class="input-group mb-3" >
+        <input type="text" id="key_textfield" class="form-control" placeholder="Stream Key" aria-label="Stream Key" readonly="readonly">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button">Copy</button>
-          <button class="btn btn-primary" id="keyGenerationStream" type="generateKey">Generate Key</button>
+          <button class="btn btn-primary" ref="keyGenerationStream" type="generateKey">Generate Key</button>
         </div>
       </div>
       </form>
@@ -33,13 +33,11 @@
 export default {
   name: "active-streams",
   mounted() {
-    const form = this.$refs['keyGeneration']
-    form.addEventListener('generateKey',generateStreamKey)
+    const butt = this.$refs['keyGenerationStream']
+    butt.addEventListener('click',generateStreamKey)
     
     async function generateStreamKey(event) {
-      console.log('jnjnjve')
       event.preventDefault()
-      const streamKeyGeneration = document.getElementById('keyGenerationStream').value
 
       const result = await fetch('http://localhost:4000/api/generate_key', {
         method: 'PUT',
@@ -49,8 +47,8 @@ export default {
         },
         }).then((res) => res.json())
 
-        
-        document.getElementById("keyGenerationStream").innerHTML = result.stream_key;
+      console.log(result.stream_key)      
+      document.getElementById("key_textfield").innerHTML = result.stream_key;
     }
   },
 }
