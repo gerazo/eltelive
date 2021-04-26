@@ -46,7 +46,7 @@ describe('/GET get_user', async () => {
             });
     });
 
-    it('should return "Invalid JWT Token" error, if the token is not in the correct format', async () => {
+    it('should return "Unexpected error" error, if the token is not in the correct format', async () => {
         const token = temp_data.DUMMY_STRING
         chai.request(server)
             .get('/api/get_user')
@@ -54,7 +54,7 @@ describe('/GET get_user', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(400);
-                res.body.title.should.be.eql('Invalid JWT Token');
+                res.body.title.should.be.eql('Unexpected error');
             });
     });
 

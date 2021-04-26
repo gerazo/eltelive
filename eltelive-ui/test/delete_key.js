@@ -41,7 +41,7 @@ describe('/DELETE delete_key', async () => {
             });
     })
 
-    it('should return "Invalid JWT Token" error', async () => {
+    it('should return "Unexpected error" error', async () => {
         const token = temp_data.DUMMY_STRING
         chai.request(server)
             .delete('/api/delete_key')
@@ -49,7 +49,7 @@ describe('/DELETE delete_key', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(400);
-                res.body.title.should.be.eql('Invalid JWT Token');
+                res.body.title.should.be.eql('Unexpected error');
             });
     })
 

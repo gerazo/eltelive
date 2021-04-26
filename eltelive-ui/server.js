@@ -46,7 +46,7 @@ app.patch('/api/change_password', async (req, res) => {
 		res.status(200).json({ status: 'ok', title: 'Password was changed successfully' })
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 });
 
@@ -75,7 +75,7 @@ app.get('/api/get_user', async (req, res) => {
 		})
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 })
 
@@ -103,7 +103,7 @@ app.get('/api/get_users', async (req, res) => {
 		})
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 })
 
@@ -218,20 +218,28 @@ app.delete('/api/delete_user', async (req, res) => {
 		if(user.email.localeCompare('admin@admin.com') && user.email.localeCompare(email_to_be_deleted)){
 			return res.status(403).json({ status: 'error', title: 'Only the admin or the email holder can delete the account registered with this email' })	
 		}
+		deletion_result = await User.deleteOne({email: email_to_be_deleted})
+		// Check if there was found a user with this email address in the database
+		if(deletion_result.n == 0){
+			return res.status(200).json({
+				status: 'ok',
+				title: 'A user with this email address does not exist in the database'
+			})
+		}
 		await User.deleteOne({email: email_to_be_deleted})
 		res.status(200).json({
 			status: 'ok',
-			title: 'The user details with the email address provided was deleted from the database'
+			title: 'The user details with the email address provided were deleted from the database'
 		})
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 })
 
 app.put('/api/generate_key', async(req, res) => {
 	const authHeader = req.headers['authorization']
-  	const token = authHeader && authHeader.split(' ')[1]
+	const token = authHeader && authHeader.split(' ')[1]
 	if(!token || typeof token !== 'string') {
 		return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
 	}
@@ -254,17 +262,17 @@ app.put('/api/generate_key', async(req, res) => {
 		const current_time_in_epoch = Math.floor(new Date().getTime() / 1000)
 		const stream_expiration_time = current_time_in_epoch + day_in_epoch // After one day
 		const hashValue = md5("/live-" + stream_expiration_time + "-" + streaming_config.auth.secret)
-		const stream_address = "rtmp://localhost/live?sign=" + stream_expiration_time + "-" + hashValue 
+		const stream_address = "rtmp://" + process.env.HOST + "/live?sign=" + stream_expiration_time + "-" + hashValue
 		res.status(201).json({ 
 			status: 'ok', 
 			title: 'Stream key generated successfully', 
 			stream_key: stream_key,
-			stream_display_url: "http://localhost:8000/live/" + stream_key + ".flv",
+			stream_display_url: "http://" + process.env.HOST + ":" + streaming_config.http.port + "/live/" + stream_key + ".flv",
 			stream_address: stream_address
 		})
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 })
 
@@ -288,7 +296,7 @@ app.get('/api/get_key', async(req, res) => {
 		})
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 })
 
@@ -314,7 +322,7 @@ app.delete('/api/delete_key', async (req, res) => {
 		res.status(200).json({ status: 'ok', title: 'Stream key deleted successfully'})
 	} catch (error) {
 		// console.log(error)
-		res.status(400).json({ status: 'error', title: 'Invalid JWT Token' })
+		res.status(400).json({ status: 'error', title: 'Unexpected error' })
 	}
 })
 

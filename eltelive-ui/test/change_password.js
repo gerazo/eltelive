@@ -83,7 +83,7 @@ describe('/PATCH change_password', async () => {
             });
     });
 
-    it('should return "Invalid JWT token" error', async () => {
+    it('should return "Unexpected error" error', async () => {
         const token = temp_data.DUMMY_STRING
         chai.request(server)
             .patch('/api/change_password')
@@ -92,7 +92,7 @@ describe('/PATCH change_password', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(400);
-                res.body.title.should.be.eql('Invalid JWT token');
+                res.body.title.should.be.eql('Unexpected error');
             });
     });
 });

@@ -16,6 +16,91 @@ after((done) => {
 });
 
 describe('/DELETE delete_user', async () => {
+    it('should return "JWT Token not provided" error', async () => {
+        const token = temp_data.EMPTY_STRING
+        chai.request(server)
+            .delete('/api/delete_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({ email_to_be_deleted: temp_data.TEST1_USER.email})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(401);
+                res.body.title.should.be.eql('JWT Token not provided');
+            });
+    })
+
+    it('should return "Unexpected error" error', async () => {
+        const token = temp_data.DUMMY_STRING
+        chai.request(server)
+            .delete('/api/delete_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({ email_to_be_deleted: temp_data.TEST1_USER.email})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(400);
+                res.body.title.should.be.eql('Unexpected error');
+            });
+    })
+
+    it('should return "User with this token does not exist" error', async () => {
+        const token = jwt.sign(
+            {
+                id: temp_data.DUMMY_STRING,
+                email: temp_data.TEST2_USER.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .delete('/api/delete_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({ email_to_be_deleted: temp_data.TEST2_USER.email})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(404);
+                res.body.title.should.be.eql('User with this token does not exist');
+            });
+    })
+
+    it('should return "Only the admin or the email holder can delete the account registered with this email" error', async () => {
+        const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
+        const token = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .delete('/api/delete_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({ email_to_be_deleted: temp_data.ADMIN_USER.email})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(403);
+                res.body.title.should.be.eql('Only the admin or the email holder can delete the account registered with this email');
+            });
+    })
+
+    it('should return "A user with this email address does not exist in the database" error', async () => {
+        const user = await User.findOne({ email: temp_data.ADMIN_USER.email }).lean()
+        const token = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET
+        )
+        chai.request(server)
+            .delete('/api/delete_user')
+            .set({ "Authorization": `Bearer ${token}` })
+            .send({ email_to_be_deleted: temp_data.TEST2_USER.email})
+            .end((err, res) => {
+                res.body.should.be.a('object');
+                res.should.have.status(200);
+                res.body.title.should.be.eql('A user with this email address does not exist in the database');
+            });
+    })
+
     it('should delete the account of the logged-in user', async () => {
         const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
         const token = jwt.sign(
@@ -32,52 +117,7 @@ describe('/DELETE delete_user', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
-                res.body.title.should.be.eql('The user details with the email address provided was deleted from the database');
-            });
-    })
-
-    it('should return "JWT Token not provided" error', async () => {
-        const token = temp_data.EMPTY_STRING
-        chai.request(server)
-            .delete('/api/delete_user')
-            .set({ "Authorization": `Bearer ${token}` })
-            .send({ email_to_be_deleted: temp_data.TEST1_USER.email})
-            .end((err, res) => {
-                res.body.should.be.a('object');
-                res.should.have.status(401);
-                res.body.title.should.be.eql('JWT Token not provided');
-            });
-    })
-
-    it('should return "Invalid JWT Token" error', async () => {
-        const token = temp_data.DUMMY_STRING
-        chai.request(server)
-            .delete('/api/delete_user')
-            .set({ "Authorization": `Bearer ${token}` })
-            .send({ email_to_be_deleted: temp_data.TEST1_USER.email})
-            .end((err, res) => {
-                res.body.should.be.a('object');
-                res.should.have.status(400);
-                res.body.title.should.be.eql('Invalid JWT Token');
-            });
-    })
-
-    it('should return "User with this token does not exist" error', async () => {
-        const token = jwt.sign(
-            {
-                id: DUMMY_STRING,
-                email: temp_data.TEST2_USER.email
-            },
-            process.env.JWT_SECRET
-        )
-        chai.request(server)
-            .delete('/api/delete_user')
-            .set({ "Authorization": `Bearer ${token}` })
-            .send({ email_to_be_deleted: temp_data.TEST1_USER.email})
-            .end((err, res) => {
-                res.body.should.be.a('object');
-                res.should.have.status(404);
-                res.body.title.should.be.eql('User with this token does not exist');
+                res.body.title.should.be.eql('The user details with the email address provided were deleted from the database');
             });
     })
 });

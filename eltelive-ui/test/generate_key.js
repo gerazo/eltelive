@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('../db_connections/test');
 const User = require('../model/user');
 const server = require('../server');
-const temp_data = require('./temp_data')
+const temp_data = require('./temp_data');
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -44,7 +44,7 @@ describe('/PUT generate_key', async () => {
             });
     })
 
-    it('should return "Invalid JWT Token" error', async () => {
+    it('should return "Unexpected error" error', async () => {
         const token = temp_data.DUMMY_STRING
         chai.request(server)
             .put('/api/generate_key')
@@ -52,7 +52,7 @@ describe('/PUT generate_key', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(400);
-                res.body.title.should.be.eql('Invalid JWT Token');
+                res.body.title.should.be.eql('Unexpected error');
             });
     })
 
