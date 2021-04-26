@@ -253,12 +253,12 @@ app.put('/api/generate_key', async(req, res) => {
 		const current_time_in_epoch = Math.floor(new Date().getTime() / 1000)
 		const stream_expiration_time = current_time_in_epoch + day_in_epoch // After one day
 		const hashValue = md5("/live-" + stream_expiration_time + "-" + config.auth.secret)
-		const stream_address = "rtmp://localhost/live?sign=" + stream_expiration_time + "-" + hashValue 
+		const stream_address = "rtmp://" + process.env.HOST + "/live?sign=" + stream_expiration_time + "-" + hashValue 
 		res.status(201).json({ 
 			status: 'ok', 
 			title: 'Stream key generated successfully', 
 			stream_key: stream_key,
-			stream_display_url: "http://localhost:8000/live/" + stream_key + ".flv",
+			stream_display_url: "http://" + process.env.HOST + ":" + config.http.port + "/live/" + stream_key + ".flv",
 			stream_address: stream_address
 		})
 	} catch (error) {
