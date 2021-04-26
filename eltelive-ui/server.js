@@ -216,12 +216,12 @@ app.delete('/api/delete_user', async (req, res) => {
 		if(deletion_result.n == 0){
 			return res.status(200).json({
 				status: 'ok',
-				title: 'A user with this email address doesn not exist in the database'
+				title: 'A user with this email address does not exist in the database'
 			})
 		}
 		res.status(200).json({
 			status: 'ok',
-			title: 'The user details with the email address provided was deleted from the database'
+			title: 'The user details with the email address provided were deleted from the database'
 		})
 	} catch (error) {
 		console.log(error)
