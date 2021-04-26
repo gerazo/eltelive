@@ -16,6 +16,10 @@ describe('Users', () => {
         });
     });
 
+    after(() => {
+        mongoose.connection.close();
+    })
+
     describe('POST /api/register', async () => {
         it('it should create a new user', () => {
             const user = {

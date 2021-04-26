@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_SERVER_URI, {
+mongoose.connect(process.env.TEST_DATABASE, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true

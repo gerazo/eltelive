@@ -10,7 +10,6 @@ import ProfileComponent from '@/eltelive-frontend/components/user/profile';
 import LoginComponent from '@/eltelive-frontend/components/user/login';
 import LegalDisclaimer from '@/eltelive-frontend/components/legal-disclaimer';
 import ActiveStreamsComponent from '@/eltelive-frontend/components/stream/active-streams'
-import CreateStreamComponent from '@/eltelive-frontend/components/stream/create-stream';
 import NotFoundComponent from '@/eltelive-frontend/components/not-found-page';
 
 Vue.use(Router)
@@ -52,10 +51,6 @@ export default new Router({
     {
       path: '/active-streams',
       component: ActiveStreamsComponent,
-    },
-    {
-      path: '/create-stream',
-      component: CreateStreamComponent,
     },
     {
       path: '/legal-disclaimer',
