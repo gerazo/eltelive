@@ -18,13 +18,14 @@
         <h6>Stream Key:</h6>
       </div>
       <form id="keyGeneration" ref="keyGeneration">
-        <div class="input-group mb-3" >
-        <input type="text" id="key_textfield" class="form-control" placeholder="Stream Key" aria-label="Stream Key" readonly="readonly">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Copy</button>
-          <button class="btn btn-primary" ref="keyGenerationStream" type="generateKey">Generate Key</button>
+        <div class="d-flex">
+          <div class="streamKeyField border">
+            <p placeholder="Stream Key" class="pt-2" id="key_textfield"></p>
+          </div>
+          <div class="input-group-append">
+            <input class="btn btn-primary" ref="keyGenerationStream" type="button" value="Generate Key"/>
+          </div>
         </div>
-      </div>
       </form>
     </div>
   </div>
@@ -32,13 +33,18 @@
 <script>
 export default {
   name: "active-streams",
+  methods: {
+    changeText(){
+    	document.getElementById('boldStuff').innerHTML = 'Fred Flinstone';
+    }
+  },
   mounted() {
     const butt = this.$refs['keyGenerationStream']
     butt.addEventListener('click',generateStreamKey)
     
     async function generateStreamKey(event) {
       event.preventDefault()
-
+      
       const result = await fetch('http://localhost:4000/api/generate_key', {
         method: 'PUT',
         headers: {
@@ -47,14 +53,21 @@ export default {
         },
         }).then((res) => res.json())
 
-      console.log(result.stream_key)      
       document.getElementById("key_textfield").innerHTML = result.stream_key;
     }
+    
   },
 }
 </script>
 <style lang ="scss">
   .jumbotron{
     background-color: #215692;
+  }
+
+  .streamKeyField {
+    height: 3rem;
+    min-width: 7rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
   }
 </style>
