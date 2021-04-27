@@ -57,7 +57,7 @@
           ref="Player"  
           id="stream-player" 
           width=530 height=300 
-          class="vjs-default-skin" controls>
+          class="video-js vjs-default-skin" controls>
           </video>
       </div>
     </div>
@@ -65,7 +65,7 @@
 </template>
 <script>
 import videojs from "./video";
-window.videojs = videojs
+
 
 export default {
   name: "login-as-guest",
@@ -73,6 +73,12 @@ export default {
         return {
             showVideo: false
         }
+    },
+    mounted() {
+      window.videojs = videojs
+      let recaptchaScript = document.createElement('script')
+      recaptchaScript.setAttribute('src', 'https://vjs.zencdn.net/7.11.4/video.min.js')
+      document.head.appendChild(recaptchaScript)
     },
   methods: {
     registerStreamKey(type) {
@@ -95,8 +101,10 @@ export default {
         //HLS
         var streamLink =
           "http://localhost:8000/live/" + streamKey + ".flv";
-        var player = videojs(this.$refs.Player);
+        // var player = videojs(this.$refs.Player);
+        var player = videojs('stream-player');
         player.src({src: streamLink, type: 'application/x-mpegURL'});
+        console.log(player);
         player.play();
       } else if (type == "4") {
         //Recorded videos
