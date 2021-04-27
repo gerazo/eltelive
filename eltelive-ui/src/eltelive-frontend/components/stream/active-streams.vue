@@ -25,6 +25,9 @@
           <div class="input-group-append">
             <input class="btn btn-primary" ref="keyGenerationStream" type="button" value="Generate Key"/>
           </div>
+          <div class="input-group-append">
+            <input class="btn btn-danger" ref="keyDeletionStream" type="button" value="Delete Key"/>
+          </div>
         </div>
       </form>
     </div>
@@ -37,8 +40,12 @@ export default {
 
   },
   mounted() {
-    const butt = this.$refs['keyGenerationStream']
-    butt.addEventListener('click',generateStreamKey)
+    const generateButton = this.$refs['keyGenerationStream']
+    generateButton.addEventListener('click',generateStreamKey)
+
+    const deleteButton = this.$refs['keyDeletionStream']
+    deleteButton.addEventListener('click',deleteStreamKey)
+
     document.getElementById("key_textfield").innerHTML = localStorage.getItem('streamKey') || '';
     async function generateStreamKey(event) {
       event.preventDefault()
@@ -52,6 +59,25 @@ export default {
         }).then((res) => res.json())
       localStorage.setItem('streamKey',result.stream_key);
       document.getElementById("key_textfield").innerHTML = result.stream_key;
+    }
+
+    async function deleteStreamKey(event) {
+      event.preventDefault()
+      console.log("keyDeleted2");
+      
+      const result = await fetch('http://localhost:4000/api/delete_key', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token') 
+        },
+        }).then((res) => res.json())
+      localStorage.removeItem('streamKey',result.stream_key);
+      if(result.stream_key === undefined){
+        document.getElementById("key_textfield").innerHTML = '';
+      }else{
+        document.getElementById("key_textfield").innerHTML = result.stream_key;
+      }
     }
     
   },

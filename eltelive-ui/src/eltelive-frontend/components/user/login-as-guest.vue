@@ -57,6 +57,7 @@
           ref="Player"  
           id="stream-player" 
           width=530 height=300 
+          style="display:none"
           class="video-js vjs-default-skin" controls>
           </video>
       </div>
@@ -71,7 +72,7 @@ export default {
   name: "login-as-guest",
   data: function() {
         return {
-            showVideo: false
+          
         }
     },
     mounted() {
@@ -82,7 +83,8 @@ export default {
     },
   methods: {
     registerStreamKey(type) {
-      this.showVideo = true;
+      var showVideo = document.getElementById("stream-player");
+      showVideo.style.display="block";
       var streamKey = document.getElementById("streamkey").value;
       if(!streamKey)
         return;
@@ -104,7 +106,6 @@ export default {
         // var player = videojs(this.$refs.Player);
         var player = videojs('stream-player');
         player.src({src: streamLink, type: 'application/x-mpegURL'});
-        console.log(player);
         player.play();
       } else if (type == "4") {
         //Recorded videos
