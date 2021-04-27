@@ -34,14 +34,12 @@
 export default {
   name: "active-streams",
   methods: {
-    changeText(){
-    	document.getElementById('boldStuff').innerHTML = 'Fred Flinstone';
-    }
+
   },
   mounted() {
     const butt = this.$refs['keyGenerationStream']
     butt.addEventListener('click',generateStreamKey)
-    
+    document.getElementById("key_textfield").innerHTML = localStorage.getItem('streamKey') || '';
     async function generateStreamKey(event) {
       event.preventDefault()
       
@@ -52,7 +50,7 @@ export default {
           'Authorization': 'Bearer ' + localStorage.getItem('token') 
         },
         }).then((res) => res.json())
-
+      localStorage.setItem('streamKey',result.stream_key);
       document.getElementById("key_textfield").innerHTML = result.stream_key;
     }
     

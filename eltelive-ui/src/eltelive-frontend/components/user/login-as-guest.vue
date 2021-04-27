@@ -53,14 +53,18 @@
             <small>Listen LQ in App</small>
           </button>
         </div>
-          <video-js ref="Player" v-if="showVideo" id="stream-player" width=530 height=300 class="vjs-default-skin" controls>
-          </video-js>
+          <video 
+          ref="Player"  
+          id="stream-player" 
+          width=530 height=300 
+          class="vjs-default-skin" controls>
+          </video>
       </div>
     </div>
   </div>
 </template>
 <script>
-import videojs from "./video.min.js";
+import videojs from "./video";
 window.videojs = videojs
 
 export default {
