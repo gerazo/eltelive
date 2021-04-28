@@ -4,23 +4,23 @@
     <div class="text-center pt-5 pb-5">
       <h1>Active Streams</h1>
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center pb-5">
       <div class="jumbotron w-50 p-3 mb-2">
       <p class="pt-3 pr-1 pl-3 lead">
-        The <span class="h4">STREAM KEY</span> that is currently displayed is the key that you as a 
+        The <span class="h4 font-weight-bold">STREAM KEY</span> that is currently displayed is the key that you as a 
         streamer should copy to OBS. This key should be shared with your audience for them 
         to able to access your stream.
       </p>
       </div>
     </div>
-    <div class="d-flex justify-content-center w-50 pt-5 pl-5">
+    <div class="d-flex justify-content-center pt-5 pl-5">
       <div>
-        <h6>Stream Key:</h6>
+        <h4 class="pt-2 pr-4 font-weight-bold">Stream Key:</h4>
       </div>
       <form id="keyGeneration" ref="keyGeneration">
         <div class="d-flex">
           <div class="streamKeyField border">
-            <p placeholder="Stream Key" class="pt-2" id="key_textfield"></p>
+            <p placeholder="Stream Key" class="pt-2 font-weight-bold" id="key_textfield"></p>
           </div>
           <div class="input-group-append">
             <input class="btn btn-primary" ref="keyGenerationStream" type="button" value="Generate Key"/>
@@ -36,9 +36,6 @@
 <script>
 export default {
   name: "active-streams",
-  methods: {
-
-  },
   mounted() {
     const generateButton = this.$refs['keyGenerationStream']
     generateButton.addEventListener('click',generateStreamKey)
@@ -93,5 +90,10 @@ export default {
     min-width: 7rem;
     padding-left: 1rem;
     padding-right: 2rem;
+
+    p{
+      font-size:1.3rem;
+    }
   }
+
 </style>
