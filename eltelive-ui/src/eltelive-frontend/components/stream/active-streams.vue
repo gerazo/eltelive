@@ -1,6 +1,6 @@
 <script src="flv.min.js"></script>
 <template>
-  <div>
+  <div class="background">
     <div class="text-center pt-5 pb-5">
       <h1>Active Streams</h1>
     </div>
@@ -82,7 +82,7 @@ export default {
 </script>
 <style lang ="scss">
   .jumbotron{
-    background-color: #215692;
+    background: rgb(41,170,224);
   }
 
   .streamKeyField {

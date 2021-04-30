@@ -58,15 +58,15 @@
           id="stream-player" 
           width=530 height=300 
           style="display:none"
-          class="video-js vjs-default-skin" controls>
+          class="video-js" controls>
           </video>
+          <video id="videoElement"></video>
       </div>
     </div>
   </div>
 </template>
 <script>
 import videojs from "./video";
-
 
 export default {
   name: "login-as-guest",
@@ -86,6 +86,25 @@ export default {
       var showVideo = document.getElementById("stream-player");
       showVideo.style.display="block";
       var streamKey = document.getElementById("streamkey").value;
+       if (flvjs.isSupported()) {
+        var videoElement = document.getElementById('videoElement');
+
+        var flvPlayer = flvjs.createPlayer({
+
+            type: 'flv',
+
+            url: 'http://localhost:8000/live/STREAM_NAME.flv'
+
+        });
+
+        flvPlayer.attachMediaElement(videoElement);
+
+        flvPlayer.load();
+
+        flvPlayer.play();
+
+  }
+
       if(!streamKey)
         return;
       if (type == "1") {
@@ -102,8 +121,9 @@ export default {
       } else if (type == "3") {
         //HLS
         var streamLink =
-          "http://localhost:8000/live/" + streamKey + ".flv";
+          "http://localhost:8000/live/" + streamKey + "/index.m3u8";
         // var player = videojs(this.$refs.Player);
+        console.log(streamLink);
         var player = videojs('stream-player');
         player.src({src: streamLink, type: 'application/x-mpegURL'});
         player.play();
@@ -124,8 +144,7 @@ export default {
         player.src({src: streamLink, type: 'application/x-mpegURL'});
         player.play();
   }
-}
-
+},
   }
 };
 </script>

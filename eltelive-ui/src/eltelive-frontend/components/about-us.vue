@@ -6,7 +6,8 @@
           We help in easy access for live online sessions
       </div>
     </div>
-    <div class="first-box pb-5">
+    <div class="d-flex pb-5">
+      <div class="first-box">
         <h1 class="display-5">Our Story</h1>
         <p class="lead">
           We are students who have new point of view for online streaming.
@@ -14,6 +15,10 @@
           go live online. As well as for gamers and studying rooms. Conferences also are much more dependant on online sessions.
           ElteLive purpose is for sharing ideas, stories,gaming, teaching, and speaking out loud.
         </p>
+      </div>
+      <div>
+        <img class="our-story" src="/img/our-story.svg" alt="our-story-image">
+      </div>
     </div>
     <div class="row pl-5 pr-5 pb-5">
       <div class="col-sm-6 pb-4">
@@ -98,13 +103,18 @@
     font-size: 3.2rem;
   }
 
+  .our-story {
+    width: 600px;
+    height: 400px;
+    margin-left: 7rem;
+  }
   .div-p-1{
     font-size: 1.3rem;
     margin-bottom: 10rem;
   }
 
   .first-box {
-    max-width: 600px;
+    max-width: 700px;
     margin-left: 10rem;
     margin-bottom: 5rem;
   }

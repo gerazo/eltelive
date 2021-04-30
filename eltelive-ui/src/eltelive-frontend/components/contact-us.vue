@@ -1,82 +1,81 @@
 <template>
-    <div class="contact">
-        <h1 class="title text-left">CONTACT US</h1>
-      <div class="content d-flex">
-        <div class="side-text-left border-right">
-          <div class="side-text-left-p"> 
-            <h2 class="display-4">LET'S TALK</h2>
-            <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
+  <div class="contact">
+    <h1 class="title text-left">CONTACT US</h1>
+    <div class="content d-flex">
+      <div class="side-text-left border-right">
+        <div class="side-text-left-p">
+          <h2 class="display-4">LET'S TALK</h2>
+          <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
+        </div>
+      </div>
+      <div class="right-side pl-3">
+        <div>
+          <div class="right-side-p">
+            <div>
+              <img src="/img/location-graphic.svg" alt="" />
+              Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P.
+              sny. 1/C
+            </div>
+            <div>
+              <img src="/img/phone-graphic.svg" alt="" />
+              TelePhone: ELTELive Team
+            </div>
+            <Sending></Sending>
           </div>
-          </div>
-            <div class="right-side pl-3">
-              <div>
-                <div class="right-side-p">
-                  <div>
-                    <img src="/img/location-graphic.svg" alt="">
-                      Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P. sny. 1/C
-                  </div>
-                  <div>
-                    <img src="/img/phone-graphic.svg" alt="">
-                      TelePhone: ELTELive Team
-                  </div>
-                  <div>
-                    <img class="email-icon" src="/img/email-graphic.svg" alt="">
-                      Email : SomeEmail@someemail.com
-                  </div>
-                </div>  
-                <div class="contact-graphic">
-                    <img class="image" src="/img/contact-graphic.svg" alt=""> 
-                </div>
-              </div>
-            </div>  
-      </div>     
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name :'contact-us'
-    }
+import Sending from './sending-message';
+
+export default {
+  name: "contact-us",
+  components: {
+    Sending
+  }
+};
 </script>
 
 <style lang="scss">
-$color:#438bac;
+$color: #438bac;
 $mid: 540px;
-.contact{
-    margin : 3rem 15rem;
-    background-color:#f1f3f5;
-    box-shadow: 0 10px 30px 0px rgba(155, 207, 241, 0.1);
-    padding: 30px;
-    min-width: 400px;
+.contact {
+  margin: 3rem 15rem;
+  background-color: #f1f3f5;
+  box-shadow: 0 10px 30px 0px rgba(155, 207, 241, 0.1);
+  padding: 30px;
+  min-width: 400px;
 }
-.title{
-    color: $color;
+.title {
+  color: $color;
 }
-.email-icon{
-    width:20px;
-    height:20px;
+.email-icon {
+  width: 20px;
+  height: 20px;
 }
-.contact-graphic{
-margin: 10px;
-height:auto;
-overflow:auto;
+.contact-graphic {
+  margin: 10px;
+  height: auto;
+  overflow: auto;
 }
-.side-text-left{
-    padding-top:15rem;
-    width: 23rem;
+.side-text-left {
+  padding-top: 15rem;
+  width: 23rem;
 }
-.side-text-left-p{
-    color: $color;
-    font-size: 1.8rem;
+.side-text-left-p {
+  color: $color;
+  font-size: 1.8rem;
 }
-.right-side-p{
-    color: rgb(128, 125, 125);
-    font-size: 1rem;
-    font-weight: bold;
+.right-side-p {
+  color: rgb(128, 125, 125);
+  font-size: 1rem;
+  font-weight: bold;
 }
-.image{
+.image {
   height: auto;
   max-width: 500px;
 }
-
 </style>
