@@ -53,12 +53,18 @@
             <small>Listen LQ in App</small>
           </button>
         </div>
-          <video 
+        <script type="application/javascript" defer src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+        <video id="videoElement" 
+        class="centeredVideo" 
+        controls autoplay width="600" height="576">
+        Your browser is too old which doesn't support HTML5 video.
+        </video>
+          <!-- <video 
           ref="Player"  
           id="stream-player" 
           width=960 height=540 
           class="video-js vjs-default-skin" controls>
-          </video>
+          </video> -->
       </div>
     </div>
   </div>
@@ -82,7 +88,7 @@ export default {
   methods: {
     registerStreamKey(type) {
       var showVideo = document.getElementById("stream-player");
-      showVideo.style.display="block";
+      //showVideo.style.display="block";
       var streamKey = document.getElementById("streamkey").value;
 
       if(!streamKey)
@@ -100,11 +106,22 @@ export default {
         player.play();
       } else if (type == "3") {
         //HLS
-        var streamLink =
-          "http://localhost:8000/live/" + streamKey + "/index.m3u8";
-        var player = videojs('stream-player');
-        player.src({src: streamLink, type: 'application/x-mpegURL'});
-        player.play();
+        // var streamLink =
+        //   "http://localhost:8000/live/" + streamKey + "/index.m3u8";
+        // var player = videojs('stream-player');
+        // player.src({src: streamLink, type: 'application/x-mpegURL'});
+        // player.play();
+        if (flvjs.isSupported()) {
+        var videoElement = document.getElementById('videoElement');
+        var flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            isLive: true,
+            url: 'http://localhost:8000/live/umSMSHU2V.flv',
+        });
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        flvPlayer.play();
+       }
       } else if (type == "4") {
         //Recorded videos
         var streamLink =
