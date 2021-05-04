@@ -4,7 +4,7 @@
     <img class= "logo" src="img/logo.png" alt="logo">
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
-      <ul class="navbar-nav my-2 my-sm-0" ref="loggedIn" v-if="isloggedin">
+      <!-- <ul class="navbar-nav my-2 my-sm-0" ref="loggedIn">
         <li class="navbar-brand">
           <router-link to="/home" class="nav-link">Home</router-link>
         </li>
@@ -17,8 +17,8 @@
         <li class="navbar-brand">
           <router-link to="/login" class="nav-link">Log Out</router-link>
         </li>
-      </ul>
-      <ul class="navbar-nav my-2 my-sm-0" ref="notLoggedIn" v-else>
+      </ul> -->
+      <ul class="navbar-nav my-2 my-sm-0" ref="notLoggedIn">
         <li class="navbar-brand">
           <router-link to="/home" class="nav-link">Home</router-link>
         </li>
@@ -48,23 +48,23 @@ export default {
         }
     },
   mounted() {
-    const isLoggedInTrue = this.$refs['loggedIn'];
-    isLoggedInTrue.addEventListener('keyup',isLoggedIn);
+    // const isLoggedInTrue = this.$refs['loggedIn'];
+    // isLoggedInTrue.addEventListener('keyup',isLoggedIn);
 
-    const isNotLoggedIn = this.$refs['notLoggedIn'];
-    isNotLoggedIn.addEventListener("keyup",isNotIn);
+    // const isNotLoggedIn = this.$refs['notLoggedIn'];
+    // isNotLoggedIn.addEventListener("keyup",isNotIn);
     
-    function isLoggedIn(){
-        if(localStorage.getItem('token') !== undefined){
-          this.isloggedin = false;
-        }
-        console.log("LoggedIn? is " + this.isloggedin)
-      }
-    function isNotIn () {
-      if(localStorage.getItem('token') === undefined){
-          this.isloggedin = true;
-        }
-    }
+    // function isLoggedIn(){
+    //     if(localStorage.getItem('token') !== undefined){
+    //       this.isloggedin = false;
+    //     }
+    //     console.log("LoggedIn? is " + this.isloggedin)
+    //   }
+    // function isNotIn () {
+    //   if(localStorage.getItem('token') === undefined){
+    //       this.isloggedin = true;
+    //     }
+   // }
     }
 };
 </script>

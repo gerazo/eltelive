@@ -1,6 +1,9 @@
 <template>
+  <div>
+     <div class="contact-us-title text-center pt-5">
+      <h1 class="pb-5">Contact Us</h1>
+    </div>
   <div class="contact">
-    <h1 class="title text-left">CONTACT US</h1>
     <div class="content d-flex">
       <div class="side-text-left border-right">
         <div class="side-text-left-p">
@@ -26,6 +29,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -40,14 +44,18 @@ export default {
 </script>
 
 <style lang="scss">
-$color: #438bac;
-$mid: 540px;
+  .contact-us-title {
+    text-transform: uppercase;
+  }
+  .contact-us-title > h1 {
+    font-size: 3.2rem;
+  }
+$color: rgb(53, 114, 210);
 .contact {
-  margin: 3rem 15rem;
+  margin: 3rem 10rem;
   background-color: #f1f3f5;
   box-shadow: 0 10px 30px 0px rgba(155, 207, 241, 0.1);
   padding: 30px;
-  min-width: 400px;
 }
 .title {
   color: $color;

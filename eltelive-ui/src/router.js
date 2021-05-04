@@ -1,64 +1,49 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import HomePageComponent from '@/eltelive-frontend/components/home-page';
-import AboutComponent from '@//eltelive-frontend/components/about-us';
-import ContactComponent from '@/eltelive-frontend/components/contact-us';
-import SignUpComponent from '@/eltelive-frontend/components/user/sign-up';
-import GuestComponent from '@/eltelive-frontend/components/user/login-as-guest';
-import ProfileComponent from '@/eltelive-frontend/components/user/profile';
-import LoginComponent from '@/eltelive-frontend/components/user/login';
-import LegalDisclaimer from '@/eltelive-frontend/components/legal-disclaimer';
-import ActiveStreamsComponent from '@/eltelive-frontend/components/stream/active-streams'
-import NotFoundComponent from '@/eltelive-frontend/components/not-found-page';
-
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '',
-      component: HomePageComponent,
+      path: '/',
+      component: () => import('./eltelive-frontend/components/home-page'),
     },
     {
       path: '/home',
-      component: HomePageComponent,
+      component: () => import('./eltelive-frontend/components/home-page'),
     },
     {
       path: '/about',
-      component: AboutComponent,
+      component: () => import('./eltelive-frontend/components/about-us'),
     },
     {
       path: '/contact',
-      component: ContactComponent,
+      component: () => import('./eltelive-frontend/components/contact-us'),
     },
     {
       path: '/signup',
-      component: SignUpComponent,
+      component: () => import('./eltelive-frontend/components/user/sign-up'),
     },
     {
       path: '/guest',
-      component: GuestComponent,
-    },
-    {
-      path: '/profile',
-      component: ProfileComponent,
+      component: () => import('./eltelive-frontend/components/user/login-as-guest'),
     },
     {
       path: '/login',
-      component: LoginComponent,
+      component: () => import('./eltelive-frontend/components/user/login'),
     },
     {
       path: '/active-streams',
-      component: ActiveStreamsComponent,
+      component: () => import('./eltelive-frontend/components/stream/active-streams'),
     },
     {
       path: '/legal-disclaimer',
-      component: LegalDisclaimer,
+      component: () => import('./eltelive-frontend/components/legal-disclaimer'),
     },
     {
       path: "**",
-      component: NotFoundComponent,
+      component: () => import('./eltelive-frontend/components/not-found-page'),
     }
   ]
 })

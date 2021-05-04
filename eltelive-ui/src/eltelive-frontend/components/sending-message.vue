@@ -30,7 +30,6 @@
 
 <script>
 import emailjs from 'emailjs-com';
-
 export default {
   name: 'Sending',
   data() {
@@ -49,13 +48,13 @@ export default {
           email: this.email,
           message: this.message
         })
+        setTimeout(function() {
+        document.location.reload()
+  }, 7000);
 
       } catch(error) {
           console.log({error})
       }
-      setTimeout(function() {
-        document.location.reload()
-  }, 8000);
     },
   }
 }
@@ -71,7 +70,7 @@ export default {
   border-radius: 5px;
   background-color: #cbd8df;
   padding: 20px;
-  width: 70%;
+  width: 90%;
 }
 
 label {
@@ -90,7 +89,7 @@ input[type=text], [type=email], textarea {
 }
 
 input[type=submit] {
-  background-color: rgb(67,139,172);
+  background-color: rgb(53, 114, 210);;
   color: white;
   padding: 12px 20px;
   border: none;
