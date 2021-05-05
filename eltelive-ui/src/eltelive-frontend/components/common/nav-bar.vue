@@ -4,7 +4,7 @@
     <img class= "logo" src="img/logo.png" alt="logo">
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
-      <ul class="navbar-nav my-2 my-sm-0" v-if="!isLoggedIn">
+      <ul class="navbar-nav my-2 my-sm-0" v-if="isOut()">
         <li class="navbar-brand">
           <router-link to="/home" class="nav-link">Home</router-link>
         </li>
@@ -15,15 +15,15 @@
           <router-link to="/contact" class="nav-link">Contact</router-link>
         </li>
         <li class="navbar-brand">
-          <router-link to="/login" class="nav-link">Login</router-link>
+          <a v-on:click="loggingIn()" class="nav-link">Login</a>
         </li>
         <li class="navbar-brand">
           <router-link to="/signup" class="nav-link">Sign Up</router-link>
         </li>
       </ul>
       
-      <ul class="navbar-nav my-2 my-sm-0" v-else>
-        <li class="navbar-brand">
+      <ul class="navbar-nav my-2 my-sm-0" v-if="isIn()">
+          <li class="navbar-brand">
           <router-link to="/home" class="nav-link">Home</router-link>
         </li>
         <li class="navbar-brand">
@@ -31,6 +31,9 @@
         </li>
         <li class="navbar-brand">
           <router-link to="/contact" class="nav-link">Contact</router-link>
+        </li>
+        <li class="navbar-brand">
+          <router-link to="/active-streams" class="nav-link">Stream Keys</router-link>
         </li>
         <li class="navbar-brand">
           <a v-on:click="loggingOut()" class="nav-link">Logout</a>
@@ -45,14 +48,37 @@ export default {
   name: "NavBar",
   data() {
    return {
-      isLoggedIn: true
+     
    }
   },
     methods:{
+      loggingIn(){
+        console.log(this.isLoggedIn)
+        if(!(localStorage.getItem('token'))){
+          this.$router.push('login')
+        }
+      },
       loggingOut(){
-        localStorage.removeItem('token');
-        this.$router.push('home')
-        this.isLoggedIn = !this.isLoggedIn
+         if(localStorage.getItem('token')){
+           localStorage.removeItem('token');
+           this.$router.push('home')
+           document.location.reload();
+         }
+      },
+      isOut(){
+      if(!(localStorage.getItem('token'))){
+          return true;
+        }else{
+          return false;
+        }
+      },
+      isIn(){
+        if(localStorage.getItem('token')){
+          console.log(localStorage.getItem('token'))
+          return true;
+        }else{
+          return false;
+        }
       }
     }
 };

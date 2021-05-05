@@ -29,6 +29,14 @@
             class="btn btn-primary btn-lg btn-block"
           />
         </div>
+        <div class="d-flex justify-content-between pt-3">
+          <p>
+            <router-link to="/change-password">Forgot your Password?</router-link>
+          </p>
+          <p class="pr-2">
+            <router-link to="/signup">Sign Up</router-link>
+          </p>
+        </div>
       </form>
     </div>
     <div class="guest text-center pt-4 pl-5">

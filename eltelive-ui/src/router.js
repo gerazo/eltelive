@@ -38,6 +38,10 @@ export default new Router({
       component: () => import('./eltelive-frontend/components/stream/active-streams'),
     },
     {
+      path: '/change-password',
+      component: () => import('./eltelive-frontend/components/user/change-password'),
+    },
+    {
       path: '/legal-disclaimer',
       component: () => import('./eltelive-frontend/components/legal-disclaimer'),
     },

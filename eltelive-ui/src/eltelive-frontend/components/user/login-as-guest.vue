@@ -53,12 +53,14 @@
             <small>Listen LQ in App</small>
           </button>
         </div>
-        <script type="application/javascript" defer src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+        <div id="videoElementDisplay" style="display:none">
+          <script type="application/javascript" defer src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
         <video id="videoElement" 
         class="centeredVideo" 
         controls autoplay width="600" height="576">
         Your browser is too old which doesn't support HTML5 video.
         </video>
+        </div>
       </div>
     </div>
   </div>
@@ -68,11 +70,6 @@ import videojs from "./video";
 
 export default {
   name: "login-as-guest",
-  data: function() {
-        return {
-          
-        }
-    },
     mounted() {
       window.videojs = videojs
       let recaptchaScript = document.createElement('script')
@@ -82,8 +79,7 @@ export default {
   methods: {
     registerStreamKey(type) {
       var showVideo = document.getElementById("stream-player");
-      var streamKey = document.getElementById("streamkey").value;
-      console.log(streamKey);
+      var streamKey = (document.getElementById("streamkey").value).trim();
 
       if(!streamKey)
         return;
@@ -100,11 +96,8 @@ export default {
         player.play();
       } else if (type == "3") {
         //HLS
-        // var streamLink =
-        //   "http://localhost:8000/live/" + streamKey + "/index.m3u8";
-        // var player = videojs('stream-player');
-        // player.src({src: streamLink, type: 'application/x-mpegURL'});
-        // player.play();
+        var T = document.getElementById("videoElementDisplay");
+        T.style.display = "block";
         if (flvjs.isSupported()) {
         var videoElement = document.getElementById('videoElement');
         var flvPlayer = flvjs.createPlayer({

@@ -5,7 +5,6 @@
     <router-view/>
     </div>
     <div><Footer></Footer></div>
-    <notifications/>
   </div>
   
 </template>

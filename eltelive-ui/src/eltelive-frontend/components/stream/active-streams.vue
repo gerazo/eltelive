@@ -37,6 +37,16 @@
 export default {
   name: "active-streams",
   mounted() {
+    
+    if( window.localStorage ){
+      if( !localStorage.getItem('firstLoad') )
+      {
+        localStorage['firstLoad'] = true;
+        document.location.reload();
+      }  
+    else
+      localStorage.removeItem('firstLoad');
+  }
     const generateButton = this.$refs['keyGenerationStream']
     generateButton.addEventListener('click',generateStreamKey)
 
