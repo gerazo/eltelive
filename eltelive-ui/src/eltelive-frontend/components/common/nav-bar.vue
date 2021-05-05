@@ -30,13 +30,16 @@
           <router-link to="/about" class="nav-link">About Us</router-link>
         </li>
         <li class="navbar-brand">
-          <router-link to="/contact" class="nav-link">Contact</router-link>
-        </li>
-        <li class="navbar-brand">
           <router-link to="/active-streams" class="nav-link">Stream Keys</router-link>
         </li>
         <li class="navbar-brand">
-          <a v-on:click="loggingOut()" class="nav-link">Logout</a>
+          <router-link to="/change-password" class="nav-link">Change Password</router-link>
+        </li>
+        <li class="navbar-brand">
+          <router-link to="/contact" class="nav-link">Contact</router-link>
+        </li>
+        <li class="navbar-brand">
+          <a v-on:click="loggingOut()" class="nav-link btn btn-danger text-white">Logout</a>
         </li>
       </ul>
    </nav>
@@ -46,10 +49,8 @@
 <script>
 export default {
   name: "NavBar",
-  data() {
-   return {
-     
-   }
+  mounted (){
+    
   },
     methods:{
       loggingIn(){
@@ -61,8 +62,7 @@ export default {
       loggingOut(){
          if(localStorage.getItem('token')){
            localStorage.removeItem('token');
-           this.$router.push('home')
-           document.location.reload();
+           location.replace('home');
          }
       },
       isOut(){
@@ -101,5 +101,8 @@ export default {
     background-position: 50% 50%;
     background-repeat:   no-repeat;
     background-size:     cover;
+  }
+  .nav-link {
+    font-size: 1.23rem;
   }
 </style>
