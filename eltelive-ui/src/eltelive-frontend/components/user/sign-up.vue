@@ -65,7 +65,7 @@
           alert('Success')
           window.location.href = "/#/login";
         } else {
-          alert(result.error)
+          alert(result.title)
         }
       }
 

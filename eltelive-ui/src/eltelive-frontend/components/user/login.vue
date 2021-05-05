@@ -78,7 +78,7 @@ export default {
         localStorage.setItem("token", result.token);
         window.location.href = "/#/active-streams";
       } else {
-        alert('wrong input')
+        alert(result.title)
       }
     }
 
