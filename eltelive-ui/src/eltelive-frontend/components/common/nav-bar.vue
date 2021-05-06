@@ -54,7 +54,6 @@ export default {
   },
     methods:{
       loggingIn(){
-        console.log(this.isLoggedIn)
         if(!(localStorage.getItem('token'))){
           this.$router.push('login')
         }

@@ -8,18 +8,21 @@
                 type="text" 
                 name="name"
                 placeholder="Your Name"
+                required
             >
             <label>Email</label>
             <input 
                 type="email" 
                 name="email"
                 placeholder="Your Email"
+                required
                 >
             <label>Message</label>
             <textarea 
                 name="message"
                 cols="30" rows="5"
-                placeholder="Message">
+                placeholder="Message"
+                required>
             </textarea>
             
             <input class="font-weight-bold" type="submit" value="Send">
