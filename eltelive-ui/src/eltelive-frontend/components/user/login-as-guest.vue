@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="guest-title text-center pt-5">Guest Portal</h1>
-      <div class="wrapper">
+    <div class="wrapper">
       <div class="box">
         <noscript>
           <div style="text-align: left;">
@@ -14,7 +14,7 @@
               <li>
                 Using any player which can play RTMP streams like
                 <a href="https://www.videolan.org/vlc/">VLC</a>. Use this URL:
-                <b>rtmp://$DOMAINNAME/live/mylecture</b><br>
+                <b>rtmp://$DOMAINNAME/live/mylecture</b><br />
               </li>
             </ul>
             <p>
@@ -29,37 +29,37 @@
             <hr />
           </div>
         </noscript>
-        <input 
+        <input
           class="mt-3"
-          type="text" 
-          id="streamkey" 
+          type="text"
+          id="streamkey"
           placeholder="Insert your stream key here and press one of the buttons below"
-        required />
+          required
+        />
         <div class="pt-5">
-          <button class="link-buttons" v-on:click="registerStreamKey(3);">
+          <button class="link-buttons" v-on:click="registerStreamKey(3)">
             - Listen in Browser -
           </button>
-          <button class="link-buttons" v-on:click="registerStreamKey(1);">
+          <button class="link-buttons" v-on:click="registerStreamKey(1)">
             - Listen in App -
-          </button>
-          <button class="link-buttons" v-on:click="registerStreamKey(4);">
-            - Recordings -
-          </button>
-          <br />
-          <button class="link-buttons" v-on:click="registerStreamKey(6);">
-            <small>Listen LQ in Browser</small>
-          </button>
-          <button class="link-buttons" v-on:click="registerStreamKey(5);">
-            <small>Listen LQ in App</small>
           </button>
         </div>
         <div id="videoElementDisplay" style="display:none">
-          <script type="application/javascript" defer src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
-        <video id="videoElement" 
-        class="centeredVideo" 
-        controls autoplay width="600" height="576">
-        Your browser is too old which doesn't support HTML5 video.
-        </video>
+          <script
+            type="application/javascript"
+            defer
+            src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"
+          ></script>
+          <video
+            id="videoElement"
+            class="centeredVideo"
+            controls
+            autoplay
+            width="600"
+            height="576"
+          >
+            Your browser is too old which doesn't support HTML5 video.
+          </video>
         </div>
       </div>
     </div>
@@ -70,76 +70,55 @@ import videojs from "./video";
 
 export default {
   name: "login-as-guest",
-    mounted() {
-      window.videojs = videojs
-      let recaptchaScript = document.createElement('script')
-      recaptchaScript.setAttribute('src', 'https://vjs.zencdn.net/7.11.4/video.min.js')
-      document.head.appendChild(recaptchaScript)
-    },
+  mounted() {
+    window.videojs = videojs;
+    let recaptchaScript = document.createElement("script");
+    recaptchaScript.setAttribute(
+      "src",
+      "https://vjs.zencdn.net/7.11.4/video.min.js"
+    );
+    document.head.appendChild(recaptchaScript);
+  },
   methods: {
     registerStreamKey(type) {
       var showVideo = document.getElementById("stream-player");
-      var streamKey = (document.getElementById("streamkey").value).trim();
+      var streamKey = document.getElementById("streamkey").value.trim();
 
-      if(!streamKey)
-        return;
+      if (!streamKey) return;
       if (type == "1") {
         // RTMP
         var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
         window.open(streamLink, "_blank");
-      } else if (type == "2") {
-        //MPEG-DASH
-        var streamLink =
-          "https://$DOMAINNAME/livedash/" + streamKey + ".mpd";
-        var player = videojs('stream-player');
-        player.src({src: streamLink, type: 'application/dash+xml'});
-        player.play();
       } else if (type == "3") {
         //HLS
         var T = document.getElementById("videoElementDisplay");
         T.style.display = "block";
         if (flvjs.isSupported()) {
-        var videoElement = document.getElementById('videoElement');
-        var flvPlayer = flvjs.createPlayer({
-            type: 'flv',
+          var videoElement = document.getElementById("videoElement");
+          var flvPlayer = flvjs.createPlayer({
+            type: "flv",
             isLive: true,
-            url: 'http://localhost:8000/live/' + streamKey +'.flv',
-        });
-        flvPlayer.attachMediaElement(videoElement);
-        flvPlayer.load();
-        flvPlayer.play();
-       }
-      } else if (type == "4") {
-        //Recorded videos
-        var streamLink =
-          "https://$DOMAINNAME/videos/" + streamKey;
-        window.open(streamLink, "_blank");
-      } else if (type == "5") {
-        //RTMP low quality
-        var streamLink = "rtmp://$DOMAINNAME/livelq/" + streamKey;
-        window.open(streamLink, "_blank");
-      } else if (type == "6") {
-        //HLS low quality
-        var streamLink =
-          "https://$DOMAINNAME/livehlslq/" + streamKey + ".m3u8";
-        var player = videojs('stream-player');
-        player.src({src: streamLink, type: 'application/x-mpegURL'});
-        player.play();
-  }
-},
+            url: "http://localhost:8000/live/" + streamKey + ".flv"
+          });
+          flvPlayer.attachMediaElement(videoElement);
+          flvPlayer.load();
+          flvPlayer.play();
+        }
+      }
+    }
   }
 };
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
-@import url('video-js.min.css');
-  .guest-title {
-    text-transform: uppercase;
-  }
-  .guest-title > h1 {
-    font-size: 3.2rem;
-  }
+@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
+@import url("video-js.min.css");
+.guest-title {
+  text-transform: uppercase;
+}
+.guest-title > h1 {
+  font-size: 3.2rem;
+}
 .wrapper {
   max-width: 850px;
   margin: 10% auto;
@@ -153,7 +132,7 @@ export default {
   text-align: center;
 }
 
-.box noscript{
+.box noscript {
   text-align: left !important;
 }
 

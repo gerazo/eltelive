@@ -21,6 +21,20 @@
         </div>
       </form>
     </div>
+    <button
+      id="notificationSuccess"
+      class="notification btn text-white font-weight-bold"
+      style="display:none;"
+    >
+      Successfully Changed Password
+    </button>
+    <button 
+      id="notificationError"
+      class="notification btn text-white font-weight-bold"
+      style="display:none;"
+    >
+      Failed to Change Password
+    </button>
   </div>
 </template>
 <script>
@@ -38,7 +52,7 @@ export default {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          Authorization: "Bearer " + localStorage.getItem("token")
         },
         body: JSON.stringify({
           newPassword
@@ -46,16 +60,24 @@ export default {
       }).then(res => res.json());
 
       if (result.status === "ok") {
-        // everythign went fine
-        alert("Success");
+         document.getElementById("notificationSuccess").style.display = "block";
+        setTimeout(function() {
+          $("#notificationSuccess").fadeOut("fast");
+        }, 4000);
       } else {
-        alert(result.error);
+        document.getElementById("notificationError").style.display = "block";
+        if(!(localStorage.getItem('token'))){
+          document.getElementById('notificationError').innerHTML="Login to Change Password";
+        }else{
+          document.getElementById('notificationError').innerHTML="Password is too short";
+        }
+        setTimeout(function() {
+          $("#notificationError").fadeOut("fast");
+        }, 4000);
       }
     }
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
 <style>
@@ -69,5 +91,24 @@ export default {
 }
 .change-password {
   background-color: #f1f3f5;
+}
+
+.notification {
+  text-align: center;
+  position: fixed;
+  top: 7rem;
+  left: 40%;
+  z-index: 999;
+  height: 60px;
+  width: 20%;
+}
+
+#notificationError {
+  background-color: rgb(245, 132, 132);
+  font-size:1.2rem;
+}
+#notificationSuccess{
+  background-color: rgb(34, 170, 34);
+  font-size:1.2rem;
 }
 </style>

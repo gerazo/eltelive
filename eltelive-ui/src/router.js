@@ -10,10 +10,6 @@ export default new Router({
       component: () => import('./eltelive-frontend/components/home-page'),
     },
     {
-      path: '/home',
-      component: () => import('./eltelive-frontend/components/home-page'),
-    },
-    {
       path: '/about',
       component: () => import('./eltelive-frontend/components/about-us'),
     },
