@@ -7,43 +7,43 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: () => import('./eltelive-frontend/components/home-page'),
+      component: () => import('./components/home-page'),
     },
     {
       path: '/about',
-      component: () => import('./eltelive-frontend/components/about-us'),
+      component: () => import('./components/about-us'),
     },
     {
       path: '/contact',
-      component: () => import('./eltelive-frontend/components/contact-us'),
+      component: () => import('./components/contact-us'),
     },
     {
       path: '/signup',
-      component: () => import('./eltelive-frontend/components/user/sign-up'),
+      component: () => import('./components/user/sign-up'),
     },
     {
       path: '/guest',
-      component: () => import('./eltelive-frontend/components/user/login-as-guest'),
+      component: () => import('./components/user/login-as-guest'),
     },
     {
       path: '/login',
-      component: () => import('./eltelive-frontend/components/user/login'),
+      component: () => import('./components/user/login'),
     },
     {
       path: '/active-streams',
-      component: () => import('./eltelive-frontend/components/stream/active-streams'),
+      component: () => import('./components/stream/active-streams'),
     },
     {
       path: '/change-password',
-      component: () => import('./eltelive-frontend/components/user/change-password'),
+      component: () => import('./components/user/change-password'),
     },
     {
       path: '/legal-disclaimer',
-      component: () => import('./eltelive-frontend/components/legal-disclaimer'),
+      component: () => import('./components/legal-disclaimer'),
     },
     {
       path: "**",
-      component: () => import('./eltelive-frontend/components/not-found-page'),
+      component: () => import('./components/not-found-page'),
     }
   ]
 })

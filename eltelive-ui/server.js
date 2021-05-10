@@ -1,4 +1,6 @@
 const express = require('express');
+const serveStatic = require('serve-static')
+const path = require('path')
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -16,6 +18,14 @@ node_media_server.run();
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+//here we are configuring dist to serve app files
+app.use('/', serveStatic(path.join(__dirname, '/dist')))
+
+// this * route is to serve project on different page routes except root `/`
+app.get(/.*/, function (req, res) {
+	res.sendFile(path.join(__dirname, '/dist/index.html'))
+})
 
 app.patch('/api/change_password', async (req, res) => {
 	const { newPassword: newPlainTextPassword } = req.body
@@ -334,4 +344,4 @@ app.listen(port, (err) => {
   console.log('server running on port ' + port);
 })
 
-module.exports = app;
+module.exports = app; 
