@@ -15,7 +15,7 @@
           <router-link to="/contact" class="nav-link">Contact</router-link>
         </li>
         <li class="navbar-brand">
-          <a v-on:click="loggingIn()" class="nav-link">Login</a>
+          <router-link to="/login" class="nav-link">Login</router-link>
         </li>
         <li class="navbar-brand">
           <router-link to="/signup" class="nav-link">Sign Up</router-link>
