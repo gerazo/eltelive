@@ -90,7 +90,7 @@ export default {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const result = await fetch("http://localhost:4000/api/register", {
+      const result = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

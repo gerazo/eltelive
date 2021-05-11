@@ -88,7 +88,7 @@ export default {
     async function generateStreamKey(event) {
       event.preventDefault();
 
-      const result = await fetch("http://localhost:4000/api/generate_key", {
+      const result = await fetch("/api/generate_key", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export default {
       event.preventDefault();
       console.log("keyDeleted2");
 
-      const result = await fetch("http://localhost:4000/api/delete_key", {
+      const result = await fetch("/api/delete_key", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
