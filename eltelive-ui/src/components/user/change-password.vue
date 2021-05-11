@@ -48,7 +48,7 @@ export default {
       event.preventDefault();
       const newPassword = document.getElementById("password").value;
 
-      const result = await fetch("http://localhost:4000/api/change_password", {
+      const result = await fetch("/api/change_password", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
