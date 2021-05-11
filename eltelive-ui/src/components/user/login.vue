@@ -61,7 +61,6 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-      Email or Password is incorrect
     </button>
     <script
       type="application/javascript"
@@ -105,6 +104,7 @@ export default {
         window.location.href = "/#/active-streams";
       } else {
         document.getElementById("notificationError").style.display = "block";
+        document.getElementById("notificationError").innerHTML=result.title
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);

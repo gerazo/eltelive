@@ -71,7 +71,6 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-    Unable to Create Account
     </button>
   </div>
 </template>
@@ -111,7 +110,7 @@ export default {
         window.location.href = "/#/login";
       } else {
         document.getElementById("notificationError").style.display = "block";
-        document.getElementById('notificationError').innerHTML=""
+        document.getElementById('notificationError').innerHTML=result.title
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);

@@ -30,17 +30,17 @@
           </div>
         </noscript>
         <input
-          class="mt-3"
+          class="input mt-3"
           type="text"
           id="streamkey"
           placeholder="Insert your stream key here and press one of the buttons below"
           required
         />
-        <div class="pt-5">
-          <button class="link-buttons" v-on:click="registerStreamKey(3)">
+        <div class="pt-4">
+          <button class="link-buttons mr-5" v-on:click="registerStreamKey(3)">
             - Listen in Browser -
           </button>
-          <button class="link-buttons" v-on:click="registerStreamKey(1)">
+          <button class="link-buttons ml-5" v-on:click="registerStreamKey(1)">
             - Listen in App -
           </button>
         </div>
@@ -177,5 +177,9 @@ input:focus {
 
 input::placeholder {
   color: #999;
+}
+.input {
+  height:3.5rem;
+  font-size: 1.15rem;
 }
 </style>

@@ -69,7 +69,8 @@ export default {
           document.location.reload();
         }, 5000);
       } catch (error) {
-        document.getElementById("notificationError").style.display = error;
+        document.getElementById("notificationError").style.display = "block";
+        document.getElementById("notificationError").innerHTML=error;
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);

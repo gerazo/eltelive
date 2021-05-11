@@ -17,7 +17,7 @@
             <div>
               <img src="/img/location-graphic.svg" alt="" />
               Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P.
-              sny. 1/C
+              stny. 1/C
             </div>
             <div>
               <img src="/img/phone-graphic.svg" alt="" />

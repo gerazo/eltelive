@@ -1,17 +1,78 @@
 <script src="flv.min.js"></script>
 <template>
   <div class="background">
-    <div class="text-center pt-5 pb-5">
-      <h1>Active Streams</h1>
+    <div class="pt-5 pb-5">
+      <h1 class="text-center">Active Streams</h1>
+      <div class="float-right mr-5">
+        <button
+      type="button"
+      class="btn btn-primary mr-5"
+      data-toggle="modal"
+      data-target="#exampleModalCenter"
+    >
+      Streamer Guide
+    </button>
+      </div>
     </div>
-    <div class="d-flex justify-content-center pb-5">
+    <div class="d-flex justify-content-center mt-5 pb-5">
       <div class="jumbotron w-50 p-3 mb-2">
         <p class="pt-3 pr-1 pl-3 lead">
-          The <span class="h4 font-weight-bold">STREAM KEY</span> that is
-          currently displayed is the key that you as a streamer should copy to
-          OBS. This key should be shared with your audience for them to able to
-          access your stream.
+          The
+          <span class="h4 text-danger font-weight-bold">STREAM KEY</span> that
+          is currently displayed is the key that you as a streamer should copy
+          to OBS. This key should be shared with your audience for them to able
+          to access your stream.
         </p>
+      </div>
+    </div>
+    
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLongTitle">Streamer Guide</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="pb-2">To be able to stream, here are steps that can help you:</p>
+            <ol>
+              <li class="pb-1">Generate a Stream key</li>
+              <li class="pb-1">Share the stream key with your audience/guests</li>
+              <li class="pb-1">Open any streaming app, we recommend OBS</li>
+              <li class="pb-1">In OBS, click on settings button then click on Stream</li>
+              <li class="pb-1">Set the Service to Custom</li>
+              <li class="pb-1">Set the Server with the server link</li>
+              <li class="pb-1">Paste the Stream Key you generated in the Stream Key input</li>
+              <li class="pb-1">Click Apply then ok and you will be directed back to OBS main page</li>
+              <li class="pb-1">Click on start streaming to start your streaming</li>
+            </ol>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="d-flex justify-content-center pt-5 pl-5">
@@ -54,7 +115,7 @@
       Successfully Generated Stream Key
     </button>
     <button
-      id="notificationError"
+      id="notificationSuccess"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
@@ -85,6 +146,8 @@ export default {
 
     document.getElementById("key_textfield").innerHTML =
       localStorage.getItem("streamKey") || "";
+
+    
     async function generateStreamKey(event) {
       event.preventDefault();
 
@@ -97,8 +160,10 @@ export default {
       }).then(res => res.json());
       localStorage.setItem("streamKey", result.stream_key);
       document.getElementById("key_textfield").innerHTML = result.stream_key;
-       document.getElementById("notificationSuccess").style.display="block";
-         setTimeout(function() {$('#notificationSuccess').fadeOut('fast');}, 4000);
+      document.getElementById("notificationSuccess").style.display = "block";
+      setTimeout(function() {
+        $("#notificationSuccess").fadeOut("fast");
+      }, 4000);
     }
 
     async function deleteStreamKey(event) {
@@ -113,20 +178,17 @@ export default {
         }
       }).then(res => res.json());
       localStorage.removeItem("streamKey", result.stream_key);
-      document.getElementById("notificationError").style.display="block";
-        setTimeout(function() {$('#notificationError').fadeOut('fast');}, 4000);
-      if (result.stream_key === undefined) {
-        document.getElementById("key_textfield").innerHTML = "";
-      } else {
-        document.getElementById("key_textfield").innerHTML = result.stream_key;
-      }
+      document.getElementById("notificationSuccess").style.display = "block";
+      setTimeout(function() {
+        $("#notificationSuccess").fadeOut("fast");
+      }, 4000);
     }
   }
 };
 </script>
 <style lang="scss">
 .jumbotron {
-  background: rgb(41, 170, 224);
+  background: rgb(210, 224, 230);
 }
 
 .streamKeyField {
@@ -148,12 +210,12 @@ export default {
   height: 60px;
   width: 20%;
 }
-#notificationSuccess{
-  background-color:#75d812;
-  font-size:1.1rem;
+#notificationSuccess {
+  background-color: #75d812;
+  font-size: 1.1rem;
 }
 #notificationError {
   background-color: rgb(245, 132, 132);
-  font-size:1.5rem;
+  font-size: 1.5rem;
 }
 </style>
