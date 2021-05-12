@@ -71,8 +71,13 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-    Unable to Create Account
+      Unable to Create Account
     </button>
+    <script
+      type="application/javascript"
+      defer
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+    ></script>
   </div>
 </template>
 
@@ -105,10 +110,12 @@ export default {
       }).then(res => res.json());
 
       if (result.status === "ok") {
-      document.getElementById("notificationSuccess").style.display = "block";
+        localStorage.setItem("token", result.token);
+        document.getElementById("notificationSuccess").style.display = "block";
         setTimeout(function() {
           $("#notificationSuccess").fadeOut("fast");
         }, 4000);
+
         window.location.href = "/#/login";
       } else {
         document.getElementById("notificationError").style.display = "block";

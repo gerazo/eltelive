@@ -66,18 +66,11 @@
   </div>
 </template>
 <script>
-import videojs from "./video";
 
 export default {
   name: "login-as-guest",
   mounted() {
-    window.videojs = videojs;
-    let recaptchaScript = document.createElement("script");
-    recaptchaScript.setAttribute(
-      "src",
-      "https://vjs.zencdn.net/7.11.4/video.min.js"
-    );
-    document.head.appendChild(recaptchaScript);
+ 
   },
   methods: {
     registerStreamKey(type) {
@@ -112,7 +105,6 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
-@import url("video-js.min.css");
 .guest-title {
   text-transform: uppercase;
 }
