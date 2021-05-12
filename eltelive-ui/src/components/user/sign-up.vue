@@ -71,11 +71,13 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
+    Unable to Create Account
     </button>
   </div>
 </template>
 
 <script>
+import $ from "jquery";
 export default {
   name: "signup",
   mounted() {
@@ -110,7 +112,6 @@ export default {
         window.location.href = "/#/login";
       } else {
         document.getElementById("notificationError").style.display = "block";
-        document.getElementById('notificationError').innerHTML=result.title
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);
@@ -161,13 +162,14 @@ export default {
   height: 60px;
   width: 20%;
 }
-  #notificationSuccess {
-    background-color: #75d812;
-    font-size: 1.1rem;
-  }
-  #notificationError {
-    background-color: rgb(245, 132, 132);
-    font-size: 1.5rem;
-  }
+
+#notificationError {
+  background-color: rgb(245, 132, 132);
+  font-size:1.2rem;
+}
+#notificationSuccess{
+  background-color: rgb(34, 170, 34);
+  font-size:1.2rem;
+}
 }
 </style>
