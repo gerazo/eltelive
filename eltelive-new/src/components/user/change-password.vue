@@ -26,14 +26,12 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-      Successfully Changed Password
     </button>
     <button 
       id="notificationError"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-      Failed to Change Password
     </button>
   </div>
 </template>
@@ -61,6 +59,7 @@ export default {
 
       if (result.status === "ok") {
          document.getElementById("notificationSuccess").style.display = "block";
+         document.getElementById('notificationSuccess').innerHTML=result.title;
         setTimeout(function() {
           $("#notificationSuccess").fadeOut("fast");
         }, 4000);
@@ -69,7 +68,7 @@ export default {
         if(!(localStorage.getItem('token'))){
           document.getElementById('notificationError').innerHTML="Login to Change Password";
         }else{
-          document.getElementById('notificationError').innerHTML="Password is too short";
+          document.getElementById('notificationError').innerHTML=result.title;
         }
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");

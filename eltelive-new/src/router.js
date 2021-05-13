@@ -38,10 +38,6 @@ export default new Router({
       component: () => import('./components/user/change-password'),
     },
     {
-      path: '/legal-disclaimer',
-      component: () => import('./components/legal-disclaimer'),
-    },
-    {
       path: "**",
       component: () => import('./components/not-found-page'),
     }

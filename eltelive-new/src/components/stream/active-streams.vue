@@ -132,7 +132,6 @@
         class="notification btn text-white font-weight-bold"
         style="display:none;"
       >
-        Successfully Generated Stream Key
       </button>
       <button
         id="notificationErrorG"
@@ -145,7 +144,6 @@
         class="notification btn font-weight-bold"
         style="display:none;"
       >
-        Key is Deleted
       </button>
       <button
         id="notificationErrorD"
@@ -177,7 +175,10 @@ export default {
     document.getElementById("server_textfield").innerHTML =
       localStorage.getItem("server") || "";
 
-
+    /**
+     * Returns a promise from the backend with the result. 
+     * Promise fields used:[status,title]
+     */
     async function generateStreamKey(event) {
       event.preventDefault();
 
@@ -194,17 +195,21 @@ export default {
       document.location.reload();
 
       if (result.status === "ok") {
+        //Success notification for generating a key
         document.getElementById("notificationSuccessG").style.display = "block";
+        document.getElementById("notificationSuccessG").innerHTML=result.title;
         setTimeout(function() {
           $("#notificationSuccessG").fadeOut("fast");
         }, 4000);
       }else if (!localStorage.getItem('token')){
+        //Error notification for deletion in case user is not logged in
         document.getElementById("notificationErrorD").style.display = "block";
          document.getElementById("notificationErrorD").innerHTML='Login to Generate';
         setTimeout(function() {
           $("#notificationErrorD").fadeOut("fast");
         }, 4000);
       }else {
+        //Error notification for deletion in case of any other error
          document.getElementById("notificationErrorG").style.display = "block";
          document.getElementById("notificationErrorG").innerHTML=result.title;
         setTimeout(function() {
@@ -212,7 +217,10 @@ export default {
         }, 4000);
       }
     }
-
+    /**
+     * Returns a promise from the backend with the result. 
+     * Promise fields used:[status,title]
+     */
     async function deleteStreamKey(event) {
       event.preventDefault();
 
@@ -224,23 +232,28 @@ export default {
         }
       }).then(res => res.json());
       localStorage.removeItem("streamKey", result.stream_key);
+
       if (result.stream_key === undefined) {
         document.getElementById("key_textfield").innerHTML = "";
       } else {
         document.getElementById("key_textfield").innerHTML = result.stream_key;
       }
       if (result.status === "ok") {
+        //Success Notification for deletion
         document.getElementById("notificationSuccessD").style.display = "block";
+        document.getElementById("notificationSuccessD").innerHTML=result.title;
         setTimeout(function() {
           $("#notificationSuccessD").fadeOut("fast");
         }, 4000);
       } else if (!localStorage.getItem('token')){
+        //Error notification for deletion in case user is not logged in
         document.getElementById("notificationErrorD").style.display = "block";
-         document.getElementById("notificationErrorD").innerHTML='Login to Delete';
+        document.getElementById("notificationErrorD").innerHTML='Login to Delete';
         setTimeout(function() {
           $("#notificationErrorD").fadeOut("fast");
         }, 4000);
       } else {
+        //Error notification for deletion in case anything else is wrong
          document.getElementById("notificationErrorD").style.display = "block";
          document.getElementById("notificationErrorD").innerHTML=result.title;
         setTimeout(function() {

@@ -6,7 +6,7 @@
       <p>The page you were looking for is not found. Make sure you typed the link address correctly</p>
       <div>
         <router-link class="mr-4" to="/">Back To Home</router-link>
-        <router-link class="ml-4" to="/contact-us">Contact Us</router-link>
+        <router-link class="ml-4" to="/contact">Contact Us</router-link>
       </div>
     </div>
   </div>
