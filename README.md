@@ -14,7 +14,8 @@ It can be installed on a Debian-based host and also on Docker containers based o
 ## How to start?
 
 ### New web application
-Navigate to **eltelive-new** and checkout this [README] for the instrucations related to the new version of the application
+ 1. Check out repo
+ 2. Navigate to **eltelive-new** and checkout this [README] for the instrucations related to the new version of the application
 
 
 ### Legacy web application
