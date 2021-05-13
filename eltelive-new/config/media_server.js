@@ -3,6 +3,7 @@ config = require('./config');
 const User = require('../model/user');
 nms = new NodeMediaServer(config);
 
+// Check if the stream key used to watch the stream exists in the database or not
 nms.on('prePublish', async (id, StreamPath, args) => {
     let stream_key = getStreamKeyFromStreamPath(StreamPath);
     console.log('[NodeEvent on prePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
@@ -12,8 +13,6 @@ nms.on('prePublish', async (id, StreamPath, args) => {
             if (!user) {
                 let session = nms.getSession(id);
                 session.reject();
-            } else {
-                // do stuff
             }
         }
     });
