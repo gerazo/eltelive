@@ -106,14 +106,14 @@
       </form>
     </div>
     <button
-      id="notificationSuccessG"
+      id="notificationSuccess"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
       Successfully Generated Stream Key
     </button>
     <button
-      id="notificationSuccessD"
+      id="notificationError"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
@@ -158,7 +158,7 @@ export default {
       }).then(res => res.json());
       localStorage.setItem("streamKey", result.stream_key);
       document.getElementById("key_textfield").innerHTML = result.stream_key;
-      document.getElementById("notificationSuccessG").style.display = "block";
+      document.getElementById("notificationSuccess").style.display = "block";
       setTimeout(function() {
         $("#notificationSuccess").fadeOut("fast");
       }, 4000);
@@ -176,7 +176,7 @@ export default {
         }
       }).then(res => res.json());
       localStorage.removeItem("streamKey", result.stream_key);
-      document.getElementById("notificationSuccessD").style.display = "block";
+      document.getElementById("notificationError").style.display = "block";
       setTimeout(function() {
         $("#notificationSuccess").fadeOut("fast");
       }, 4000);

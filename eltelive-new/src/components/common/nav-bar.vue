@@ -61,7 +61,7 @@ export default {
       loggingOut(){
          if(localStorage.getItem('token')){
            localStorage.removeItem('token');
-           location.replace('home');
+           location.replace('');
          }
       },
       isOut(){
