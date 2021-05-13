@@ -43,7 +43,7 @@ npm run watch
 ```
 #### Running the back-end tests
 ```
-npm run watch
+npm run test
 ```
 #### Customize command-line options
 See [Node.js CLI documentation](https://nodejs.org/api/cli.html).
