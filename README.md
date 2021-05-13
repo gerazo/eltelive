@@ -15,7 +15,7 @@ It can be installed on a Debian-based host and also on Docker containers based o
 
 ### New web application
  1. Check out repo
- 2. Navigate to **eltelive-new** and checkout this [README] for the instrucations related to the new version of the application
+ 2. Navigate to [eltelive-new] and checkout this [README] for the instrucations related to the new version of the application
 
 
 ### Legacy web application
@@ -31,4 +31,5 @@ It can be installed on a Debian-based host and also on Docker containers based o
  8. See your data and logs under `deploy` folder
  9. Run `./clean-project.sh` to clean built stuff but leave data and logs
 
+[eltelive-new]: eltelive-new
 [README]: eltelive-new/README.md

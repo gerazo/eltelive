@@ -3,7 +3,7 @@
 
 
 ## Prerequisites
-You will need to download and install [Node.js] and [MongoDB] on your system
+You will need to download and install [Node.js] and [MongoDB] on your system.
 
 ---
 
