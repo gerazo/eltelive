@@ -120,18 +120,30 @@
         </div>
       </form>
       <button
-        id="notificationSuccess"
+        id="notificationSuccessG"
         class="notification btn text-white font-weight-bold"
         style="display:none;"
       >
         Successfully Generated Stream Key
       </button>
       <button
-        id="notificationError"
+        id="notificationErrorG"
         class="notification btn text-white font-weight-bold"
         style="display:none;"
       >
+      </button>
+      <button
+        id="notificationSuccessD"
+        class="notification btn font-weight-bold"
+        style="display:none;"
+      >
         Key is Deleted
+      </button>
+      <button
+        id="notificationErrorD"
+        class="notification btn text-white font-weight-bold"
+        style="display:none;"
+      >
       </button>
       <script
         type="application/javascript"
@@ -175,9 +187,21 @@ export default {
       document.getElementById("key_textfield").innerHTML = result.stream_key;
 
       if (result.status === "ok") {
-        document.getElementById("notificationSuccess").style.display = "block";
+        document.getElementById("notificationSuccessG").style.display = "block";
         setTimeout(function() {
-          $("#notificationSuccess").fadeOut("fast");
+          $("#notificationSuccessG").fadeOut("fast");
+        }, 4000);
+      }else if (!localStorage.getItem('token')){
+        document.getElementById("notificationErrorD").style.display = "block";
+         document.getElementById("notificationErrorD").innerHTML='Login to Generate';
+        setTimeout(function() {
+          $("#notificationErrorD").fadeOut("fast");
+        }, 4000);
+      }else {
+         document.getElementById("notificationErrorG").style.display = "block";
+         document.getElementById("notificationErrorG").innerHTML=result.title;
+        setTimeout(function() {
+          $("#notificationErrorG").fadeOut("fast");
         }, 4000);
       }
     }
@@ -199,9 +223,21 @@ export default {
         document.getElementById("key_textfield").innerHTML = result.stream_key;
       }
       if (result.status === "ok") {
-        document.getElementById("notificationError").style.display = "block";
+        document.getElementById("notificationSuccessD").style.display = "block";
         setTimeout(function() {
-          $("#notificationError").fadeOut("fast");
+          $("#notificationSuccessD").fadeOut("fast");
+        }, 4000);
+      } else if (!localStorage.getItem('token')){
+        document.getElementById("notificationErrorD").style.display = "block";
+         document.getElementById("notificationErrorD").innerHTML='Login to Delete';
+        setTimeout(function() {
+          $("#notificationErrorD").fadeOut("fast");
+        }, 4000);
+      } else {
+         document.getElementById("notificationErrorD").style.display = "block";
+         document.getElementById("notificationErrorD").innerHTML=result.title;
+        setTimeout(function() {
+          $("#notificationErrorD").fadeOut("fast");
         }, 4000);
       }
     }
@@ -232,12 +268,16 @@ export default {
   height: 60px;
   width: 20%;
 }
-#notificationSuccess {
-  background-color: #75d812;
+#notificationSuccessG {
+  background-color: #559b0f;
   font-size: 1.1rem;
 }
-#notificationError {
-  background-color: rgb(245, 132, 132);
+#notificationSuccessD {
+  background-color: rgb(198,198,198);
+  font-size: 1.4rem;
+}
+#notificationErrorG,#notificationErrorD {
+  background-color: #BA4844;
   font-size: 1.1rem;
 }
 </style>

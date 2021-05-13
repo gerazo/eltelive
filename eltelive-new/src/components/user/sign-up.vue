@@ -77,7 +77,6 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-      Unable to Create Account
     </button>
     <script
       type="application/javascript"
@@ -124,6 +123,7 @@ export default {
         window.location.href = "/#/login";
       } else {
         document.getElementById("notificationError").style.display = "block";
+        document.getElementById("notificationError").innerHTML = result.title;
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);
@@ -165,6 +165,7 @@ export default {
   .guest-portal-btn:hover {
     background-color: #b1bfcc;
   }
+}
 .notification {
   text-align: center;
   position: fixed;
@@ -176,12 +177,11 @@ export default {
 }
 
 #notificationError {
-  background-color: rgb(245, 132, 132);
-  font-size:1.2rem;
+  background-color: #BA4844;
+  font-size:1.1rem;
 }
 #notificationSuccess{
-  background-color: rgb(34, 170, 34);
-  font-size:1.2rem;
-}
+  background-color: #559b0f;
+  font-size:1.1rem;
 }
 </style>

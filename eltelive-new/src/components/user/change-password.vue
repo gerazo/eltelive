@@ -104,11 +104,11 @@ export default {
 }
 
 #notificationError {
-  background-color: rgb(245, 132, 132);
+  background-color: #BA4844;
   font-size:1.2rem;
 }
 #notificationSuccess{
-  background-color: rgb(34, 170, 34);
+  background-color: #559b0f;
   font-size:1.2rem;
 }
 </style>
