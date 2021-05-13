@@ -73,7 +73,6 @@ export default {
       },
       isIn(){
         if(localStorage.getItem('token')){
-          console.log(localStorage.getItem('token'))
           return true;
         }else{
           return false;

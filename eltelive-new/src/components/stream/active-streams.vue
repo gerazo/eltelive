@@ -91,6 +91,7 @@
     <div class="d-flex justify-content-center pt-5 pl-5">
       <div>
         <h4 class="pt-2 pr-4 font-weight-bold">Stream Key:</h4>
+        <h4 class="pt-2 pr-4 font-weight-bold">Streaming Server:</h4>
       </div>
       <form id="keyGeneration" ref="keyGeneration">
         <div class="d-flex">
@@ -117,6 +118,13 @@
               value="Delete Key"
             />
           </div>
+        </div>
+        <div class="serverLinkField border">
+            <p
+              placeholder="Server"
+              class="pt-2 font-weight-bold"
+              id="server_textfield"
+            ></p>
         </div>
       </form>
       <button
@@ -171,6 +179,9 @@ export default {
 
     document.getElementById("key_textfield").innerHTML =
       localStorage.getItem("streamKey") || "";
+    
+    document.getElementById("server_textfield").innerHTML =
+      localStorage.getItem("server") || "";
 
 
     async function generateStreamKey(event) {
@@ -184,7 +195,8 @@ export default {
         }
       }).then(res => res.json());
       localStorage.setItem("streamKey", result.stream_key);
-      document.getElementById("key_textfield").innerHTML = result.stream_key;
+      localStorage.setItem("server", result.stream_address);
+      document.getElementById("server_textfield").innerHTML = result.stream_address;
 
       if (result.status === "ok") {
         document.getElementById("notificationSuccessG").style.display = "block";
@@ -250,6 +262,16 @@ export default {
 }
 
 .streamKeyField {
+  height: 3rem;
+  min-width: 10rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+
+  p {
+    font-size: 1.3rem;
+  }
+}
+.serverLinkField {
   height: 3rem;
   min-width: 7rem;
   padding-left: 1rem;
