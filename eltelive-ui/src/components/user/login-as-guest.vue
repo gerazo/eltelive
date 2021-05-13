@@ -33,15 +33,12 @@
           class="input mt-3"
           type="text"
           id="streamkey"
-          placeholder="Insert your stream key here and press one of the buttons below"
+          placeholder="Insert your stream key here and press the button below"
           required
         />
         <div class="pt-4">
           <button class="link-buttons mr-5" v-on:click="registerStreamKey(3)">
             - Listen in Browser -
-          </button>
-          <button class="link-buttons ml-5" v-on:click="registerStreamKey(1)">
-            - Listen in App -
           </button>
         </div>
         <div id="videoElementDisplay" style="display:none">
@@ -78,11 +75,7 @@ export default {
       var streamKey = document.getElementById("streamkey").value.trim();
 
       if (!streamKey) return;
-      if (type == "1") {
-        // RTMP
-        var streamLink = "rtmp://$DOMAINNAME/live/" + streamKey;
-        window.open(streamLink, "_blank");
-      } else if (type == "3") {
+      if (type == "3") {
         //HLS
         var T = document.getElementById("videoElementDisplay");
         T.style.display = "block";

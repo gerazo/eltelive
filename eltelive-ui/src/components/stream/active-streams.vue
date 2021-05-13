@@ -26,8 +26,6 @@
       </div>
     </div>
     
-
-    <!-- Modal -->
     <div
       class="modal fade"
       id="exampleModalCenter"
@@ -108,14 +106,14 @@
       </form>
     </div>
     <button
-      id="notificationSuccess"
+      id="notificationSuccessG"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
       Successfully Generated Stream Key
     </button>
     <button
-      id="notificationSuccess"
+      id="notificationSuccessD"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
@@ -160,7 +158,7 @@ export default {
       }).then(res => res.json());
       localStorage.setItem("streamKey", result.stream_key);
       document.getElementById("key_textfield").innerHTML = result.stream_key;
-      document.getElementById("notificationSuccess").style.display = "block";
+      document.getElementById("notificationSuccessG").style.display = "block";
       setTimeout(function() {
         $("#notificationSuccess").fadeOut("fast");
       }, 4000);
@@ -178,7 +176,7 @@ export default {
         }
       }).then(res => res.json());
       localStorage.removeItem("streamKey", result.stream_key);
-      document.getElementById("notificationSuccess").style.display = "block";
+      document.getElementById("notificationSuccessD").style.display = "block";
       setTimeout(function() {
         $("#notificationSuccess").fadeOut("fast");
       }, 4000);
@@ -216,6 +214,6 @@ export default {
 }
 #notificationError {
   background-color: rgb(245, 132, 132);
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 </style>
