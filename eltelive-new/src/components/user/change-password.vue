@@ -46,7 +46,7 @@ export default {
       event.preventDefault();
       const newPassword = document.getElementById("password").value;
 
-      const result = await fetch("/api/change_password", {
+      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/change_password", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

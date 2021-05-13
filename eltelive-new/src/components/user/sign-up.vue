@@ -101,7 +101,7 @@ export default {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const result = await fetch("/api/register", {
+      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
