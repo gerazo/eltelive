@@ -165,12 +165,6 @@
 export default {
   name: "active-streams",
   mounted() {
-    if (window.localStorage) {
-      if (!localStorage.getItem("firstLoad")) {
-        localStorage["firstLoad"] = true;
-        document.location.reload();
-      } else localStorage.removeItem("firstLoad");
-    }
     const generateButton = this.$refs["keyGenerationStream"];
     generateButton.addEventListener("click", generateStreamKey);
 
@@ -197,6 +191,7 @@ export default {
       localStorage.setItem("streamKey", result.stream_key);
       localStorage.setItem("server", result.stream_address);
       document.getElementById("server_textfield").innerHTML = result.stream_address;
+      document.location.reload();
 
       if (result.status === "ok") {
         document.getElementById("notificationSuccessG").style.display = "block";
