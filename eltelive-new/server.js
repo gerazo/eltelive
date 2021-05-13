@@ -278,7 +278,9 @@ app.put('/api/generate_key', async(req, res) => {
 			title: 'Stream key generated successfully', 
 			stream_key: stream_key,
 			stream_display_url: "http://" + process.env.HOST + ":" + streaming_config.http.port + "/live/" + stream_key + ".flv",
-			stream_address: stream_address
+			web_admin_panel: "http://" + process.env.HOST + ":" + streaming_config.http.port,
+			stream_address: "rtmp://" + process.env.HOST + "/live",
+			stream_address_authenticated: stream_address
 		})
 	} catch (error) {
 		// console.log(error)

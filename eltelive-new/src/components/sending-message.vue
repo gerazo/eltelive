@@ -54,8 +54,8 @@ export default {
   methods: {
     sendEmail(e) {
       try {
-        emailjs.sendForm(process.env.EMAIL_SERVICE_ID,process.env.EMAIL_TEMPLATE_ID, e.target,
-        process.env.EMAIL_USER_ID, {
+        emailjs.sendForm(process.env.VUE_APP_EMAIL_SERVICE_ID,process.env.VUE_APP_EMAIL_TEMPLATE_ID, e.target,
+        process.env.VUE_APP_EMAIL_USER_ID, {
           name: this.name,
           email: this.email,
           message: this.message
