@@ -5,13 +5,13 @@
       <h1 class="text-center">Active Streams</h1>
       <div class="float-right mr-5">
         <button
-      type="button"
-      class="btn btn-primary mr-5"
-      data-toggle="modal"
-      data-target="#exampleModalCenter"
-    >
-      Streamer Guide
-    </button>
+          type="button"
+          class="btn btn-primary mr-5"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+        >
+          Streamer Guide
+        </button>
       </div>
     </div>
     <div class="d-flex justify-content-center mt-5 pb-5">
@@ -25,7 +25,7 @@
         </p>
       </div>
     </div>
-    
+
     <div
       class="modal fade"
       id="exampleModalCenter"
@@ -37,7 +37,9 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLongTitle">Streamer Guide</h4>
+            <h4 class="modal-title" id="exampleModalLongTitle">
+              Streamer Guide
+            </h4>
             <button
               type="button"
               class="close"
@@ -48,17 +50,30 @@
             </button>
           </div>
           <div class="modal-body">
-            <p class="pb-2">To be able to stream, here are steps that can help you:</p>
+            <p class="pb-2">
+              To be able to stream, here are steps that can help you:
+            </p>
             <ol>
               <li class="pb-1">Generate a Stream key</li>
-              <li class="pb-1">Share the stream key with your audience/guests</li>
+              <li class="pb-1">
+                Share the stream key with your audience/guests
+              </li>
               <li class="pb-1">Open any streaming app, we recommend OBS</li>
-              <li class="pb-1">In OBS, click on settings button then click on Stream</li>
+              <li class="pb-1">
+                In OBS, click on settings button then click on Stream
+              </li>
               <li class="pb-1">Set the Service to Custom</li>
               <li class="pb-1">Set the Server with the server link</li>
-              <li class="pb-1">Paste the Stream Key you generated in the Stream Key input</li>
-              <li class="pb-1">Click Apply then ok and you will be directed back to OBS main page</li>
-              <li class="pb-1">Click on start streaming to start your streaming</li>
+              <li class="pb-1">
+                Paste the Stream Key you generated in the Stream Key input
+              </li>
+              <li class="pb-1">
+                Click Apply then ok and you will be directed back to OBS main
+                page
+              </li>
+              <li class="pb-1">
+                Click on start streaming to start your streaming
+              </li>
             </ol>
           </div>
           <div class="modal-footer">
@@ -104,26 +119,26 @@
           </div>
         </div>
       </form>
+      <button
+        id="notificationSuccess"
+        class="notification btn text-white font-weight-bold"
+        style="display:none;"
+      >
+        Successfully Generated Stream Key
+      </button>
+      <button
+        id="notificationError"
+        class="notification btn text-white font-weight-bold"
+        style="display:none;"
+      >
+        Key is Deleted
+      </button>
+      <script
+        type="application/javascript"
+        defer
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+      ></script>
     </div>
-    <button
-      id="notificationSuccess"
-      class="notification btn text-white font-weight-bold"
-      style="display:none;"
-    >
-      Successfully Generated Stream Key
-    </button>
-    <button
-      id="notificationError"
-      class="notification btn text-white font-weight-bold"
-      style="display:none;"
-    >
-      Key is Deleted
-    </button>
-    <script
-      type="application/javascript"
-      defer
-      src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-    ></script>
   </div>
 </template>
 <script>
@@ -145,11 +160,11 @@ export default {
     document.getElementById("key_textfield").innerHTML =
       localStorage.getItem("streamKey") || "";
 
-    
+
     async function generateStreamKey(event) {
       event.preventDefault();
 
-      const result = await fetch("/api/generate_key", {
+      const result = await fetch("http://localhost:4000/api/generate_key", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -158,17 +173,19 @@ export default {
       }).then(res => res.json());
       localStorage.setItem("streamKey", result.stream_key);
       document.getElementById("key_textfield").innerHTML = result.stream_key;
-      document.getElementById("notificationSuccess").style.display = "block";
-      setTimeout(function() {
-        $("#notificationSuccess").fadeOut("fast");
-      }, 4000);
+
+      if (result.status === "ok") {
+        document.getElementById("notificationSuccess").style.display = "block";
+        setTimeout(function() {
+          $("#notificationSuccess").fadeOut("fast");
+        }, 4000);
+      }
     }
 
     async function deleteStreamKey(event) {
       event.preventDefault();
-      console.log("keyDeleted2");
 
-      const result = await fetch("/api/delete_key", {
+      const result = await fetch("http://localhost:4000/api/delete_key", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -176,10 +193,17 @@ export default {
         }
       }).then(res => res.json());
       localStorage.removeItem("streamKey", result.stream_key);
-      document.getElementById("notificationError").style.display = "block";
-      setTimeout(function() {
-        $("#notificationSuccess").fadeOut("fast");
-      }, 4000);
+      if (result.stream_key === undefined) {
+        document.getElementById("key_textfield").innerHTML = "";
+      } else {
+        document.getElementById("key_textfield").innerHTML = result.stream_key;
+      }
+      if (result.status === "ok") {
+        document.getElementById("notificationError").style.display = "block";
+        setTimeout(function() {
+          $("#notificationError").fadeOut("fast");
+        }, 4000);
+      }
     }
   }
 };

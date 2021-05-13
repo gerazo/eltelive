@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <div class="d-flex justify-content-center pl-5">
       <div class="sign-in pt-4 pr-5">
         <h3 class="text-center">Sign in</h3>

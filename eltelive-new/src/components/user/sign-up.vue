@@ -45,7 +45,11 @@
               class="btn btn-primary btn-lg btn-block"
             />
           </div>
-          <router-link to="/login">Already have an account? Login</router-link>
+          <div class="d-flex justify-content-end pt-3">
+            <p class="pr-2">
+              <router-link to="/login">Already have an account? Login</router-link>
+            </p>
+          </div>
         </form>
       </div>
       <div class="guest-sign-up text-center pt-4 pl-5">

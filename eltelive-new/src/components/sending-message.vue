@@ -54,8 +54,8 @@ export default {
   methods: {
     sendEmail(e) {
       try {
-        emailjs.sendForm(process.env.EMAIL_SERVICE_ID, process.env.EMAIL_TEMPLATE_ID, e.target,
-        process.env.EMAIL_USER_ID, {
+        emailjs.sendForm('service_k3wro66','template_lm8nnls', e.target,
+        'user_UnWtOOGPoa3vHSWQRtLZQ', {
           name: this.name,
           email: this.email,
           message: this.message
@@ -66,8 +66,8 @@ export default {
         setTimeout(function() {
           $("#notificationSuccess").fadeOut("fast");
         }, 4000);
-          document.location.reload();
-        }, 5000);
+          
+        });
       } catch (error) {
         document.getElementById("notificationError").style.display = "block";
         document.getElementById("notificationError").innerHTML=error;
