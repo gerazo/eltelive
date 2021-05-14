@@ -1,10 +1,10 @@
 # eltelive-new
-
-
+The newer version of the ELTELive live streaming solution of ELTE University
 
 ## Prerequisites
 You will need to download and install [Node.js] and [MongoDB] on your system.
 
+You will have to create your own `.env` file locally, and specifiy specific Environment Variables used .
 ---
 
 ## Install packages and dependencies for the project setup
