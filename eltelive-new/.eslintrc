@@ -1,12 +1,9 @@
 {
-    "parser": "vue-eslint-parser",
-    "plugins": ["@vue", "babel"],
-    "parserOptions": {
-        "ecmaVersion": 8,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "modules": true
-        }
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "codeFrame": false
     },
     "env": {
         "browser": true,
