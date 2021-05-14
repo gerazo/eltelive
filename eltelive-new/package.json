@@ -68,6 +68,9 @@
     },
     "rules": {}
   },
+  "resolutions": {
+    "eslint-loader": "2.1.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://gitea.com/gerazo/eltelive"
