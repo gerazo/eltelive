@@ -103,6 +103,7 @@ export default {
         }, 4000);
 
         window.location.href = "/#/active-streams";
+        window.location.reload();
       } else {
         document.getElementById("notificationError").style.display = "block";
         setTimeout(function() {
