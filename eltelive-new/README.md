@@ -33,11 +33,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ---
 
 ## Back-end Command-Line Interface (CLI) commands
-#### Running the back-end
+#### Running the back-end server
 ```
 npm run server
 ```
-#### Running the back-end while monitoring any changes during development
+#### Running the back-end server while monitoring any changes during development
 ```
 npm run watch
 ```

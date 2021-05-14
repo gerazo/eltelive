@@ -26,14 +26,12 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-      Successfully Changed Password
     </button>
     <button 
       id="notificationError"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-      Failed to Change Password
     </button>
   </div>
 </template>
@@ -48,7 +46,7 @@ export default {
       event.preventDefault();
       const newPassword = document.getElementById("password").value;
 
-      const result = await fetch("/api/change_password", {
+      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/change_password", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -61,6 +59,7 @@ export default {
 
       if (result.status === "ok") {
          document.getElementById("notificationSuccess").style.display = "block";
+         document.getElementById('notificationSuccess').innerHTML=result.title;
         setTimeout(function() {
           $("#notificationSuccess").fadeOut("fast");
         }, 4000);
@@ -69,7 +68,7 @@ export default {
         if(!(localStorage.getItem('token'))){
           document.getElementById('notificationError').innerHTML="Login to Change Password";
         }else{
-          document.getElementById('notificationError').innerHTML="Password is too short";
+          document.getElementById('notificationError').innerHTML=result.title;
         }
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
@@ -104,11 +103,11 @@ export default {
 }
 
 #notificationError {
-  background-color: rgb(245, 132, 132);
+  background-color: #BA4844;
   font-size:1.2rem;
 }
 #notificationSuccess{
-  background-color: rgb(34, 170, 34);
+  background-color: #559b0f;
   font-size:1.2rem;
 }
 </style>

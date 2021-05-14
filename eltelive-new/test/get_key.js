@@ -26,7 +26,6 @@ describe('/GET get_key', async () => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
                 res.body.title.should.be.eql('Stream key was retrieved successfully');
-                // res.body.should.have.property('stream_key');
             });
     })
 

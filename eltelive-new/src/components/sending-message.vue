@@ -54,8 +54,8 @@ export default {
   methods: {
     sendEmail(e) {
       try {
-        emailjs.sendForm(process.env.EMAIL_SERVICE_ID, process.env.EMAIL_TEMPLATE_ID, e.target,
-        process.env.EMAIL_USER_ID, {
+        emailjs.sendForm(process.env.VUE_APP_EMAIL_SERVICE_ID,process.env.VUE_APP_EMAIL_TEMPLATE_ID, e.target,
+        process.env.VUE_APP_EMAIL_USER_ID, {
           name: this.name,
           email: this.email,
           message: this.message
@@ -66,8 +66,8 @@ export default {
         setTimeout(function() {
           $("#notificationSuccess").fadeOut("fast");
         }, 4000);
-          document.location.reload();
-        }, 5000);
+          
+        });
       } catch (error) {
         document.getElementById("notificationError").style.display = "block";
         document.getElementById("notificationError").innerHTML=error;
@@ -135,11 +135,11 @@ input[type="submit"]:hover {
 }
 
   #notificationSuccess {
-    background-color: #75d812;
-    font-size: 1.1rem;
+    background-color: #559b0f;
+    font-size: 1rem;
   }
   #notificationError {
-    background-color: rgb(245, 132, 132);
+    background-color: #BA4844;
     font-size: 1.5rem;
   }
 </style>

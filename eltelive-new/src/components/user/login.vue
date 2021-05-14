@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <div class="d-flex justify-content-center pl-5">
       <div class="sign-in pt-4 pr-5">
         <h3 class="text-center">Sign in</h3>
@@ -84,7 +84,7 @@ export default {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const result = await fetch("/api/login", {
+      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -161,11 +161,11 @@ export default {
 }
 
 #notificationError {
-  background-color: rgb(245, 132, 132);
-  font-size:1.2rem;
+  background-color: #BA4844;
+  font-size:1.1rem;
 }
 #notificationSuccess{
-  background-color: rgb(34, 170, 34);
-  font-size:1.2rem;
+  background-color: #559b0f;
+  font-size:1.1rem;
 }
 </style>

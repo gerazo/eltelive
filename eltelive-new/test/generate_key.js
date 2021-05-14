@@ -28,7 +28,9 @@ describe('/PUT generate_key', async () => {
                 res.body.title.should.be.eql('Stream key generated successfully');
                 res.body.should.have.property('stream_key');
                 res.body.should.have.property('stream_display_url');
+                res.body.should.have.property('web_admin_panel');
                 res.body.should.have.property('stream_address');
+                res.body.should.have.property('stream_address_authenticated');
             });
     })
 
