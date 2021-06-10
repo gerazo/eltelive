@@ -1,0 +1,85 @@
+{
+  "name": "eltelive",
+  "version": "1.0.0",
+  "description": "Very simple, battle tested live streaming solution of ELTE University",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "server": "node server.js",
+    "watch": "nodemon server.js",
+    "test": "mocha test/test.js --exit"
+  },
+  "dependencies": {
+    "@vue/eslint-plugin": "^4.2.0",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.6.0",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "emailjs-com": "^2.6.4",
+    "eslint-plugin-babel": "^5.3.1",
+    "express": "^4.17.1",
+    "flv.js": "^1.5.0",
+    "jquery": "^3.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "mocha": "^8.3.2",
+    "mongoose": "^5.11.17",
+    "node-media-server": "^2.2.4",
+    "nodemon": "^2.0.7",
+    "npm": "^7.9.0",
+    "popper.js": "^1.16.1",
+    "shortid": "^2.2.16",
+    "stylus-loader": "^4.1.1",
+    "video.min.js": "^1.2.3-0",
+    "vue": "^2.6.12",
+    "vue-router": "^3.4.6",
+    "vuex": "^4.0.0-beta.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "^4.1.1",
+    "babel-eslint": "^10.1.0",
+    "bootstrap": "~4.6.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^5.0.0",
+    "sass": "^1.19.0",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "resolutions": {
+    "eslint-loader": "2.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.com/gerazo/eltelive"
+  },
+  "keywords": [
+    "node",
+    "vue",
+    "express",
+    "mongodb"
+  ],
+  "license": "GPL"
+}

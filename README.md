@@ -13,6 +13,13 @@ It can be installed on a Debian-based host and also on Docker containers based o
 
 ## How to start?
 
+### New web application
+ 1. Check out repo
+ 2. Navigate to [eltelive-new] and checkout this [README] for the instrucations related to the new version of the application
+
+
+### Legacy web application
+
  1. Check out repo
  2. Run `./eltelive.sh` to generate a default configuration
  3. Edit configuration under `deploy/config`
@@ -23,3 +30,6 @@ It can be installed on a Debian-based host and also on Docker containers based o
  7. Use `https://localhost` for viewing
  8. See your data and logs under `deploy` folder
  9. Run `./clean-project.sh` to clean built stuff but leave data and logs
+
+[eltelive-new]: eltelive-new
+[README]: eltelive-new/README.md
