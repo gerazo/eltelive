@@ -2,11 +2,9 @@
   <div class="About pt-5">
     <div class="about-us-title text-center">
       <h1 class="pb-5">About Us</h1>
-      <div class="div-p-1">
-          We help in easy access for live online sessions
-      </div>
+      <h4 class="pb-5"> We help in easy access for live online sessions</h4>
     </div>
-    <div class="d-flex pb-5">
+    <div class="d-flex pb-3">
       <div class="first-box">
         <h1 class="display-5">Our Story</h1>
         <p class="lead">
@@ -76,11 +74,11 @@
     <div class="contact-us d-flex justify-content-center pt-5 pb-5">
       <div class="contact-c">
         <div class="contact-preview">
-          <h2>Reach the Team</h2>
+          <h3>Reach the Team</h3>
         </div>
         <div class="contact-info">
-          <h2>You can contact us since we like to communicate and socialize</h2>
-          <router-link to="/contact" class="btn-contact">Contact Us</router-link>
+          <h4>You can contact us since we like to communicate and socialize</h4>
+          <router-link to="/contact" class="btn btn-contact mt-3">Contact Us</router-link>
         </div>
       </div>
     </div>
@@ -100,7 +98,7 @@
     text-transform: uppercase;
   }
   .about-us-title > h1 {
-    font-size: 3.2rem;
+    font-size: 3rem;
   }
 
   .our-story {
@@ -136,7 +134,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    min-height: 100vh;
   }
   .contact-c {
     background-color: #fff;
@@ -145,7 +142,7 @@
     display: flex;
     max-width: 100%;
     overflow: hidden;
-    width: 700px;
+    width: 600px;
   }
 
 .contact-c h2 {
@@ -169,11 +166,9 @@
 
 .btn-contact {
 	background-color: #057bfe;
-	border: 0;
-	border-radius: 50px;
 	color: #fff;
 	font-size: 16px;
-	padding: 12px 25px;
+	padding: 5px 15px;
 	letter-spacing: 1px;
 	cursor: pointer;
 	float: right;
@@ -183,4 +178,10 @@
     background: rgb(143, 190, 235);
     color: black;
   }
+
+    @media screen and (max-width: 500px){
+      .our-story{
+        display: none;
+      }
+    }
 </style>

@@ -295,7 +295,7 @@ export default {
   top: 7rem;
   left: 40%;
   z-index: 999;
-  height: 60px;
+  height: 70px;
   width: 20%;
 }
 #notificationSuccessG {

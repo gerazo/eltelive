@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="mt-5">Send a Message:</h5>
+    <h5 class="mt-5 pl-4">Send a Message:</h5>
     <div class="container mt-3">
       <form class="contact-form" v-on:submit.prevent="sendEmail">
         <label>Name</label>

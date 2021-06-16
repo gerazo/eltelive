@@ -48,7 +48,7 @@ export default {
     text-transform: uppercase;
   }
   .contact-us-title > h1 {
-    font-size: 3.2rem;
+    font-size: 3rem;
   }
 $color: rgb(53, 114, 210);
 .contact {
@@ -71,7 +71,6 @@ $color: rgb(53, 114, 210);
 }
 .side-text-left {
   padding-top: 15rem;
-  width: 23rem;
 }
 .side-text-left-p {
   color: $color;
@@ -81,9 +80,5 @@ $color: rgb(53, 114, 210);
   color: rgb(128, 125, 125);
   font-size: 1rem;
   font-weight: bold;
-}
-.image {
-  height: auto;
-  max-width: 500px;
 }
 </style>
