@@ -2,7 +2,6 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <img class="logo" src="img/logo.png" alt="logo" />
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
       <ul class="navbar-nav my-2 my-sm-0" v-if="isOut()">
         <li class="navbar-brand">
@@ -91,6 +90,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 @media (min-width: 992px) {
   .navbar.custom-nav {

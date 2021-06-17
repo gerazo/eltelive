@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center pl-5">
+    <div class="container-sign-in pl-5">
       <div class="sign-in pt-4 pr-5">
         <h4 class="text-center">Sign in</h4>
         <form class="pl-5 pt-5" id="login" ref="login">
@@ -31,7 +31,7 @@
           </div>
           <div class="d-flex justify-content-center pt-3">
             <p class="sign-up-btn">
-              <router-link to="/signup">Sign Up</router-link>
+              <router-link to="/signup">Don't have an account? Sign Up</router-link>
             </p>
           </div>
         </form>
@@ -84,16 +84,23 @@ export default {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
-      }).then(res => res.json());
+      const result = await fetch(
+        "http://" +
+          process.env.VUE_APP_HOST +
+          ":" +
+          process.env.VUE_APP_NODE_JS_PORT +
+          "/api/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      ).then(res => res.json());
 
       if (result.status === "ok") {
         localStorage.setItem("token", result.token);
@@ -116,11 +123,15 @@ export default {
 </script>
 
 <style lang="scss">
+.container-sign-in {
+  display: grid;
+  grid-template-columns: 450px 450px;
+  justify-content: center;
+}
 .sign-in,
 .guest {
-  margin-top: 7rem;
+  margin-top: 4rem;
   margin-bottom: 5rem;
-  width: 450px;
   height: 25rem;
   box-shadow: 0 0 5px 2px rgb(248, 245, 245);
 }
@@ -155,11 +166,11 @@ export default {
   align-items: center;
 }
 
-.sign-up-btn{
+.sign-up-btn {
   font-size: 0.8rem;
 }
 
-.login-btn{
+.login-btn {
   margin-top: 5rem;
 }
 
@@ -174,11 +185,22 @@ export default {
 }
 
 #notificationError {
-  background-color: #BA4844;
-  font-size:1.1rem;
+  background-color: #ba4844;
+  font-size: 1.1rem;
 }
-#notificationSuccess{
+#notificationSuccess {
   background-color: #559b0f;
-  font-size:1.1rem;
+  font-size: 1.1rem;
+}
+
+@media screen and (max-width: 300px){
+  .container-sign-in {
+    display: block;
+  }
+}
+@media screen and (max-width: 500px) {
+  .container-sign-in {
+    display: block;
+  }
 }
 </style>

@@ -24,14 +24,13 @@
       class="notification btn text-white font-weight-bold"
       style="display:none;"
     >
-     Email Sent Successfully
+      Email Sent Successfully
     </button>
     <button
       id="notificationError"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
-    >
-    </button>
+    ></button>
     <script
       type="application/javascript"
       defer
@@ -54,23 +53,27 @@ export default {
   methods: {
     sendEmail(e) {
       try {
-        emailjs.sendForm(process.env.VUE_APP_EMAIL_SERVICE_ID,process.env.VUE_APP_EMAIL_TEMPLATE_ID, e.target,
-        process.env.VUE_APP_EMAIL_USER_ID, {
-          name: this.name,
-          email: this.email,
-          message: this.message
+        emailjs.sendForm(
+          process.env.VUE_APP_EMAIL_SERVICE_ID,
+          process.env.VUE_APP_EMAIL_TEMPLATE_ID,
+          e.target,
+          process.env.VUE_APP_EMAIL_USER_ID,
+          {
+            name: this.name,
+            email: this.email,
+            message: this.message
           }
         );
         setTimeout(function() {
-          document.getElementById("notificationSuccess").style.display = "block";
-        setTimeout(function() {
-          $("#notificationSuccess").fadeOut("fast");
-        }, 4000);
-          
+          document.getElementById("notificationSuccess").style.display =
+            "block";
+          setTimeout(function() {
+            $("#notificationSuccess").fadeOut("fast");
+          }, 4000);
         });
       } catch (error) {
         document.getElementById("notificationError").style.display = "block";
-        document.getElementById("notificationError").innerHTML=error;
+        document.getElementById("notificationError").innerHTML = error;
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);
@@ -134,12 +137,12 @@ input[type="submit"]:hover {
   width: 20%;
 }
 
-  #notificationSuccess {
-    background-color: #559b0f;
-    font-size: 1rem;
-  }
-  #notificationError {
-    background-color: #BA4844;
-    font-size: 1.5rem;
-  }
+#notificationSuccess {
+  background-color: #559b0f;
+  font-size: 1rem;
+}
+#notificationError {
+  background-color: #ba4844;
+  font-size: 1.5rem;
+}
 </style>

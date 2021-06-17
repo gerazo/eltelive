@@ -63,13 +63,11 @@
   </div>
 </template>
 <script>
-import flvjs from 'flv.js'
+import flvjs from "flv.js";
 
 export default {
   name: "login-as-guest",
-  mounted() {
- 
-  },
+  mounted() {},
   methods: {
     registerStreamKey(type) {
       var showVideo = document.getElementById("stream-player");
@@ -85,7 +83,12 @@ export default {
           var flvPlayer = flvjs.createPlayer({
             type: "flv",
             isLive: true,
-            url: "http://" + process.env.VUE_APP_HOST + ":8000/live/" + streamKey + ".flv"
+            url:
+              "http://" +
+              process.env.VUE_APP_HOST +
+              ":8000/live/" +
+              streamKey +
+              ".flv"
           });
           flvPlayer.attachMediaElement(videoElement);
           flvPlayer.load();
@@ -165,7 +168,7 @@ input::placeholder {
   color: #999;
 }
 .input {
-  height:3.5rem;
+  height: 3.5rem;
   font-size: 1.15rem;
 }
 </style>

@@ -1,39 +1,39 @@
 <template>
   <div>
-     <div class="contact-us-title text-center pt-5">
+    <div class="contact-us-title text-center pt-5">
       <h1 class="pb-5">Contact Us</h1>
     </div>
-  <div class="contact">
-    <div class="content d-flex">
-      <div class="side-text-left border-right">
-        <div class="side-text-left-p">
-          <h2 class="display-4">LET'S TALK</h2>
-          <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
+    <div class="contact">
+      <div class="content d-flex">
+        <div class="side-text-left border-right">
+          <div class="side-text-left-p">
+            <h2 class="display-4">LET'S TALK</h2>
+            <p>WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!</p>
+          </div>
         </div>
-      </div>
-      <div class="right-side pl-3">
-        <div>
-          <div class="right-side-p">
-            <div>
-              <img src="/img/location-graphic.svg" alt="" />
-              Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány P.
-              stny. 1/C
+        <div class="right-side pl-3">
+          <div>
+            <div class="right-side-p">
+              <div>
+                <img src="/img/location-graphic.svg" alt="" />
+                Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány
+                P. stny. 1/C
+              </div>
+              <div>
+                <img src="/img/phone-graphic.svg" alt="" />
+                TelePhone: ELTELive Team
+              </div>
+              <Sending></Sending>
             </div>
-            <div>
-              <img src="/img/phone-graphic.svg" alt="" />
-              TelePhone: ELTELive Team
-            </div>
-            <Sending></Sending>
           </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
 </template>
 
 <script>
-import Sending from './sending-message';
+import Sending from "./sending-message";
 
 export default {
   name: "contact-us",
@@ -44,12 +44,12 @@ export default {
 </script>
 
 <style lang="scss">
-  .contact-us-title {
-    text-transform: uppercase;
-  }
-  .contact-us-title > h1 {
-    font-size: 3rem;
-  }
+.contact-us-title {
+  text-transform: uppercase;
+}
+.contact-us-title > h1 {
+  font-size: 3rem;
+}
 $color: rgb(53, 114, 210);
 .contact {
   margin: 3rem 10rem;

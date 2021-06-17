@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <div class="d-flex justify-content-center pl-5">
+  <div>
+    <div class="container-sign-up pl-5">
       <div class="sign-up pt-4 pr-5">
         <h4 class="text-center">Sign Up</h4>
         <form class="pl-5 pt-5" id="registration" ref="registration">
@@ -47,7 +47,9 @@
           </div>
           <div class="d-flex justify-content-center pt-3">
             <p class="existing-account">
-              <router-link to="/login">Already have an account? Login</router-link>
+              <router-link to="/login"
+                >Already have an account? Login</router-link
+              >
             </p>
           </div>
         </form>
@@ -76,8 +78,7 @@
       id="notificationError"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
-    >
-    </button>
+    ></button>
     <script
       type="application/javascript"
       defer
@@ -101,18 +102,25 @@ export default {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          givenName,
-          familyName,
-          email,
-          password
-        })
-      }).then(res => res.json());
+      const result = await fetch(
+        "http://" +
+          process.env.VUE_APP_HOST +
+          ":" +
+          process.env.VUE_APP_NODE_JS_PORT +
+          "/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            givenName,
+            familyName,
+            email,
+            password
+          })
+        }
+      ).then(res => res.json());
 
       if (result.status === "ok") {
         document.getElementById("notificationSuccess").style.display = "block";
@@ -132,13 +140,20 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
+
+.container-sign-up {
+  display: grid;
+  grid-template-columns: 450px 450px;
+  justify-content: center;
+}
+
 .sign-up,
 .guest-sign-up {
-  margin-top: 7rem;
+  margin-top: 4rem;
   margin-bottom: 5rem;
   margin-right: 0.1rem;
-  width: 450px;
   height: 25rem;
   box-shadow: 0 0 5px 2px rgb(248, 245, 245);
 }
@@ -166,7 +181,7 @@ export default {
     background-color: #b1bfcc;
   }
 }
-.existing-account{
+.existing-account {
   font-size: 0.8rem;
 }
 
@@ -181,11 +196,11 @@ export default {
 }
 
 #notificationError {
-  background-color: #BA4844;
-  font-size:1.1rem;
+  background-color: #ba4844;
+  font-size: 1.1rem;
 }
-#notificationSuccess{
+#notificationSuccess {
   background-color: #559b0f;
-  font-size:1.1rem;
+  font-size: 1.1rem;
 }
 </style>
