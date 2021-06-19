@@ -7,11 +7,11 @@
         </div>
       </div>
       <div class="landing-gp">
-        <h1>
-          ELTE LIVEStream
-        </h1>
+      <div class="text-center pt-5">
+      <h1>ELTELive</h1>
+    </div>
         <p>
-          Welcome to ELTE LIVEStream
+          Welcome to ELTELive Live Streaming
         </p>
         <div class="home-btn mt-5">
           <button @click="$router.push('login')" class="btn btn-primary mr-4">
@@ -26,12 +26,20 @@
         </div>
       </div>
     </div>
+    <div class="animated-div">
+      <AnimatedScreen></AnimatedScreen>
+    </div>
   </div>
 </template>
 
 <script>
+import AnimatedScreen from './animation/animation.vue';
+
 export default {
   name: "home-page",
+  components: {
+    AnimatedScreen
+  },
   methods: {
     isLoggedIn() {
       if (localStorage.getItem("token")) {
@@ -51,8 +59,10 @@ export default {
     width: 500px;
   }
 }
-
-@media screen and (max-width: 500px) {
+.animated-div {
+  display: none;
+}
+@media only screen and (max-device-width: 480px) {
   .graphic {
     display: none;
   }
@@ -62,10 +72,6 @@ export default {
     text-align: center;
     font-size: 2rem;
 
-    h1 {
-      font-size: 3rem;
-    }
-
     p {
       margin-top: 3rem;
     }
@@ -73,6 +79,13 @@ export default {
       margin-top: 4rem;
       font-size: 2rem;
     }
+  }
+  .animated-div {
+    display: grid;
+    grid-template-columns: 450px;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10rem;
   }
 }
 </style>

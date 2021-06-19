@@ -1,5 +1,9 @@
 <template>
-  <div class="d-flex justify-content-center pl-5">
+<div>
+  <div class="text-center pt-5">
+      <h1 class="pb-5">Change Password</h1>
+  </div>
+    <div class="d-flex justify-content-center pl-5">
     <div class="change-password pt-4 pr-5">
       <h3 class="text-center pl-5">Change Password</h3>
       <form class="pl-5 pt-5" id="changePass" ref="changePass">
@@ -32,6 +36,7 @@
       style="display:none;"
     ></button>
   </div>
+</div>
 </template>
 
 <script>

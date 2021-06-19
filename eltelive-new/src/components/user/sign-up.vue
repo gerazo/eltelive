@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="container-sign-up pl-5">
+    <div class="text-center pt-5">
+      <h1 class="pb-5">Create an Account</h1>
+    </div>
+    <div class="container-sign-up">
       <div class="sign-up pt-4 pr-5">
         <h4 class="text-center">Sign Up</h4>
         <form class="pl-5 pt-5" id="registration" ref="registration">
@@ -84,13 +87,19 @@
       defer
       src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
     ></script>
+    <AdditionalArea></AdditionalArea>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
+import AdditionalArea from '../common/additonal-area.vue';
+
 export default {
   name: "signup",
+  components: {
+    AdditionalArea
+  },
   mounted() {
     const form = this.$refs["registration"];
     form.addEventListener("submit", registerUser);

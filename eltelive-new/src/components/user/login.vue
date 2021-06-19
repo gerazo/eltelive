@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="container-sign-in pl-5">
+    <div class="text-center pt-5">
+      <h1 class="pb-5">Welcome Back</h1>
+    </div>
+    <div class="container-sign-in">
       <div class="sign-in pt-4 pr-5">
         <h4 class="text-center">Sign in</h4>
         <form class="pl-5 pt-5" id="login" ref="login">
@@ -68,13 +71,18 @@
       defer
       src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
     ></script>
+    <AdditionalArea></AdditionalArea>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
+import AdditionalArea from '../common/additonal-area.vue';
 export default {
   name: "login",
+  components: {
+    AdditionalArea
+  },
   mounted() {
     const form = this.$refs["login"];
     form.addEventListener("submit", login);
@@ -191,16 +199,5 @@ export default {
 #notificationSuccess {
   background-color: #559b0f;
   font-size: 1.1rem;
-}
-
-@media screen and (max-width: 300px){
-  .container-sign-in {
-    display: block;
-  }
-}
-@media screen and (max-width: 500px) {
-  .container-sign-in {
-    display: block;
-  }
 }
 </style>

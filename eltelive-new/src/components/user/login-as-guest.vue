@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class="guest-title text-center pt-5">Guest Portal</h1>
+    <div class="text-center pt-5">
+      <h1 class="pb-5">Guest Portal</h1>
+    </div>
     <div class="wrapper">
       <div class="box">
         <noscript>
@@ -104,9 +106,6 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
 .guest-title {
   text-transform: uppercase;
-}
-.guest-title > h1 {
-  font-size: 3.2rem;
 }
 .wrapper {
   max-width: 850px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="contact-us-title text-center pt-5">
+    <div class="text-center pt-5">
       <h1 class="pb-5">Contact Us</h1>
     </div>
     <div class="contact">
@@ -46,9 +46,6 @@ export default {
 <style lang="scss">
 .contact-us-title {
   text-transform: uppercase;
-}
-.contact-us-title > h1 {
-  font-size: 3rem;
 }
 $color: rgb(53, 114, 210);
 .contact {

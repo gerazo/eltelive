@@ -2,7 +2,9 @@
 <template>
   <div class="background">
     <div class="pt-5 pb-5">
-      <h1 class="text-center">Active Streams</h1>
+      <div class="text-center pt-5">
+      <h1 class="pb-5">Active Streams</h1>
+    </div>
       <div class="float-right mr-5">
         <button
           type="button"

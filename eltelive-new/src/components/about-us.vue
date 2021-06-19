@@ -1,6 +1,6 @@
 <template>
   <div class="About pt-5">
-    <div class="about-us-title text-center">
+    <div class="text-center pt-5">
       <h1 class="pb-5">About Us</h1>
       <h4 class="pb-5">We help in easy access for live online sessions</h4>
     </div>
@@ -105,15 +105,9 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
-.about-us-title {
-  text-transform: uppercase;
-}
-.about-us-title > h1 {
-  font-size: 3rem;
-}
 
 .our-story {
-  width: 600px;
+  width: 400px;
   height: 400px;
   margin-left: 7rem;
 }
@@ -193,7 +187,7 @@ export default {
   color: black;
 }
 
-@media screen and (max-width: 500px) {
+@media only screen and (max-device-width: 480px) {
   .our-story {
     display: none;
   }
