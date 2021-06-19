@@ -1,11 +1,11 @@
 <template>
 <div>
   <div class="text-center pt-5">
-      <h1 class="pb-5">Change Password</h1>
+      <h1>Change Password</h1>
   </div>
     <div class="d-flex justify-content-center pl-5">
-    <div class="change-password pt-4 pr-5">
-      <h3 class="text-center pl-5">Change Password</h3>
+    <div class="change-password pt-4 mt-5 pr-5">
+      <h3 class="text-center">Change Password</h3>
       <form class="pl-5 pt-5" id="changePass" ref="changePass">
         <div class="pb-2">
           <input
@@ -94,7 +94,6 @@ export default {
 
 <style>
 .change-password {
-  margin-top: 8rem;
   margin-bottom: 5rem;
   margin-right: 0.1rem;
   width: 600px;

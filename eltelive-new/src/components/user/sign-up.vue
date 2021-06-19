@@ -63,7 +63,7 @@
           Attending a stream? You can go to the guest portal for attending the
           stream
         </p>
-        <div class="guest-portal-btn pt-5">
+        <div class="guest-portal-btn">
           <router-link to="/guest" class="btn btn-light btn-block"
             >Go to Guest Portal</router-link
           >
@@ -73,14 +73,14 @@
     <button
       id="notificationSuccess"
       class="notification btn text-white font-weight-bold"
-      style="display:none;"
+      style="display: none"
     >
       Successfully Created Account
     </button>
     <button
       id="notificationError"
       class="notification btn text-white font-weight-bold"
-      style="display:none;"
+      style="display: none"
     ></button>
     <script
       type="application/javascript"
@@ -93,12 +93,12 @@
 
 <script>
 import $ from "jquery";
-import AdditionalArea from '../common/additonal-area.vue';
+import AdditionalArea from "../common/additonal-area.vue";
 
 export default {
   name: "signup",
   components: {
-    AdditionalArea
+    AdditionalArea,
   },
   mounted() {
     const form = this.$refs["registration"];
@@ -120,20 +120,20 @@ export default {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             givenName,
             familyName,
             email,
-            password
-          })
+            password,
+          }),
         }
-      ).then(res => res.json());
+      ).then((res) => res.json());
 
       if (result.status === "ok") {
         document.getElementById("notificationSuccess").style.display = "block";
-        setTimeout(function() {
+        setTimeout(function () {
           $("#notificationSuccess").fadeOut("fast");
         }, 4000);
 
@@ -141,17 +141,16 @@ export default {
       } else {
         document.getElementById("notificationError").style.display = "block";
         document.getElementById("notificationError").innerHTML = result.title;
-        setTimeout(function() {
+        setTimeout(function () {
           $("#notificationError").fadeOut("fast");
         }, 4000);
       }
     }
-  }
+  },
 };
 </script>
 
 <style lang="scss">
-
 .container-sign-up {
   display: grid;
   grid-template-columns: 450px 450px;
@@ -181,7 +180,7 @@ export default {
     margin-top: 5rem;
   }
   .guest-portal-btn {
-    margin-top: 6rem;
+    margin-top: 9rem;
     margin-right: 3rem;
     color: black;
   }
