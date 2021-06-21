@@ -47,7 +47,7 @@ export default {
 $color: rgb(53, 114, 210);
 
 .contact {
-  margin-top: 7rem;
+  margin-top: 4rem;
   max-width: 600px;
   background-color: #f1f3f5;
   box-shadow: 0 10px 30px 0px rgba(155, 207, 241, 0.1);
