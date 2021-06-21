@@ -3,27 +3,29 @@
     <div class="text-center pt-5">
       <h1 class="pb-4">Contact Us</h1>
     </div>
-    <div class="contact">
-      <div class="d-flex justify-content-center mt-5 pb-5">
-      <div class="jumbotron text-white text-center bg-primary w-50 p-4 mb-2">
-          <p class="h4  font-weight-bold">LET'S TALK</p>
-          WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!
+    <div class="d-flex justify-content-center mt-5">
+      <div class="jumbotron text-white text-center bg-primary p-4 mb-2">
+        <p class="h4 font-weight-bold">LET'S TALK</p>
+        WANT TO SPEAK TO US? WE ARE HAPPY TO BE IN CONTACT!
       </div>
     </div>
-        <div class="right-side pl-3 pt-5">
+    <div class="d-flex justify-content-center">
+      <div class="contact">
+        <div class="right-side">
           <div>
             <div class="right-side-p">
               <div>
-                <img src="/img/location-graphic.svg" alt="" />
+                <img src="/img/location-graphic.svg" alt="location" />
                 Location : ELTE Faculty of Informatics, 1117 Budapest, Pázmány
                 P. stny. 1/C
               </div>
               <div>
-                <img src="/img/phone-graphic.svg" alt="" />
+                <img src="/img/phone-graphic.svg" alt="phone number" />
                 TelePhone: ELTELive Team
               </div>
               <Sending></Sending>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -45,10 +47,11 @@ export default {
 $color: rgb(53, 114, 210);
 
 .contact {
-  margin: 0 10rem;
+  margin-top: 7rem;
+  max-width: 600px;
   background-color: #f1f3f5;
   box-shadow: 0 10px 30px 0px rgba(155, 207, 241, 0.1);
-  padding: 50px;
+  padding: 30px;
 }
 .title {
   color: $color;
@@ -67,7 +70,6 @@ $color: rgb(53, 114, 210);
   font-weight: bold;
 }
 
-@media screen and (max-width: 500px){
- 
+@media screen and (max-width: 500px) {
 }
 </style>
