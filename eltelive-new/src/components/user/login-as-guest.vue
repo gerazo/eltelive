@@ -60,6 +60,13 @@
             Your browser is too old which doesn't support HTML5 video.
           </video>
         </div>
+        <button
+          id="notificationError"
+          class="notification btn text-white font-weight-bold"
+          style="display:none;"
+        >
+          Failed to Load. Check if stream key is correct
+        </button>
       </div>
     </div>
   </div>
@@ -80,8 +87,8 @@ export default {
         //HLS
         var T = document.getElementById("videoElementDisplay");
         T.style.display = "block";
+        var videoElement = document.getElementById("videoElement");
         if (flvjs.isSupported()) {
-          var videoElement = document.getElementById("videoElement");
           var flvPlayer = flvjs.createPlayer({
             type: "flv",
             isLive: true,
@@ -95,6 +102,12 @@ export default {
           flvPlayer.attachMediaElement(videoElement);
           flvPlayer.load();
           flvPlayer.play();
+        }
+        if (videoElement.readyState < 3) {
+          document.getElementById("notificationError").style.display = "block";
+          setTimeout(function() {
+            $("#notificationError").fadeOut("fast");
+          }, 4000);
         }
       }
     }
@@ -169,5 +182,19 @@ input::placeholder {
 .input {
   height: 3.5rem;
   font-size: 1.15rem;
+}
+.notification {
+  text-align: center;
+  position: fixed;
+  top: 7rem;
+  left: 40%;
+  z-index: 999;
+  height: 60px;
+  width: 20%;
+}
+
+#notificationError {
+  background-color: #ba4844;
+  font-size: 1.1rem;
 }
 </style>

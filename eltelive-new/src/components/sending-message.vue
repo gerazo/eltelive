@@ -30,7 +30,9 @@
       id="notificationError"
       class="notification btn text-white font-weight-bold"
       style="display:none;"
-    ></button>
+    >
+      Unable to send message
+    </button>
     <script
       type="application/javascript"
       defer
@@ -73,7 +75,6 @@ export default {
         });
       } catch (error) {
         document.getElementById("notificationError").style.display = "block";
-        document.getElementById("notificationError").innerHTML = error;
         setTimeout(function() {
           $("#notificationError").fadeOut("fast");
         }, 4000);
