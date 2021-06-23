@@ -1,7 +1,66 @@
 <template>
   <div>
-    <div class="text-center pt-5">
-      <h1 class="pb-5">Guest Portal</h1>
+    <div class="pt-5 pb-3">
+      <div class="text-center pt-5">
+        <h1 class="pb-3">Guest Portal</h1>
+      </div>
+      <div class="float-right mr-5">
+        <button
+          type="button"
+          class="btn btn-primary mr-5"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+        >
+          Guest Guide
+        </button>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLongTitle">
+              Streamer Guide
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="pb-2">
+              If stream is not working:
+            </p>
+            <ol>
+              <li class="pb-1">Refresh and re-enter the stream key (wait 15 seconds before refreshing)</li>
+              <li class="pb-1">
+                Check if the stream key is written correctly
+              </li>
+              <li class="pb-1">If streamer didn't start the stream, the video won't load</li>
+            </ol>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="wrapper">
       <div class="box">
@@ -60,13 +119,6 @@
             Your browser is too old which doesn't support HTML5 video.
           </video>
         </div>
-        <button
-          id="notificationError"
-          class="notification btn text-white font-weight-bold"
-          style="display:none;"
-        >
-          Failed to Load. Check if stream key is correct
-        </button>
       </div>
     </div>
   </div>
@@ -102,12 +154,6 @@ export default {
           flvPlayer.attachMediaElement(videoElement);
           flvPlayer.load();
           flvPlayer.play();
-        }
-        if (videoElement.readyState < 3) {
-          document.getElementById("notificationError").style.display = "block";
-          setTimeout(function() {
-            $("#notificationError").fadeOut("fast");
-          }, 4000);
         }
       }
     }
@@ -182,19 +228,5 @@ input::placeholder {
 .input {
   height: 3.5rem;
   font-size: 1.15rem;
-}
-.notification {
-  text-align: center;
-  position: fixed;
-  top: 7rem;
-  left: 40%;
-  z-index: 999;
-  height: 60px;
-  width: 20%;
-}
-
-#notificationError {
-  background-color: #ba4844;
-  font-size: 1.1rem;
 }
 </style>
