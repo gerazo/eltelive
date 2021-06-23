@@ -2,7 +2,9 @@
 <template>
   <div class="background">
     <div class="pt-5 pb-5">
-      <h1 class="text-center">Active Streams</h1>
+      <div class="text-center pt-5">
+      <h1 class="pb-5">Active Streams</h1>
+    </div>
       <div class="float-right mr-5">
         <button
           type="button"
@@ -120,37 +122,33 @@
           </div>
         </div>
         <div class="serverLinkField border">
-            <p
-              placeholder="Server"
-              class="pt-2 font-weight-bold"
-              id="server_textfield"
-            ></p>
+          <p
+            placeholder="Server"
+            class="pt-2 font-weight-bold"
+            id="server_textfield"
+          ></p>
         </div>
       </form>
       <button
         id="notificationSuccessG"
         class="notification btn text-white font-weight-bold"
         style="display:none;"
-      >
-      </button>
+      ></button>
       <button
         id="notificationErrorG"
         class="notification btn text-white font-weight-bold"
         style="display:none;"
-      >
-      </button>
+      ></button>
       <button
         id="notificationSuccessD"
         class="notification btn font-weight-bold"
         style="display:none;"
-      >
-      </button>
+      ></button>
       <button
         id="notificationErrorD"
         class="notification btn text-white font-weight-bold"
         style="display:none;"
-      >
-      </button>
+      ></button>
       <script
         type="application/javascript"
         defer
@@ -171,66 +169,83 @@ export default {
 
     document.getElementById("key_textfield").innerHTML =
       localStorage.getItem("streamKey") || "";
-    
+
     document.getElementById("server_textfield").innerHTML =
       localStorage.getItem("server") || "";
 
     /**
-     * Returns a promise from the backend with the result. 
+     * Returns a promise from the backend with the result.
      * Promise fields used:[status,title]
      */
     async function generateStreamKey(event) {
       event.preventDefault();
 
-      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/generate_key", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
+      const result = await fetch(
+        "http://" +
+          process.env.VUE_APP_HOST +
+          ":" +
+          process.env.VUE_APP_NODE_JS_PORT +
+          "/api/generate_key",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
         }
-      }).then(res => res.json());
+      ).then(res => res.json());
       localStorage.setItem("streamKey", result.stream_key);
       localStorage.setItem("server", result.stream_address);
-      document.getElementById("server_textfield").innerHTML = result.stream_address;
+      document.getElementById("server_textfield").innerHTML =
+        result.stream_address;
       document.location.reload();
 
       if (result.status === "ok") {
         //Success notification for generating a key
         document.getElementById("notificationSuccessG").style.display = "block";
-        document.getElementById("notificationSuccessG").innerHTML=result.title;
+        document.getElementById("notificationSuccessG").innerHTML =
+          result.title;
         setTimeout(function() {
           $("#notificationSuccessG").fadeOut("fast");
         }, 4000);
-      }else if (!localStorage.getItem('token')){
+      } else if (!localStorage.getItem("token")) {
         //Error notification for deletion in case user is not logged in
         document.getElementById("notificationErrorD").style.display = "block";
-         document.getElementById("notificationErrorD").innerHTML='Login to Generate';
+        document.getElementById("notificationErrorD").innerHTML =
+          "Login to Generate";
         setTimeout(function() {
           $("#notificationErrorD").fadeOut("fast");
         }, 4000);
-      }else {
+      } else {
         //Error notification for deletion in case of any other error
-         document.getElementById("notificationErrorG").style.display = "block";
-         document.getElementById("notificationErrorG").innerHTML=result.title;
+        document.getElementById("notificationErrorG").style.display = "block";
+        document.getElementById("notificationErrorG").innerHTML = result.title;
         setTimeout(function() {
           $("#notificationErrorG").fadeOut("fast");
         }, 4000);
       }
     }
     /**
-     * Returns a promise from the backend with the result. 
+     * Returns a promise from the backend with the result.
      * Promise fields used:[status,title]
      */
     async function deleteStreamKey(event) {
       event.preventDefault();
 
-      const result = await fetch("http://" + process.env.VUE_APP_HOST+ ":" + process.env.VUE_APP_NODE_JS_PORT + "/api/delete_key", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
+      const result = await fetch(
+        "http://" +
+          process.env.VUE_APP_HOST +
+          ":" +
+          process.env.VUE_APP_NODE_JS_PORT +
+          "/api/delete_key",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
         }
-      }).then(res => res.json());
+      ).then(res => res.json());
       localStorage.removeItem("streamKey", result.stream_key);
 
       if (result.stream_key === undefined) {
@@ -241,21 +256,23 @@ export default {
       if (result.status === "ok") {
         //Success Notification for deletion
         document.getElementById("notificationSuccessD").style.display = "block";
-        document.getElementById("notificationSuccessD").innerHTML=result.title;
+        document.getElementById("notificationSuccessD").innerHTML =
+          result.title;
         setTimeout(function() {
           $("#notificationSuccessD").fadeOut("fast");
         }, 4000);
-      } else if (!localStorage.getItem('token')){
+      } else if (!localStorage.getItem("token")) {
         //Error notification for deletion in case user is not logged in
         document.getElementById("notificationErrorD").style.display = "block";
-        document.getElementById("notificationErrorD").innerHTML='Login to Delete';
+        document.getElementById("notificationErrorD").innerHTML =
+          "Login to Delete";
         setTimeout(function() {
           $("#notificationErrorD").fadeOut("fast");
         }, 4000);
       } else {
         //Error notification for deletion in case anything else is wrong
-         document.getElementById("notificationErrorD").style.display = "block";
-         document.getElementById("notificationErrorD").innerHTML=result.title;
+        document.getElementById("notificationErrorD").style.display = "block";
+        document.getElementById("notificationErrorD").innerHTML = result.title;
         setTimeout(function() {
           $("#notificationErrorD").fadeOut("fast");
         }, 4000);
@@ -264,6 +281,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 .jumbotron {
   background: rgb(210, 224, 230);
@@ -279,6 +297,7 @@ export default {
     font-size: 1.3rem;
   }
 }
+
 .serverLinkField {
   height: 3rem;
   min-width: 7rem;
@@ -289,25 +308,30 @@ export default {
     font-size: 1.3rem;
   }
 }
+
 .notification {
   text-align: center;
   position: fixed;
   top: 7rem;
   left: 40%;
   z-index: 999;
-  height: 60px;
+  height: 70px;
   width: 20%;
 }
+
 #notificationSuccessG {
   background-color: #559b0f;
   font-size: 1.1rem;
 }
+
 #notificationSuccessD {
-  background-color: rgb(198,198,198);
+  background-color: rgb(198, 198, 198);
   font-size: 1.4rem;
 }
-#notificationErrorG,#notificationErrorD {
-  background-color: #BA4844;
+
+#notificationErrorG,
+#notificationErrorD {
+  background-color: #ba4844;
   font-size: 1.1rem;
 }
 </style>

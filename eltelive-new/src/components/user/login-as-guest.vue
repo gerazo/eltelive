@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class="guest-title text-center pt-5">Guest Portal</h1>
+    <div class="text-center pt-5">
+      <h1 class="pb-5">Guest Portal</h1>
+    </div>
     <div class="wrapper">
       <div class="box">
         <noscript>
@@ -58,17 +60,23 @@
             Your browser is too old which doesn't support HTML5 video.
           </video>
         </div>
+        <button
+          id="notificationError"
+          class="notification btn text-white font-weight-bold"
+          style="display:none;"
+        >
+          Failed to Load. Check if stream key is correct
+        </button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import flvjs from "flv.js";
 
 export default {
   name: "login-as-guest",
-  mounted() {
- 
-  },
+  mounted() {},
   methods: {
     registerStreamKey(type) {
       var showVideo = document.getElementById("stream-player");
@@ -79,16 +87,27 @@ export default {
         //HLS
         var T = document.getElementById("videoElementDisplay");
         T.style.display = "block";
+        var videoElement = document.getElementById("videoElement");
         if (flvjs.isSupported()) {
-          var videoElement = document.getElementById("videoElement");
           var flvPlayer = flvjs.createPlayer({
             type: "flv",
             isLive: true,
-            url: "http://" + process.env.VUE_APP_HOST + ":8000/live/" + streamKey + ".flv"
+            url:
+              "http://" +
+              process.env.VUE_APP_HOST +
+              ":8000/live/" +
+              streamKey +
+              ".flv"
           });
           flvPlayer.attachMediaElement(videoElement);
           flvPlayer.load();
           flvPlayer.play();
+        }
+        if (videoElement.readyState < 3) {
+          document.getElementById("notificationError").style.display = "block";
+          setTimeout(function() {
+            $("#notificationError").fadeOut("fast");
+          }, 4000);
         }
       }
     }
@@ -100,9 +119,6 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
 .guest-title {
   text-transform: uppercase;
-}
-.guest-title > h1 {
-  font-size: 3.2rem;
 }
 .wrapper {
   max-width: 850px;
@@ -164,7 +180,21 @@ input::placeholder {
   color: #999;
 }
 .input {
-  height:3.5rem;
+  height: 3.5rem;
   font-size: 1.15rem;
+}
+.notification {
+  text-align: center;
+  position: fixed;
+  top: 7rem;
+  left: 40%;
+  z-index: 999;
+  height: 60px;
+  width: 20%;
+}
+
+#notificationError {
+  background-color: #ba4844;
+  font-size: 1.1rem;
 }
 </style>

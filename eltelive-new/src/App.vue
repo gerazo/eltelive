@@ -14,7 +14,6 @@
   font-family: "Avenir",Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing : grayscale;
-  min-height:100%;
   position:relative;
   padding-bottom: 60px;
   color: #2c3e50;
@@ -31,11 +30,11 @@
 }
 h1 {
   color: rgb(53, 114, 210);
-  font-size: 25px;
   font-weight: bold;
   letter-spacing: 4px;
   text-transform: uppercase;
   margin-bottom: 20px;
+  font-size: 3rem;
 }
 
 .nav-router{
