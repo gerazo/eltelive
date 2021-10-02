@@ -1,14 +1,14 @@
 const express = require('express');
-const mongoose = require('./db_connections/db');
+const mongoose = require('../db_connections/db');
 
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 shortid = require('shortid');
 const md5 = require("md5");
-streaming_config = require('./config/config');
+streaming_config = require('../config/config');
 
-const User = require('./model/user');
+const User = require('../model/user');
 const router = new express.Router()
 
 
