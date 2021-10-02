@@ -6,9 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "server": "node server.js",
-    "watch": "nodemon server.js",
-    "test": "mocha test/test.js --exit"
+    "server": "node server/server.js",
+    "watch": "nodemon server/server.js",
+    "test": "mocha server/test/test.js --exit"
   },
   "dependencies": {
     "@vue/eslint-plugin": "^4.2.0",
