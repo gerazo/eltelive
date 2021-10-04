@@ -9,25 +9,18 @@ const md5 = require("md5");
 streaming_config = require('../config/config');
 
 const User = require('../model/user');
+const auth  = require('../middleware/auth')
 const router = new express.Router()
 
 
 
 
 // GET functions
-router.get('/api/get_user', async (req, res) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
+ router.get('/api/get_user', auth, async (req, res) => {
+
     try {
-        const user_data = jwt.verify(token, process.env.JWT_SECRET)
-        const email = user_data.email
-        const user = await User.findOne({ email: email }).lean()
-        if (!user) {
-            return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
-        }
+        const user =req.user
+
         res.status(200).json({
             status: 'ok',
             title: 'User details are retrieved successfully',
@@ -40,23 +33,14 @@ router.get('/api/get_user', async (req, res) => {
         })
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
 
-router.get('/api/get_users', async (req, res) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
+router.get('/api/get_users', auth , async (req, res) => {
+
     try {
-        const user_data = jwt.verify(token, process.env.JWT_SECRET)
-        const email = user_data.email
-        const user = await User.findOne({ email }).lean()
-        if (!user) {
-            return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
-        }
+        const user = req.user
         // If the user is not the admin, then he's not authorised to access the full list of users
         if(user.email.localeCompare('admin@admin.com')){
             return res.status(403).json({ status: 'error', title: 'Only the admin can get the list of users' })
@@ -68,7 +52,7 @@ router.get('/api/get_users', async (req, res) => {
         })
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
 
@@ -165,23 +149,15 @@ router.post('/api/login', async (req, res) => {
 
 
 // DELETE functions
-router.delete('/api/delete_user', async (req, res) => {
+router.delete('/api/delete_user',auth, async (req, res) => {
     const { email_to_be_deleted } = req.body
+    console.log(email_to_be_deleted)
     if(!email_to_be_deleted || typeof email_to_be_deleted !== 'string') {
         return res.status(401).json({ status: 'error', title: 'The email of the user to be deleted is not provided' })
     }
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
+
     try {
-        const user_data = jwt.verify(token, process.env.JWT_SECRET)
-        const email = user_data.email
-        const user = await User.findOne({ email }).lean()
-        if (!user) {
-            return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
-        }
+        const user = req.user
         // If the user is not the admin or the email address holder,
         // then he's not authorised to delete any other user from the database
         if(user.email.localeCompare('admin@admin.com') && user.email.localeCompare(email_to_be_deleted)){
@@ -202,17 +178,12 @@ router.delete('/api/delete_user', async (req, res) => {
         })
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
 // PATCH functions
-router.patch('/api/change_password', async (req, res) => {
+router.patch('/api/change_password', auth,async (req, res) => {
     const { newPassword: newPlainTextPassword } = req.body
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
     if (!newPlainTextPassword || typeof newPlainTextPassword !== 'string') {
         return res.status(400).json({ status: 'error', title: 'Missing password' })
     }
@@ -223,7 +194,7 @@ router.patch('/api/change_password', async (req, res) => {
         })
     }
     try {
-        const user = jwt.verify(token, process.env.JWT_SECRET)
+        const user = req.user;
         const email = user.email
         const password = await bcrypt.hash(newPlainTextPassword, 10)
         await User.updateOne(
@@ -235,22 +206,15 @@ router.patch('/api/change_password', async (req, res) => {
         res.status(200).json({ status: 'ok', title: 'Password was changed successfully' })
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
-router.get('/api/get_key', async(req, res) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
+router.get('/api/get_key', auth, async(req, res) => {
+
     try {
-        const user_data = jwt.verify(token, process.env.JWT_SECRET)
-        const email = user_data.email
-        const user = await User.findOne({ email }).lean()
-        if (!user) {
-            return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
-        }
+
+        const user = req.user
+
         res.status(200).json({
             status: 'ok',
             title: 'Stream key was retrieved successfully',
@@ -258,23 +222,17 @@ router.get('/api/get_key', async(req, res) => {
         })
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
 // PUT functions
-router.put('/api/generate_key', async(req, res) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
+router.put('/api/generate_key', auth , async(req, res) => {
+
     try {
-        const user_data = jwt.verify(token, process.env.JWT_SECRET)
-        const email = user_data.email
-        const user = await User.findOne({ email }).lean()
-        if (!user) {
-            return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
-        }
+
+        const user = req.user;
+        const email = user.email
+
         const stream_key  = shortid.generate();
         await User.updateOne(
             { email },
@@ -299,25 +257,19 @@ router.put('/api/generate_key', async(req, res) => {
         })
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
 
 
 
-router.delete('/api/delete_key', async (req, res) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(!token || typeof token !== 'string') {
-        return res.status(401).json({ status: 'error', title: 'JWT Token not provided' })
-    }
+router.delete('/api/delete_key',auth, async (req, res) => {
+
     try {
-        const user_data = jwt.verify(token, process.env.JWT_SECRET)
-        const email = user_data.email
-        const user = await User.findOne({ email }).lean()
-        if (!user) {
-            return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
-        }
+        const user = req.user
+        const email = user.email
+
+
         await User.updateOne(
             { email },
             {
@@ -327,7 +279,7 @@ router.delete('/api/delete_key', async (req, res) => {
         res.status(200).json({ status: 'ok', title: 'Stream key deleted successfully'})
     } catch (error) {
         // console.log(error)
-        res.status(400).json({ status: 'error', title: 'Unexpected error' })
+        res.status(400).json(error)
     }
 })
 
