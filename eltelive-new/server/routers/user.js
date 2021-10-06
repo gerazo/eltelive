@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('../db_connections/db');
-
+const request = require('postman-request')
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -56,6 +56,47 @@ router.get('/api/get_users', auth , async (req, res) => {
     }
 })
 
+router.get('/api/health', auth, async(req,res)=>{
+
+
+    try {
+
+        const user = req.user
+        const options = {
+            url :"http://" + process.env.HOST + ":" + streaming_config.http.port+"/api/server",
+            headers: req.headers
+        };
+
+        function callback(error, response, body) {
+
+            if (!error && response.statusCode == 200) {
+                //console.log(response.body)
+                const info = JSON.parse(body);
+                //console.log(info)
+                if (!info){
+                    return res.status(404).json({
+                        status: 'Not Found or Not Active ',
+                        title: 'Health stats not retrieved successfully',
+                        stats:[]
+                    })
+                }
+                res.status(200).json({
+                    status: 'ok',
+                    title: 'Health retrieved successfully',
+                    stats: info
+                })
+            }else{
+                res.status(402).send(error)
+            }
+        }
+
+        request(options, callback);
+
+    } catch (error) {
+
+        res.status(400).json(error)
+    }
+})
 
 // POST functions
 router.post('/api/register', async (req, res) => {
