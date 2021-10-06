@@ -19,7 +19,7 @@ const auth = async (req,res,next)=>{
         if (!user) {
             return res.status(404).json({ status: 'error', title: 'User with this token does not exist' })
         }
-        //req.token = token
+        req.token = token
         req.user = user
         next()
 
