@@ -25,7 +25,7 @@ const auth = async (req,res,next)=>{
 
     }catch(e){
 
-        res.status(400).json({ status: 'error', title: 'Please authenticate' })
+        res.status(400).json({ status: 'error', title: 'Unexpected error' })
     }
 
 }
