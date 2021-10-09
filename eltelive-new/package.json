@@ -30,6 +30,7 @@
     "md5": "^2.3.0",
     "mocha": "^8.3.2",
     "mongoose": "^5.11.17",
+    "network-speed": "^2.1.1",
     "node-media-server": "^2.3.8",
     "nodemon": "^2.0.7",
     "npm": "^7.9.0",
