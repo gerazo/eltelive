@@ -3,38 +3,30 @@ const NodeMediaServer = require('node-media-server'),
 const User = require('../model/user');
 nms = new NodeMediaServer(config);
 const nms_context = require('node-media-server/src/node_core_ctx.js')
-let cache_list = []
+
+let cached_bitrate = []
+let bandWidthHealth = 100
 // Check if the stream key used to watch the stream exists in the database or not
 const resolution_standard_video_map ={
-    '240p':{'30':1000,
-        '60':1500,},
-    '360p':{'30':1000,
-        '60':1500,},
-    '480p':{'30':2500,
-        '60':4000,},
-    '720p':{'30':5000,
-        '60':7500,},
-    '1080p':{'30':8000,
-        '60':12000,},
-    '2k':{'30':16000,
-        '60':24000,},
-    '4k':{'30':35000,
-        '60':53000,},
+    'ULD':{'min':0,'max':350,'audio':64},
+    'LD':{'min':350,'max':800,'audio':64},
+    'SD':{'min':800,'max':1200,'audio':128},
+    'HD':{'min':1200,'max':1900,'audio':256},
+    'FHD':{'min':1900,'max':4500,'audio':256}
 }
 
+
 const get_video_resolution= (width,height)=>{
-    if (width<480 & height<360){
-        return '240p'
-    }else if(width<858 & height<480){
-        return '360p'
-    }else if (width<1280 & height<729){
-        return '480p'
+    if (width<640 & height<360){
+        return 'ULD'
+    }else if(width<854 & height<480){
+        return 'LD'
+    }else if (width<1280 & height<720){
+        return 'SD'
     }else if (width<1920 & height<1080){
-        return '720p'
-    }else if (width<3680 & height<2160){
-        return '1080p'
+        return 'HD'
     }else{
-        return '4k'
+        return 'FHD'
     }
 }
 nms.on('prePublish', async (id, StreamPath, args) => {
@@ -55,33 +47,27 @@ nms.on('prePublish', async (id, StreamPath, args) => {
     this.CheckUpInterval = setInterval(function (){
 
         const session = nms.getSession(id)
-        const cache = session.bitrateCache.bytes/1000  //save cached bytes in killo bytes
+       // const cache = session.bitrateCache.bytes  /1000
         const bitrate = session.bitrate
         const fps = session.videoFps
 
-
-
-        if (cache_list.length>4){
-            cache_list.shift()
-            cache_list.push(cache)
-            CheckCache(cache_list,cache)
-        }else {
-            cache_list.push(cache)
-        }
-        console.log('bitrate ',bitrate)
-        console.log('fps ',fps)
-        console.log('video code ',session.videoCodec)
         const pixel=get_video_resolution(session.videoWidth,session.videoHeight)
-        console.log('video codeName ',session.videoCodecName )
-        console.log('video ProfileName ',session.videoProfileName)
-        console.log('video videoWidth ',session.videoWidth)
-        console.log('video videoHeight ',session.videoHeight)
-
-        console.log('video pixels ',pixel)
-        console.log('video standard rate',resolution_standard_video_map[pixel][fps.toString()])
 
 
-    },2000)
+
+        if (cached_bitrate.length>4){
+            bandWidthHealth = CheckBitrate(cached_bitrate,pixel,bitrate)
+            cached_bitrate.shift()
+            cached_bitrate.push(bitrate)
+            // CheckCache(cached_bitrate,cache)
+
+        }else {
+            cached_bitrate.push(bitrate)
+        }
+
+
+
+    },5000)
 });
 
 nms.on('donePublish', (id, StreamPath, args) => {
@@ -93,15 +79,28 @@ const getStreamKeyFromStreamPath = (path) => {
     let parts = path.split('/');
     return parts[parts.length - 1];
 };
-const CheckCache =(cached_bytes, latest_bytes)=>{
+const CheckBitrate =(cached_bitrate, pixel,video_bitrate)=>{
 
-    /// we allow 70% threshold
-    const  threshold = 0.7
-    const avg = cached_bytes.reduce((a, b) => a + b, 0) /5
-    if  (latest_bytes < (avg*threshold)){
-        console.log("BANDWIDTH IS LOW ", Math.round(latest_bytes / (avg)*100))
+    const upperLimit = resolution_standard_video_map[pixel].max
+    const lowerLimit = resolution_standard_video_map[pixel].min
+    const audioLimit = resolution_standard_video_map[pixel].audio
+    const video_bitrate_percentage = (video_bitrate)/upperLimit
+ //   console.log(video_bitrate)
+
+    if  (video_bitrate_percentage<1){
+       console.log("Bandwidth health ",Math.round(video_bitrate_percentage*100))
+    }else{
+       console.log("Bandwidth health ",100)
     }
+
+    const threshold_allow = 0.7 // 30% lower than avg allow
+    const avg = cached_bitrate.reduce((a, b) => a + b, 0) /cached_bitrate.length
+    if (video_bitrate<avg*threshold_allow){
+       console.log("BANDWIDTH DROP TO LOW !")
+    }
+
+    return video_bitrate_percentage
 
 
 }
-module.exports = nms;
+module.exports = {nms};
