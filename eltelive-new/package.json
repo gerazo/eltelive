@@ -18,6 +18,7 @@
     "bootstrap": "^4.6.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
+    "chart.js": "^3.5.1",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -53,6 +54,9 @@
     "node-sass": "^5.0.0",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.2",
+    "socket.io": "^4.2.0",
+    "socket.io-client": "^4.2.0",
+    "vue-chartjs": "^3.5.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -67,7 +71,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-console": "off"
+    }
   },
   "resolutions": {
     "eslint-loader": "2.1.2"

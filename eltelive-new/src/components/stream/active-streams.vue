@@ -1,4 +1,3 @@
-<script src="flv.min.js"></script>
 <template>
   <div class="background">
     <div class="pt-5 pb-5">
@@ -155,12 +154,65 @@
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
       ></script>
     </div>
-  </div>
+      <keep-alive>
+      <div v-if="bandwidth>0" class="d-flex justify-content-center pt-5 pl-5">
+          <h4 class="pt-2 pr-4 font-weight-bold">Stream Health</h4>
+          <Button
+
+              @btn-click="$emit('show-graph')"
+              :text="bandwidth.toString()"
+              :color="getColor(bandwidth)" />
+      </div>
+
+      </keep-alive>
+      </div>
+
 </template>
 <script>
+
+import Button from '../common/Button'
+const io = require("socket.io-client");
+var connectionOptions =  {
+    "force new connection" : true,
+    "reconnectionAttempts": "3",
+    "timeout" : 10000,
+    "transports" : ["websocket"]
+};
+var socket = io("http://localhost:4000",connectionOptions);
 export default {
   name: "active-streams",
-  mounted() {
+    data(){
+      return {
+          bandwidth:0,
+          color:'rgb(255,255,0)',
+
+      }
+    },
+    components:{
+        Button,
+    },
+    methods:{
+        getRealtimeData(stream_key) {
+
+    socket.emit('join',stream_key);
+    console.log("key_stream",stream_key)
+    socket.on("updateData", (fetchedData) => {
+        //console.log('HELLO')
+        //console.log(fetchedData)
+        this.bandwidth=fetchedData
+    })
+
+  },
+        getColor(bandwidth){
+          const  green = 255*(bandwidth/100)
+            const  red = 255-green
+
+            return `rgb(${red},${green},0)`
+        }
+    },
+
+    mounted(){
+
     const generateButton = this.$refs["keyGenerationStream"];
     generateButton.addEventListener("click", generateStreamKey);
 
@@ -170,6 +222,7 @@ export default {
     document.getElementById("key_textfield").innerHTML =
       localStorage.getItem("streamKey") || "";
 
+
     document.getElementById("server_textfield").innerHTML =
       localStorage.getItem("server") || "";
 
@@ -177,6 +230,10 @@ export default {
      * Returns a promise from the backend with the result.
      * Promise fields used:[status,title]
      */
+    const stream_key = localStorage.getItem("streamKey");
+    if(stream_key){
+        this.getRealtimeData(stream_key)
+    }
     async function generateStreamKey(event) {
       event.preventDefault();
 
@@ -201,6 +258,9 @@ export default {
       document.location.reload();
 
       if (result.status === "ok") {
+          this.getRealtimeData(result.stream_key)
+         const  message="ok"
+
         //Success notification for generating a key
         document.getElementById("notificationSuccessG").style.display = "block";
         document.getElementById("notificationSuccessG").innerHTML =
@@ -208,6 +268,7 @@ export default {
         setTimeout(function() {
           $("#notificationSuccessG").fadeOut("fast");
         }, 4000);
+
       } else if (!localStorage.getItem("token")) {
         //Error notification for deletion in case user is not logged in
         document.getElementById("notificationErrorD").style.display = "block";
@@ -278,7 +339,9 @@ export default {
         }, 4000);
       }
     }
-  }
+  },
+
+
 };
 </script>
 
