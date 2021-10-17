@@ -3,7 +3,7 @@
     <div class="footer-link">
       <h4 class="f-title f_600 t_color f_size_18">Links</h4>
       <a
-        href="https://gitea.com/gerazo/eltelive"
+        href="https://github.com/gerazo/eltelive"
         target="_blank"
         class="badge badge-primary"
         >Git Repo</a
