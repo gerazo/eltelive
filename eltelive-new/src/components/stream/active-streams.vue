@@ -154,23 +154,27 @@
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
       ></script>
     </div>
-      <keep-alive>
+
+
       <div v-if="bandwidth>0" class="d-flex justify-content-center pt-5 pl-5">
-          <h4 class="pt-2 pr-4 font-weight-bold">Stream Health</h4>
-          <Button
 
-              @btn-click="$emit('show-graph')"
-              :text="bandwidth.toString()"
-              :color="getColor(bandwidth)" />
-      </div>
 
+
+
+
+
+      <keep-alive>
+          <Feedback :stats="health_stats"   :last_update="last_update"         :text="bandwidth.toString()"
+                    :color="getColor(bandwidth)"/>
       </keep-alive>
-      </div>
+  </div>
+
+  </div>
 
 </template>
 <script>
 
-import Button from '../common/Button'
+import Feedback from '../common/feedback'
 const io = require("socket.io-client");
 var connectionOptions =  {
     "force new connection" : true,
@@ -184,34 +188,43 @@ export default {
     data(){
       return {
           bandwidth:0,
+          health_stats:{'bandwidth':87,'video':'SD','audioRate':5800,'isAudio':true,'isVideo':true,'bitrate':1000,'fps':60,'streams':1},
           color:'rgb(255,255,0)',
+          last_update:  ((new Date())),
 
       }
     },
     components:{
-        Button,
+        Feedback
     },
     methods:{
-        getRealtimeData(stream_key) {
 
-    socket.emit('join',stream_key);
-    console.log("key_stream",stream_key)
-    socket.on("updateData", (fetchedData) => {
-        //console.log('HELLO')
-        //console.log(fetchedData)
-        this.bandwidth=fetchedData
-    })
-
-  },
         getColor(bandwidth){
           const  green = 255*(bandwidth/100)
             const  red = 255-green
 
-            return `rgb(${red},${green},0)`
+            return `rgb(${red},${green},30)`
         }
     },
 
     mounted(){
+
+        const getRealtimeData = (stream_key)=> {
+
+            socket.emit('join',stream_key);
+            console.log("key_stream",stream_key)
+            socket.on("updateData", (fetchedData) => {
+                //console.log('HELLO')
+                //console.log(fetchedData)
+                this.health_stats = JSON.parse(fetchedData.stats)
+                this.last_update = (new Date(fetchedData.last_update)).toString()
+
+                //console.log(this.health_stats)
+                // console.log(typeof(this.health_stats))
+                this.bandwidth = this.health_stats.bandwidth
+            })
+            }
+
 
     const generateButton = this.$refs["keyGenerationStream"];
     generateButton.addEventListener("click", generateStreamKey);
@@ -232,7 +245,7 @@ export default {
      */
     const stream_key = localStorage.getItem("streamKey");
     if(stream_key){
-        this.getRealtimeData(stream_key)
+        getRealtimeData(stream_key)
     }
     async function generateStreamKey(event) {
       event.preventDefault();
@@ -258,7 +271,7 @@ export default {
       document.location.reload();
 
       if (result.status === "ok") {
-          this.getRealtimeData(result.stream_key)
+          getRealtimeData(result.stream_key)
          const  message="ok"
 
         //Success notification for generating a key

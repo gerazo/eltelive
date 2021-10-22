@@ -10,9 +10,9 @@ const http = require("http");
 dotenv.config();
 let cached_bitrate = []
 let bandWidthHealth = 100
-let flag_for_stream = false
 let stream_key = ''
 const connections = new Set()
+health_stats = {};
 // Check if the stream key used to watch the stream exists in the database or not
 const resolution_standard_video_map ={
     'ULD':{'min':0,'max':350,'audio':64},
@@ -24,13 +24,13 @@ const resolution_standard_video_map ={
 
 
 const get_video_resolution= (width,height)=>{
-    if (width<640 & height<360){
+    if (width<640 && height<360){
         return 'ULD'
-    }else if(width<854 & height<480){
+    }else if(width<854 && height<480){
         return 'LD'
-    }else if (width<1280 & height<720){
+    }else if (width<1280 && height<720){
         return 'SD'
-    }else if (width<1920 & height<1080){
+    }else if (width<1920 && height<1080){
         return 'HD'
     }else{
         return 'FHD'
@@ -62,10 +62,11 @@ const CheckBitrate =(cached_bitrate, pixel,video_bitrate)=>{
 
 
 }
+
 nms.on('prePublish', async (id, StreamPath, args) => {
     stream_key = getStreamKeyFromStreamPath(StreamPath)
+    health_stats[id]={}
     const session = nms.getSession(id)
-
 
                 if(session.isStarting){
                 this.CheckUpInterval = setInterval(function (){
@@ -73,7 +74,7 @@ nms.on('prePublish', async (id, StreamPath, args) => {
                     const session = nms.getSession(id)
                     // const cache = session.bitrateCache.bytes  /1000
                     const bitrate = session.bitrate
-                    const fps = session.videoFps
+
 
                     const pixel=get_video_resolution(session.videoWidth,session.videoHeight)
 
@@ -88,6 +89,18 @@ nms.on('prePublish', async (id, StreamPath, args) => {
                     }else {
                         cached_bitrate.push(bitrate)
                     }
+
+                    health_stats[id]['bandwidth'] = bandWidthHealth
+                    health_stats[id]['bitrate'] = session.bitrate
+                    health_stats[id]['fps'] = session.videoFps
+                    health_stats[id]['Video Quality'] = pixel
+                    health_stats[id]['Audio Samplerate'] = session.audioSamplerate
+                    health_stats[id]['Audio '] = session.isReceiveAudio
+                    health_stats[id]['Video'] = session.isReceiveVideo
+                    health_stats[id]['publishStreamPath '] = session.publishStreamPath
+
+                    health_stats[id]['streams'] = session.streams
+
 
 
 
@@ -111,7 +124,7 @@ nms.on('prePublish', async (id, StreamPath, args) => {
 
                      this.emiting_interval=   setInterval(()=>{
                             console.log('emitting message bandwidth to ', stream_key,bandWidthHealth)
-                            socket.broadcast.to(stream_key).emit('updateData',bandWidthHealth.toString() )
+                            socket.broadcast.to(stream_key).emit('updateData',{'stats':JSON.stringify(health_stats[id]),'last_update':session.bitrateCache.last_update} )
 
                         },3000)
 
@@ -131,9 +144,9 @@ nms.on('donePublish', (id, StreamPath, args) => {
     clearInterval(this.CheckUpInterval)
 
     }
-    if(this.emiting_interval){
+
         clearInterval(this.emiting_interval)
-    }
+
 });
 
 nms.run();
