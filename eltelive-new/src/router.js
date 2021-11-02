@@ -33,6 +33,10 @@ export default new Router({
       path: '/active-streams',
       component: () => import('./components/stream/active-streams'),
     },
+      {
+          path: '/guests',
+          component: () => import('./components/common/guests'),
+      },
     {
       path: '/change-password',
       component: () => import('./components/user/change-password'),

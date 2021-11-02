@@ -2,7 +2,7 @@ const NodeMediaServer = require('node-media-server'),
     config = require('./config');
 const User = require('../model/user');
 nms = new NodeMediaServer(config);
-const nms_context = require('node-media-server/src/node_core_ctx.js')
+let key_id = {}
 
 nms.on('prePublish', async (id, StreamPath, args) => {
     let stream_key = getStreamKeyFromStreamPath(StreamPath);
@@ -16,6 +16,9 @@ nms.on('prePublish', async (id, StreamPath, args) => {
             }
         }
     });
+    let session = nms.getSession(id);
+    session.cached_bitrate = []
+    key_id[stream_key]=id
 });
 
 
@@ -24,4 +27,4 @@ const getStreamKeyFromStreamPath = (path) => {
     return parts[parts.length - 1];
 };
 
-module.exports = {nms,getStreamKeyFromStreamPath};
+module.exports = {nms,key_id};
