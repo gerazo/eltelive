@@ -1,33 +1,34 @@
 <template>
 
-    <div class="card text-center container-sm">
+    <div class="card text-center">
         <div class="card-header">
             STREAM HEALTH FEEDBACK
         </div>
         <div class="card-body">
-            <table class="table table-info container-sm">
-                <tr v-for="(value,key) in stats">
-                    <td>{{key}}</td>
-                    <div v-if="key==='bandwidth' || key==='RAM' || key==='CPU'" >
-                        <td>
-                            <Button  :text="value.toString()" :color="getColor(value)" />
-                        </td>
-
-                    </div>
-                    <div v-else >
-                        <td v-if="value===true">&#9989;</td>
-                        <td v-else-if="value===false">&#10060;</td>
-                        <td v-else>{{value}}</td>
-                    </div>
-
-                </tr>
-
+            <table class="table table-primary ">
+                <thead class="ant-table-column-title" >
+                <th v-for="(val,k) in stats" >
+                    {{k}}
+                </th>
+                </thead>
+                <tbody>
+                <th v-for="(value,key) in stats">
+                  <div v-if="key==='bandwidth' || key==='RAM' || key==='CPU'">
+                      <Button  :text="value.toString()" :color="getColor(value,key==='bandwidth')" />
+                  </div>
+                  <div v-else-if="value===true">&#9989;</div>
+                  <div v-else-if="value===false">&#10060;</div>
+                  <div v-else>{{value}}</div>
+                </th>
+                </tbody>
             </table>
-            <div class="table-warning ">
+            <div class="table-danger">
                 <div v-for="(value,key) in comments" class="text-dark">
                     {{value}}
                 </div>
-        </div>
+            </div>
+
+
 
         </div>
         <div class="card-footer text-muted">
@@ -45,7 +46,7 @@ export default {
     props :{
         stats: Object,
         color:String,
-        bandwidth:0,
+        bandwidth:Number,
         last_update:Date,
         comments: Array,
     },
@@ -53,19 +54,14 @@ export default {
         Button,
     },
     methods:{
-        getColor(bandwidth){
-            const  green = 255*(bandwidth/100)
-            const  red = 255-green
+        getColor(value,flag){
 
-            return `rgb(${red},${green},20)`
+            const  c1 = 255*(value/100)
+            const  c2 = 255-c1
+
+            return flag ? `rgb(${c2},${c1},20)`: `rgb(${c1},${c2},20)`
         },
     },
-
-    computed: {
-        getBandwidth(){
-        return  this.stats.bandwidth
-        }
-    }
 }
 </script>
 <style>
