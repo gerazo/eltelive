@@ -1,17 +1,26 @@
 <template>
 
-    <div class="card text-center container-sm">
+    <div class="card text-center  container-md">
         <div class="card-header">
-            STREAM HEALTH FEEDBACK
+           GUESTS
         </div>
         <div class="card-body">
             <div v-if="message.length===0">
-                <table class="table table-info container-sm">
+                <table class="table table-primary ">
+                    <thead>
+                        <th>CLEINT ID</th>
+                        <th v-for="(val,k) in Object.values(stats)[0]" >
+                            {{k}}
+                        </th>
+                    </thead>
+                    <tbody>
                     <tr v-for="(value,key) in stats">
                         <td>{{key}}</td>
-
-                        <td>{{value}}</td>
+                        <td v-for="(val,k) in value" >
+                            {{val}}
+                        </td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div  v-else>
@@ -33,13 +42,17 @@
 
 export default {
 
-    name:'Feedback',
+    name:'Guests',
+    props:{
+        isModalVisible:Boolean,
+    },
     data(){
         return {
-            stats:{},
+            stats:{"9HQERALH":{"connectCreated":11,"bytes":187963.717,"ip":"::1","protocol":"http"},"6FD0AR2U":{"connectCreated":7,"bytes":130138.832,"ip":"::1","protocol":"http"}},
             last_update:  ((new Date())),
             message:"",
             server:null,
+            total:0,
 
         }
     },
@@ -65,9 +78,10 @@ export default {
             if (result["status"]==="NA"){
                 this.message = result["data"]
             }else{
-
                 this.stats= result["data"]
-
+                delete this.stats['Live Time'];
+                this.last_update = result["data"]["Live Time"]
+                this.total = result["data"]['TOTAL'];
             }
             // this.bandwidth = this.stats.bandwidth
 
@@ -95,8 +109,9 @@ export default {
 
         },
         async getInfo(){
-            this.getStreamData()
-
+            if(this.isModalVisible){
+              await this.getStreamData()
+            }
         }
 
     },
@@ -114,10 +129,11 @@ export default {
        //     console.log("Successfully connected to the echo websocket server...")
        // }
 
-       this.intervalHandle = setInterval(this.getInfo,2000)
+          this.intervalHandle = setInterval(this.getInfo,2000)
+
     },
     beforeDestroy(){
-        if(this.intervalHandle !==null)
+        if(this.intervalHandle)
         clearInterval(this.intervalHandle)
     }
 

@@ -12,13 +12,31 @@
                 </th>
                 </thead>
                 <tbody>
+
                 <th v-for="(value,key) in stats">
-                  <div v-if="key==='bandwidth' || key==='RAM' || key==='CPU'">
-                      <Button  :text="value.toString()" :color="getColor(value,key==='bandwidth')" />
-                  </div>
-                  <div v-else-if="value===true">&#9989;</div>
-                  <div v-else-if="value===false">&#10060;</div>
-                  <div v-else>{{value}}</div>
+                    <div v-if="isButton(key)">
+                      <Button
+                              :text="value.toString()"
+                              :color="getColor(value,key)"
+                      />
+                    </div>
+                    <div v-else-if="key.toUpperCase()==='VIEWERS'">
+                        <a @click="showModal" style="cursor: pointer">{{value}}</a>
+                        <Modal
+                                v-show="isModalVisible"
+                                @close="closeModal"
+                        >
+                            <template v-slot:body>
+                                <Guests :isModalVisible="isModalVisible"/>
+                            </template>
+                        </Modal>
+
+                        </div>
+                    <div v-else>
+                        <div v-if="value===true">&#9989;</div>
+                        <div v-else-if="value===false">&#10060;</div>
+                        <div v-else>{{value}}</div>
+                    </div>
                 </th>
                 </tbody>
             </table>
@@ -40,6 +58,8 @@
 
 <script>
 import Button from './Button'
+import Modal from "./Modal";
+import Guests from "./guests";
 export default {
 
     name:'Feedback2',
@@ -51,16 +71,43 @@ export default {
         comments: Array,
     },
     components: {
+        Modal,
         Button,
+        Guests,
+    },
+    data() {
+        return {
+            isModalVisible: false,
+        };
     },
     methods:{
-        getColor(value,flag){
+        getColor(value,key){
 
             const  c1 = 255*(value/100)
             const  c2 = 255-c1
-
-            return flag ? `rgb(${c2},${c1},20)`: `rgb(${c1},${c2},20)`
+            switch(key.toUpperCase()){
+                case 'BANDWIDTH':
+                    return `rgb(${c2},${c1},20)`
+                case 'CPU':
+                    return `rgb(${c1},${c2},20)`
+                case 'RAM' :
+                    return `rgb(${c1},${c2},20)`
+                case 'VIEWERS':
+                    return `rgb(136,124,124)`
+            }
         },
+        isButton(key){
+          return  key.toUpperCase()==='BANDWIDTH'
+            || key.toUpperCase()==='RAM'
+            || key.toUpperCase()==='CPU'
+        },
+        showModal() {
+            console.log("SHOW")
+            this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
+        }
     },
 }
 </script>
