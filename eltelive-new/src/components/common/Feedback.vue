@@ -16,7 +16,8 @@
                 <th v-for="(value,key) in stats">
                     <div v-if="isButton(key)">
                       <Button
-                              :text="value.toString()"
+                              :value="value"
+                              :title="key.toString()"
                               :color="getColor(value,key)"
                       />
                     </div>
@@ -52,7 +53,7 @@
 
         </div>
         <div class="card-footer text-muted">
-            {{Date(last_update)}}
+            {{Date(lastUpdate)}}
         </div>
     </div>
 </template>
@@ -69,7 +70,7 @@ export default {
         stats: Object,
         color:String,
         bandwidth:Number,
-        last_update:Date,
+        lastUpdate:Date,
         comments: Array,
     },
     components: {
@@ -89,11 +90,11 @@ export default {
             const  c2 = 255-c1
             switch(key.toUpperCase()){
                 case 'BANDWIDTH':
-                    return `rgb(${c2},${c1},20)`
+                    return `rgb(${c2},${c1},0,0.7)`
                 case 'CPU':
-                    return `rgb(${c1},${c2},20)`
+                    return `rgb(${c1},${c2},0,0.7)`
                 case 'RAM' :
-                    return `rgb(${c1},${c2},20)`
+                    return `rgb(${c1},${c2},0,0.7)`
                 case 'VIEWERS':
                     return `rgb(136,124,124)`
             }

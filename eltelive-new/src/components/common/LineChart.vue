@@ -10,6 +10,8 @@ export default {
     name: 'LineChart',
     props:{
         isModalVisible:Boolean,
+        title:String,
+        chartData:Number,
     },
     data(){
         return {
@@ -22,18 +24,25 @@ export default {
         const data = {
             labels: labels,
             datasets: [{
-                label:"RAM PER SECOND",
+                label:`${this.title} PER SECOND`,
                 data:[0],
-                fill: false,
-                borderColor: 'rgb(243,9,9)',
-                backgroundColor:'rgb(243,9,9)',
+                fill: true,
+                borderColor: 'rgba(243,77,77,0.96)',
+                backgroundColor:'rgba(159,89,89,0.5)',
                 tension: 0.1
             }]
         };
         const config = {
             type: 'line',
             data: data,
-            options: {}
+            options:{
+                scales: {
+                    y: { // defining min and max so hiding the dataset does not change scale range
+                        min: 0,
+                        max: 100
+                    }
+                }
+                }
         };
 
         const getRandomInt= (max)=> {
@@ -41,7 +50,7 @@ export default {
         }
         const fakeRealTimeData = ()=>{
             return {
-                data:getRandomInt(1000),
+                data:getRandomInt(100),
                 time:(new Date()).getSeconds()
             }
         }
@@ -67,23 +76,24 @@ export default {
 
 
             chart.data.datasets.forEach((dataset) => {
-                if (dataset.data.length>5){
+                if (dataset.data.length>7){
                     dataset.data.shift()
                     console.log("DATA SHIFTED")
                     chart.data.labels.shift();
                 }
             });
-            if(chart.data.labels.length>5){
+            if(chart.data.labels.length>7){
                 chart.data.labels.shift()
             }
             chart.update();
         }
-        function updateChart(chart){
+        function updateChart(chart,chartData,lastUpdate){
 
 
             ShiftData(chart)
-            const newData=fakeRealTimeData();
-            addData(chart,newData.time,newData.data,)
+            const time=(new Date(lastUpdate));
+            const timeData=`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()} ${time.getHours()>12?'PM':'AM'}`
+            addData(chart,timeData,chartData)
 
         }
 
@@ -100,9 +110,9 @@ export default {
             console.log("I AM HERE")
           this.TimeOutHandle=  setInterval(()=>{
 
-            updateChart(this.myChart)
+            updateChart(this.myChart,this.chartData,new Date())
 
-        },2000)
+        },3000)
         }
     },
     beforeDestroy(){

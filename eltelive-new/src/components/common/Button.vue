@@ -2,11 +2,13 @@
     <div>
     <button  type="button"
              @click="showModal"
-             :style="{background:color}"
-             class="btn btn-primary mr-15 "
+             :style="`background-color:${color}`"
+             class="btn btn-group-sm"
 
     >
-        {{text}}%
+        <div class="buttonText">
+        {{value}}%
+        </div>
     </button>
         <transition  name="modal-fade">
         <Modal
@@ -14,20 +16,16 @@
                 @close="closeModal"
         >
             <template v-slot:header>
-                This is a new modal header.
+                {{title}} Usage
             </template>
 
             <template v-slot:body>
                 <div v-if="isModalVisible">
-                    <LineChart :isModalVisible="isModalVisible" />
+                    <LineChart :isModalVisible="isModalVisible" :title="title.toString()" :chartData="value"  />
                 </div>
                 <div v-else>
-                    This is a new modal body.
+                    This is Default Body
                 </div>
-            </template>
-
-            <template v-slot:footer>
-                This is a new modal footer.
             </template>
             </Modal>
         </transition>
@@ -44,7 +42,9 @@ export default {
 
     name:'Button',
     props :{
-        text:String,
+
+        title:String,
+        value:Number,
         color:String,
     },
     components:{
@@ -67,3 +67,11 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+
+.buttonText{
+    font-size: large;
+    font-weight: bolder;
+    color: rgb(70, 68, 68);
+}
+</style>
