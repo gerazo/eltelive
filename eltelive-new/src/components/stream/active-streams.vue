@@ -183,7 +183,7 @@ export default {
     data(){
       return {
           bandwidth:1,
-          health_stats:{'bandwidth':87,'Video Quality':'ULD','Video Resolution':'100X200','isAudio':true,'isVideo':false,'bitrate':100,'audioSamplerate':48000,'fps':60},
+          health_stats:{'BANDWIDTH':87,'RAM':90,'CPU':55,'Video Quality':'ULD','Video Resolution':'100X200','isAudio':true,'isVideo':false,'bitrate':100,'audioSamplerate':48000,'fps':60},
           color:'rgb(255,255,0)',
           last_update:  ((new Date())),
           connection :null,
@@ -233,7 +233,7 @@ export default {
                 this.comments = fetchedData.comments
                 //console.log(this.health_stats)
                 // console.log(typeof(this.health_stats))
-                this.bandwidth = this.health_stats.bandwidth
+                this.bandwidth = this.health_stats['BANDWIDTH']
             })
             }
        const getStreamStats = async ()=>{
@@ -255,8 +255,8 @@ export default {
 
            this.health_stats =result.stats
            this.comments = result.comments
-           this.bandwidth = this.health_stats.bandwidth
-            //console.log(result)
+           this.bandwidth = this.health_stats['BANDWIDTH']
+
 
         }
 
@@ -283,7 +283,7 @@ export default {
     let fetching_interval =null;
     if(stream_key){
       //  getRealtimeData(stream_key)
-        this.intervalHandle=setInterval(getStreamStats,1000)
+        this.intervalHandle=setInterval(getStreamStats,7000)
         //fetching_interval=setInterval(fetchStreamData.bind(stream_key),5000)
     }
     async function generateStreamKey(event) {
