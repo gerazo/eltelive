@@ -156,7 +156,7 @@
     </div>
       <div v-if="bandwidth>0" class="d-flex justify-content-center pt-5 pl-5">
         <keep-alive>
-            <Feedback2 :stats="health_stats"   :last_update="last_update"  :comments ="comments"       :text="bandwidth.toString()"
+            <Feedback :stats="health_stats"   :last_update="last_update"  :comments ="comments"       :text="bandwidth.toString()"
                       :color="getColor(bandwidth)"/>
         </keep-alive>
       </div>
@@ -167,7 +167,7 @@
 
 <script>
 
-import Feedback2 from '../common/feedback2'
+import Feedback from '../common/Feedback'
 
 
 const  connectionOptions =  {
@@ -192,7 +192,7 @@ export default {
       }
     },
     components:{
-        Feedback2
+        Feedback
     },
     methods:{
 

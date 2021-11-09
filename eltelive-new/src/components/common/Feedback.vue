@@ -59,10 +59,10 @@
 <script>
 import Button from './Button'
 import Modal from "./Modal";
-import Guests from "./guests";
+import Guests from "./Guests";
 export default {
 
-    name:'Feedback2',
+    name:'Feedback',
     props :{
         stats: Object,
         color:String,
