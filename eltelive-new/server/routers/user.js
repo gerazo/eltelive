@@ -103,7 +103,6 @@ router.get('/api/get_guests', auth, async (req, res) => {
         const response = await fetchStreamData(user.stream_key)
         let stats = {}
         if (!isObjectEmpty(response)) {
-            console.log(response['subscribers'])
             if (response["subscribers"].length > 0) {
                 for (const sub of response["subscribers"]) {
                     const clientID = sub['clientId']
@@ -112,8 +111,8 @@ router.get('/api/get_guests', auth, async (req, res) => {
                     delete sub['clientId']
                     stats[clientID] = sub
                     stats[clientID]['bytes'] = stats[clientID]['bytes'] / 1000 //MBPS
-                    stats[clientID]['connectCreated'] = new Date(new Date() - new Date(sub["connectCreated"])).getMinutes()
-
+                    stats[clientID]['Online Since'] =`${new Date(new Date() - new Date(sub["connectCreated"])).getMinutes()} mins`
+                    delete stats['connectCreated']
                     delete stats['client']
 
                 }
@@ -147,7 +146,6 @@ router.get('/api/get_stats', auth, async (req, res) => {
         let comments = []
         // Check if the stream key used to watch the stream exists in the database or not
 
-
         const id = key_id[req.user.stream_key]
         const session = nms.getSession(id)
         if (!session) {
@@ -167,35 +165,40 @@ router.get('/api/get_stats', auth, async (req, res) => {
             bandWidthHealth = CheckBitrate(cached_bitrate, standard_properties.bitrate, bitrate)
 
 
-            health_stats['bandwidth'] = bandWidthHealth
-            getCPUInfo().then(res => health_stats['CPU'] = 100 - res)
-            health_stats['CPU'] = 100 - (await getCPUInfo())
-            health_stats['RAM'] = 100 - (await percentageMemory()).usedMem
-            percentageMemory().then(res => health_stats['RAM'] = 100 - res.usedMem)
-            health_stats['Audio'] = session.isReceiveAudio
-            health_stats['Video'] = session.isReceiveVideo
+            health_stats['BANDWIDTH'] = bandWidthHealth
+            health_stats['CPU'] = (await getCPUInfo())
+            health_stats['RAM'] = (await percentageMemory()).usedMem
+            health_stats['ReceiveAudio'] = session.isReceiveAudio
+            health_stats['ReceiveVideo'] = session.isReceiveVideo
             health_stats['Video Quality'] = pixel
-            health_stats['Video Resolution'] = session.videoWidth.toString() + " x " + session.videoHeight
-            health_stats['bitrate'] = session.bitrate
-            health_stats['fps'] = session.videoFps
-            health_stats['audioSamplerate'] = session.audioSamplerate / 1000
+            health_stats['Video Resolution'] = `${session.videoWidth} X ${session.videoHeight}`
+            health_stats['Bitrate'] = `${session.bitrate} KBPS`
+            health_stats['FPS'] = session.videoFps
+            health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} K`
+            // health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
+            const publishStreamPath = session.publishStreamPath;
+            const viewers = Array.from(nms_context.sessions.values()).filter(session => {
+                    return session.playStreamPath === publishStreamPath;
+                });
 
+           // console.log(viewers)
+            health_stats['Viewers'] =viewers.length
 
             comments = []
             if (standard_properties['videoCodecName'] !== session.videoCodecName) {
-                comments.push('videoCodec should ' + standard_properties['videoCodecName'])
+                comments.push('videoCodec should be ' + standard_properties['videoCodecName'])
             }
             if (standard_properties['AudioCodeName'] !== session.audioCodecName) {
-                comments.push('AudioCode should ' + standard_properties['AudioCodeName'])
+                comments.push('AudioCode should  be ' + standard_properties['AudioCodeName'])
             }
             if (standard_properties['audioProfileName'] !== session.audioProfileName) {
-                comments.push('audioProfileName should ' + standard_properties['audioProfileName'])
+                comments.push('audioProfileName should be ' + standard_properties['audioProfileName'])
             }
             if (standard_properties['audioChannels'] !== session.audioChannels) {
-                comments.push('audioChannels should ' + standard_properties['audioChannels'])
+                comments.push('audioChannels should  be ' + standard_properties['audioChannels'])
             }
             if (standard_properties['videoProfileName'] !== session.videoProfileName) {
-                comments.push('videoProfileName should ' + standard_properties['videoProfileName'])
+                comments.push('videoProfileName should be ' + standard_properties['videoProfileName'])
             }
 
 
