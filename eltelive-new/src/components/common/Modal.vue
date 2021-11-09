@@ -10,7 +10,8 @@
             </slot>
             <button
                     type="button"
-                    class="btn-close"
+                    class="btn btn-danger"
+                    aria-label="Close"
                     @click="$emit('close')"
             >
                 x
@@ -57,7 +58,7 @@
 }
 
 .modal-container {
-    width: 300px;
+    width: 950px;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
