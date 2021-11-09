@@ -18,7 +18,12 @@
             </template>
 
             <template v-slot:body>
-                This is a new modal body.
+                <div v-if="isModalVisible">
+                    <LineChart :isModalVisible="isModalVisible" />
+                </div>
+                <div v-else>
+                    This is a new modal body.
+                </div>
             </template>
 
             <template v-slot:footer>
@@ -34,7 +39,7 @@
 <script>
 
 import Modal from "./Modal";
-
+import LineChart from "./LineChart";
 export default {
 
     name:'Button',
@@ -44,6 +49,7 @@ export default {
     },
     components:{
         Modal,
+        LineChart,
     },
     data() {
         return {
