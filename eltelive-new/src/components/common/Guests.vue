@@ -30,7 +30,7 @@
         </div>
 
         <div class="card-footer text-muted">
-          {{stats.last_update}}
+          {{stats.lastUpdate}}
         </div>
     </div>
 </template>
@@ -47,7 +47,7 @@ export default {
     data(){
         return {
             stats:{"9HQERALH":{"connectCreated":11,"bytes":187963.717,"ip":"::1","protocol":"http"},"6FD0AR2U":{"connectCreated":7,"bytes":130138.832,"ip":"::1","protocol":"http"}},
-            last_update:  ((new Date())),
+            lastUpdate:  ((new Date())),
             message:"",
             server:null,
             total:0,
@@ -78,7 +78,7 @@ export default {
             }else{
                 this.stats= result["data"]
                 delete this.stats['Live Time'];
-                this.last_update = result["data"]["Live Time"]
+                this.lastUpdate = result["data"]["Live Time"]
                 this.total = result["data"]['TOTAL'];
             }
             // this.bandwidth = this.stats.bandwidth

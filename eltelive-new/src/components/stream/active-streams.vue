@@ -156,7 +156,7 @@
     </div>
       <div v-if="bandwidth>0" class="d-flex justify-content-center pt-5 pl-5">
         <keep-alive>
-            <Feedback :stats="health_stats"   :last_update="last_update"  :comments ="comments"       :text="bandwidth.toString()"
+            <Feedback :stats="health_stats"   :lastUpdate="lastUpdate"  :comments ="comments"       :text="bandwidth.toString()"
                       :color="getColor(bandwidth)"/>
         </keep-alive>
       </div>
@@ -185,7 +185,7 @@ export default {
           bandwidth:1,
           health_stats:{'BANDWIDTH':87,'RAM':90,'CPU':55,'Video Quality':'ULD','Video Resolution':'100X200','isAudio':true,'isVideo':false,'bitrate':100,'audioSamplerate':48000,'fps':60},
           color:'rgb(255,255,0)',
-          last_update:  ((new Date())),
+          lastUpdate:  ((new Date())),
           connection :null,
           comments:['a','b','c'],
 
@@ -229,7 +229,7 @@ export default {
                 //console.log('HELLO')
                 //console.log(fetchedData)
                 this.health_stats = JSON.parse(fetchedData.stats)
-                this.last_update = (new Date(fetchedData.last_update)).toString()
+                this.lastUpdate = (new Date(fetchedData.lastUpdate)).toString()
                 this.comments = fetchedData.comments
                 //console.log(this.health_stats)
                 // console.log(typeof(this.health_stats))
