@@ -6,11 +6,11 @@
 
         <div class="modal-header">
             <slot name="header">
-                default header
+                <div></div>
             </slot>
             <button
                     type="button"
-                    class="btn btn-danger"
+                    class="close"
                     aria-label="Close"
                     @click="$emit('close')"
             >
@@ -20,14 +20,15 @@
 
         <div class="modal-body">
             <slot name="body">
-                default body
+
             </slot>
         </div>
 
         <div class="modal-footer">
             <slot name="footer">
-                default footer
-                <button class="modal-default-button"
+                <button
+                        type="button"
+                        class="btn btn-secondary"
                         @click="$emit('close')">
                     OK
                 </button>
@@ -73,7 +74,7 @@
 }
 
 .modal-body {
-    margin: 20px 0;
+    margin: 0px 0;
 }
 
 .modal-default-button {

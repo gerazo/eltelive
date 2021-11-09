@@ -26,9 +26,11 @@
                                 v-show="isModalVisible"
                                 @close="closeModal"
                         >
+
                             <template v-slot:body>
                                 <Guests :isModalVisible="isModalVisible"/>
                             </template>
+
                         </Modal>
 
                         </div>

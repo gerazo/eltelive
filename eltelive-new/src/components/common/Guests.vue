@@ -1,9 +1,7 @@
 <template>
 
     <div class="card text-center  container-md">
-        <div class="card-header">
-           GUESTS
-        </div>
+
         <div class="card-body">
             <div v-if="message.length===0">
                 <table class="table table-primary ">
