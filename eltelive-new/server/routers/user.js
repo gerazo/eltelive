@@ -6,14 +6,13 @@ const bcrypt = require("bcryptjs");
 const shortid = require('shortid');
 const md5 = require("md5");
 const {percentageMemory, getCPUInfo} = require('../utility/server')
-const {CheckBitrate, get_video_resolution} = require("../utility/stream");
+const {CheckBitrate,getBandwidthInfo, getVideoResolution,countViewers} = require("../utility/stream");
 
 const streaming_config = require('../config/config');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const User = require('../model/user');
 const {nms, key_id} = require('../config/media_server');
 
-const nms_context = require('node-media-server/src/node_core_ctx.js')
 const standard_map = require("../utility/StreamStandard");
 
 const auth = require('../middleware/auth')
@@ -110,14 +109,16 @@ router.get('/api/get_guests', auth, async (req, res) => {
                     delete sub['stream']
                     delete sub['clientId']
                     stats[clientID] = sub
-                    stats[clientID]['bytes'] = stats[clientID]['bytes'] / 1000 //MBPS
+                    stats[clientID]['bytes Sent'] = `${stats[clientID]['bytes'] / 1000} Kbps`
+
                     stats[clientID]['Online Since'] =`${new Date(new Date() - new Date(sub["connectCreated"])).getMinutes()} mins`
-                    delete stats['connectCreated']
+                    delete stats[clientID]['connectCreated']
                     delete stats['client']
+                    delete stats[clientID]['bytes']
 
                 }
             }
-            stats["Live Time"] = new Date(new Date() - new Date(response["publisher"]["connectCreated"])).getMinutes()
+           // stats["Live Time"] = new Date(new Date() - new Date(response["publisher"]["connectCreated"])).getMinutes()
 
         }
         var test_data =
@@ -125,11 +126,11 @@ router.get('/api/get_guests', auth, async (req, res) => {
                 "subscribers": []
             }
 
-
+        const emptyObject = isObjectEmpty(stats)
         return res.status(200).json({
-            status: isObjectEmpty(stats) ? "NA" : "OK",
+            status: emptyObject ? "NA" : "OK",
             title: 'Stream details are retrieved successfully',
-            data: isObjectEmpty(stats) ? "No Guest Data" : stats
+            data: emptyObject ? "No Guest Data" : stats
         })
     } catch (error) {
         const code = error.status ? error.status : 400
@@ -140,8 +141,7 @@ router.get('/api/get_guests', auth, async (req, res) => {
 router.get('/api/get_stats', auth, async (req, res) => {
 
     try {
-        let cached_bitrate = []
-        let bandWidthHealth = 100
+
         let health_stats = {};
         let comments = []
         // Check if the stream key used to watch the stream exists in the database or not
@@ -154,37 +154,32 @@ router.get('/api/get_stats', auth, async (req, res) => {
                 comments: ['NO LIVE DATA']
             })
         }
-        if (session.isStarting) {
+        if (session.isPublishing) {
             const bitrate = session.bitrate
-            const pixel = get_video_resolution(session.videoWidth, session.videoHeight)
+            // console.log(session.videoWidth,session.videoHeight)
+            const pixel = getVideoResolution(session.videoWidth, session.videoHeight)
 
 
             const standard_properties = standard_map[pixel]
 
 
-            bandWidthHealth = CheckBitrate(cached_bitrate, standard_properties.bitrate, bitrate)
-
-
-            health_stats['BANDWIDTH'] = bandWidthHealth
+            health_stats['BANDWIDTH'] = getBandwidthInfo(standard_properties.bitrate, bitrate)
             health_stats['CPU'] = (await getCPUInfo())
             health_stats['RAM'] = (await percentageMemory()).usedMem
             health_stats['ReceiveAudio'] = session.isReceiveAudio
             health_stats['ReceiveVideo'] = session.isReceiveVideo
             health_stats['Video Quality'] = pixel
             health_stats['Video Resolution'] = `${session.videoWidth} X ${session.videoHeight}`
-            health_stats['Bitrate'] = `${session.bitrate} KBPS`
+            health_stats['Bitrate'] = `${session.bitrate } Kbps`
             health_stats['FPS'] = session.videoFps
-            health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} K`
-            // health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
-            const publishStreamPath = session.publishStreamPath;
-            const viewers = Array.from(nms_context.sessions.values()).filter(session => {
-                    return session.playStreamPath === publishStreamPath;
-                });
+            health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} Kbps`
+            health_stats['Viewers'] = countViewers(session.publishStreamPath)
+            health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
 
            // console.log(viewers)
-            health_stats['Viewers'] =viewers.length
 
-            comments = []
+           // CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
+            comments = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
             if (standard_properties['videoCodecName'] !== session.videoCodecName) {
                 comments.push('videoCodec should be ' + standard_properties['videoCodecName'])
             }
@@ -214,96 +209,6 @@ router.get('/api/get_stats', auth, async (req, res) => {
         res.status(400).json(error.toString())
     }
 })
-// POST functions
-router.post('/api/register', async (req, res) => {
-    const {givenName, familyName, email, password: plainTextPassword} = req.body
-    if (!givenName || typeof givenName !== 'string') {
-        return res.status(400).json({status: 'error', title: 'Missing Given Name'})
-    }
-    if (!familyName || typeof familyName !== 'string') {
-        return res.stats(400).json({status: 'error', title: 'Missing Family Name'})
-    }
-    if (!email || typeof email !== 'string') {
-        return res.status(400).json({status: 'error', title: 'Missing Email Address'})
-    }
-    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
-        return res.status(400).json({status: 'error', title: 'Missing password'})
-    }
-    // regular expression for matching email addresses
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(email.toLowerCase())) {
-        return res.status(400).json({status: 'error', title: 'Email Address is invalid'})
-    }
-    if (plainTextPassword.length < 5) {
-        return res.status(403).json({
-            status: 'error',
-            title: 'Password is too small. It should be at least 5 characters'
-        })
-    }
-    const password = await bcrypt.hash(plainTextPassword, 10)
-    try {
-        const response = await User.create({
-            givenName,
-            familyName,
-            email,
-            password
-        })
-        // console.log('User created successfully: ', response)
-    } catch (err) {
-        if (err.code === 11000) {
-            // duplicate key
-            return res.status(409).json({status: 'error', title: 'Email already in use'})
-        }
-        throw err
-    }
-    res.status(200).json({status: 'ok', title: 'A new user was created successfully'})
-})
-
-router.post('/api/login', async (req, res) => {
-    const {email, password: plainTextPassword} = req.body
-    if (!email || typeof email !== 'string') {
-        return res.status(400).json({status: 'error', title: 'Missing Email Address'})
-    }
-    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
-        return res.status(400).json({status: 'error', title: 'Missing password'})
-    }
-    // regular expression for matching email addresses
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(email.toLowerCase())) {
-        return res.status(400).json({status: 'error', title: 'Email Address is invalid'})
-    }
-    if (plainTextPassword.length < 5) {
-        return res.status(403).json({
-            status: 'error',
-            title: 'Password is too small. It should be at least 5 characters'
-        })
-    }
-    const user = await User.findOne({email}).lean()
-    if (!user) {
-        return res.status(401).json({status: 'error', title: 'Invalid email/password'})
-    }
-    if (await bcrypt.compare(plainTextPassword, user.password)) {
-        // the username, password combination is successful
-        const token = jwt.sign(
-            {
-                id: user._id,
-                email: user.email
-            },
-            process.env.JWT_SECRET
-        )
-        // console.log('User logged in successfully!')
-        // console.log('Token: ', token)
-        // console.log('Username: ', `${user.givenName} ${user.familyName}`)
-        return res.status(200).json({
-            status: 'ok',
-            title: "User logged in successfully",
-            token: token,
-            username: `${user.givenName} ${user.familyName}`
-        })
-    }
-    res.status(401).json({status: 'error', error: 'Invalid email/password'})
-})
-
 
 // DELETE functions
 router.delete('/api/delete_user', auth, async (req, res) => {
@@ -323,6 +228,7 @@ router.delete('/api/delete_user', auth, async (req, res) => {
                 title: 'Only the admin or the email holder can delete the account registered with this email'
             })
         }
+        let deletion_result;
         deletion_result = await User.deleteOne({email: email_to_be_deleted})
         // Check if there was found a user with this email address in the database
         if (deletion_result.n == 0) {
@@ -441,5 +347,96 @@ router.delete('/api/delete_key', auth, async (req, res) => {
         res.status(400).json(error)
     }
 })
+
+// POST functions
+router.post('/api/register', async (req, res) => {
+    const {givenName, familyName, email, password: plainTextPassword} = req.body
+    if (!givenName || typeof givenName !== 'string') {
+        return res.status(400).json({status: 'error', title: 'Missing Given Name'})
+    }
+    if (!familyName || typeof familyName !== 'string') {
+        return res.stats(400).json({status: 'error', title: 'Missing Family Name'})
+    }
+    if (!email || typeof email !== 'string') {
+        return res.status(400).json({status: 'error', title: 'Missing Email Address'})
+    }
+    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
+        return res.status(400).json({status: 'error', title: 'Missing password'})
+    }
+    // regular expression for matching email addresses
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(email.toLowerCase())) {
+        return res.status(400).json({status: 'error', title: 'Email Address is invalid'})
+    }
+    if (plainTextPassword.length < 5) {
+        return res.status(403).json({
+            status: 'error',
+            title: 'Password is too small. It should be at least 5 characters'
+        })
+    }
+    const password = await bcrypt.hash(plainTextPassword, 10)
+    try {
+        const response = await User.create({
+            givenName,
+            familyName,
+            email,
+            password
+        })
+        // console.log('User created successfully: ', response)
+    } catch (err) {
+        if (err.code === 11000) {
+            // duplicate key
+            return res.status(409).json({status: 'error', title: 'Email already in use'})
+        }
+        throw err
+    }
+    res.status(200).json({status: 'ok', title: 'A new user was created successfully'})
+})
+
+router.post('/api/login', async (req, res) => {
+    const {email, password: plainTextPassword} = req.body
+    if (!email || typeof email !== 'string') {
+        return res.status(400).json({status: 'error', title: 'Missing Email Address'})
+    }
+    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
+        return res.status(400).json({status: 'error', title: 'Missing password'})
+    }
+    // regular expression for matching email addresses
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(email.toLowerCase())) {
+        return res.status(400).json({status: 'error', title: 'Email Address is invalid'})
+    }
+    if (plainTextPassword.length < 5) {
+        return res.status(403).json({
+            status: 'error',
+            title: 'Password is too small. It should be at least 5 characters'
+        })
+    }
+    const user = await User.findOne({email}).lean()
+    if (!user) {
+        return res.status(401).json({status: 'error', title: 'Invalid email/password'})
+    }
+    if (await bcrypt.compare(plainTextPassword, user.password)) {
+        // the username, password combination is successful
+        const token = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET
+        )
+        // console.log('User logged in successfully!')
+        // console.log('Token: ', token)
+        // console.log('Username: ', `${user.givenName} ${user.familyName}`)
+        return res.status(200).json({
+            status: 'ok',
+            title: "User logged in successfully",
+            token: token,
+            username: `${user.givenName} ${user.familyName}`
+        })
+    }
+    res.status(401).json({status: 'error', error: 'Invalid email/password'})
+})
+
 
 module.exports = router
