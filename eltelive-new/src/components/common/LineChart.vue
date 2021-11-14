@@ -20,12 +20,12 @@ export default {
         };
     },
     mounted() {
-        const labels = [1,2,3,4,5];
+        const labels = [];
         const data = {
             labels: labels,
             datasets: [{
                 label:`${this.title} PER SECOND`,
-                data:[0],
+                data:[],
                 fill: true,
                 borderColor: 'rgba(243,77,77,0.96)',
                 backgroundColor:'rgba(159,89,89,0.5)',
