@@ -1,17 +1,18 @@
 <template>
 
-    <div class="card text-center">
+    <div class="ant-card text-center">
         <div class="card-header">
             STREAM HEALTH FEEDBACK
         </div>
         <div class="card-body">
-            <table class="table table-primary ">
+            <div class="ant-table-wrapper">
+              <table class="table  table-primary ">
                 <thead class="ant-table-column-title" >
                 <th v-for="(val,k) in stats" >
                     {{k}}
                 </th>
                 </thead>
-                <tbody>
+                <tbody class=ant-table-body>
 
                 <th v-for="(value,key) in stats">
                     <div v-if="isButton(key)">
@@ -22,7 +23,7 @@
                       />
                     </div>
                     <div v-else-if="key.toUpperCase()==='VIEWERS'">
-                        <a @click="showModal" style="cursor: pointer">{{value}}</a>
+                        <a @click="showModal" style="cursor:pointer">{{value}}</a>
                         <Modal
                                 v-show="isModalVisible"
                                 @close="closeModal"
@@ -43,6 +44,7 @@
                 </th>
                 </tbody>
             </table>
+            </div>
             <div class="table-danger">
                 <div v-for="(value,key) in comments" class="text-dark">
                     {{value}}
