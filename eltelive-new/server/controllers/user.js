@@ -85,7 +85,7 @@ const registerUser =  async (req, res) => {
             // duplicate key
             return res.status(409).json({ status: 'error', title: 'Email already in use' })
         }
-        return  res.status(err.code).json({status:'error',title:err.message})
+        throw err
     }
     res.status(200).json({ status: 'ok', title: 'A new user was created successfully' })
 }
