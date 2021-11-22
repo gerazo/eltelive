@@ -48,38 +48,19 @@ const getUsers =  async (req, res) => {
 
 const registerUser =  async (req, res) => {
     const { givenName, familyName, email, password: plainTextPassword } = req.body
-    if (!givenName || typeof givenName !== 'string') {
-        return res.status(400).json({ status: 'error', title: 'Missing Given Name' })
-    }
-    if (!familyName || typeof familyName !== 'string') {
-        return res.stats(400).json({ status: 'error', title: 'Missing Family Name' })
-    }
-    if (!email || typeof email !== 'string') {
-        return res.status(400).json({ status: 'error', title: 'Missing Email Address' })
-    }
-    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
-        return res.status(400).json({ status: 'error', title: 'Missing password' })
-    }
-    // regular expression for matching email addresses
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if ( !re.test(email.toLowerCase()) ) {
-        return res.status(400).json({ status: 'error', title: 'Email Address is invalid' })
-    }
-    if (plainTextPassword.length < 5) {
-        return res.status(403).json({
-            status: 'error',
-            title: 'Password is too small. It should be at least 5 characters'
-        })
-    }
     const password = await bcrypt.hash(plainTextPassword, 10)
     try {
-        const response = await User.create({
-            givenName,
-            familyName,
-            email,
-            password
-        })
+
+        const user= new User({
+                givenName,
+                familyName,
+                email,
+                password
+            })
+        await user.save()
+
         // console.log('User created successfully: ', response)
+        res.status(200).json({ status: 'ok', title: 'A new user was created successfully' })
     } catch (err) {
         if (err.code === 11000) {
             // duplicate key
@@ -87,28 +68,11 @@ const registerUser =  async (req, res) => {
         }
         return  res.status(err.code).json({status:'error',title:err.message})
     }
-    res.status(200).json({ status: 'ok', title: 'A new user was created successfully' })
+
 }
 
 const loginUser = async (req, res) => {
     const { email, password: plainTextPassword } = req.body
-    if (!email || typeof email !== 'string') {
-        return res.status(400).json({ status: 'error', title: 'Missing Email Address' })
-    }
-    if (!plainTextPassword || typeof plainTextPassword !== 'string') {
-        return res.status(400).json({ status: 'error', title: 'Missing password' })
-    }
-    // regular expression for matching email addresses
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if ( !re.test(email.toLowerCase()) ) {
-        return res.status(400).json({ status: 'error', title: 'Email Address is invalid' })
-    }
-    if (plainTextPassword.length < 5) {
-        return res.status(403).json({
-            status: 'error',
-            title: 'Password is too small. It should be at least 5 characters'
-        })
-    }
     const user = await User.findOne({ email }).lean()
     if (!user) {
         return res.status(401).json({ status: 'error', title: 'Invalid email/password' })

@@ -19,19 +19,22 @@ const UserSchema = new mongoose.Schema({
 		unique: true,
         lowercase:true ,
         trim:true,
-        // validate(value){
-        //
-        //     if(!validator.isEmail(value)){
-        //         console.log("EMAIL IS " +value)
-        //         throw  new Error("Email Address is invalid")
-        //     }
-        // }
+        validate(value){
+
+            if(!validator.isEmail(value)){
+                throw  new Error("Email Address is invalid")
+            }
+        }
 	},
 	password: {
 		type: String,
 		required: true,
-        minlength:5,
         trim:true,
+        validate(value){
+            if (value.length < 5) {
+               throw new Error('Password is too small. It should be at least 5 characters')
+            }
+        }
 	},
 	stream_key: {
 		type: String,
