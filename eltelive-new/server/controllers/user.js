@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
 const shortid = require('shortid');
-
+const mongoose = require('../db_connections/db');
 
 const streaming_config = require('../config/config');
 const getUser = async (req, res) => {
