@@ -22,3 +22,6 @@ pnpm-debug.log*
 # Editor directories and files
 .idea
 .vscode
+
+# cache for selenium
+selenium-test/__pycache__
