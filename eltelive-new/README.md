@@ -5,7 +5,7 @@ The newer version of the ELTELive live streaming solution of ELTE University
 You will need to download and install [Node.js] and [MongoDB] on your system.
 
 You will have specfiy the Environment Variables that are being used in the development of the application.
-Create a `.env` file, and insert your key/value pairs in the following format of `KEY=VALUE`:
+Create a `.env` file at the top level of your file structure (example path: `eltelive/eltelive-new/.env`), and insert your key/value pairs in the following format of `KEY=VALUE`:
 ```
 # Back-end Environment Variables
 HOST=localhost
