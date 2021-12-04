@@ -47,9 +47,29 @@ const countViewers  = (publishStreamPath)=>{
     });
     return viewers.length
 }
+const collectWarnings = (session,standard_properties)=>{
+    let warnings = [];
+    warnings = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
+    if (standard_properties['videoCodecName'] !== session.videoCodecName) {
+        warnings.push('videoCodec should be ' + standard_properties['videoCodecName'])
+    }
+    if (standard_properties['AudioCodeName'] !== session.audioCodecName) {
+        warnings.push('AudioCode should  be ' + standard_properties['AudioCodeName'])
+    }
+    if (standard_properties['audioProfileName'] !== session.audioProfileName) {
+        warnings.push('audioProfileName should be ' + standard_properties['audioProfileName'])
+    }
+    if (standard_properties['audioChannels'] !== session.audioChannels) {
+        warnings.push('audioChannels should  be ' + standard_properties['audioChannels'])
+    }
+    if (standard_properties['videoProfileName'] !== session.videoProfileName) {
+        warnings.push('videoProfileName should be ' + standard_properties['videoProfileName'])
+    }
+    return warnings
+}
 async function collectStreamStats(session){
-    var health_stats = []
-    var comments = []
+    const health_stats = [];
+
     const bitrate = session.bitrate
     // console.log(session.videoWidth,session.videoHeight)
     const pixel = getVideoResolution(session.videoWidth, session.videoHeight)
@@ -74,24 +94,8 @@ async function collectStreamStats(session){
     // console.log(viewers)
 
     // CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
-    comments = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
-    if (standard_properties['videoCodecName'] !== session.videoCodecName) {
-        comments.push('videoCodec should be ' + standard_properties['videoCodecName'])
-    }
-    if (standard_properties['AudioCodeName'] !== session.audioCodecName) {
-        comments.push('AudioCode should  be ' + standard_properties['AudioCodeName'])
-    }
-    if (standard_properties['audioProfileName'] !== session.audioProfileName) {
-        comments.push('audioProfileName should be ' + standard_properties['audioProfileName'])
-    }
-    if (standard_properties['audioChannels'] !== session.audioChannels) {
-        comments.push('audioChannels should  be ' + standard_properties['audioChannels'])
-    }
-    if (standard_properties['videoProfileName'] !== session.videoProfileName) {
-        comments.push('videoProfileName should be ' + standard_properties['videoProfileName'])
-    }
 
-    return {health_stats,comments}
+    return {health_stats,comments:collectWarnings(session,standard_properties)}
 }
 
-module.exports= {getVideoResolution,CheckBitrate,countViewers,getBandwidthInfo,collectStreamStats}
+module.exports= {collectStreamStats}
