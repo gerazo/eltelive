@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mongoose = require('../db_connections/db');
 
@@ -5,19 +6,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const shortid = require('shortid');
 const md5 = require("md5");
-const {percentageMemory, getCPUInfo} = require('../utility/server')
-const {CheckBitrate,getBandwidthInfo, getVideoResolution,countViewers} = require("../utility/stream");
+const {collectStreamStats} = require("../utility/stream");
 
 const streaming_config = require('../config/config');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const User = require('../model/user');
 const {nms, key_id} = require('../config/media_server');
 
-const standard_map = require("../utility/StreamStandard");
-
 const auth = require('../middleware/auth')
 const router = new express.Router()
-
 
 // GET functions
 router.get('/api/get_user', auth, async (req, res) => {
@@ -142,8 +139,7 @@ router.get('/api/get_stats', auth, async (req, res) => {
 
     try {
 
-        let health_stats = {};
-        let comments = []
+      var data ;
         // Check if the stream key used to watch the stream exists in the database or not
 
         const id = key_id[req.user.stream_key]
@@ -155,54 +151,14 @@ router.get('/api/get_stats', auth, async (req, res) => {
             })
         }
         if (session.isPublishing) {
-            const bitrate = session.bitrate
-            // console.log(session.videoWidth,session.videoHeight)
-            const pixel = getVideoResolution(session.videoWidth, session.videoHeight)
 
-
-            const standard_properties = standard_map[pixel]
-
-
-            health_stats['BANDWIDTH'] = getBandwidthInfo(standard_properties.bitrate, bitrate)
-            health_stats['CPU'] = (await getCPUInfo())
-            health_stats['RAM'] = (await percentageMemory()).usedMem
-            health_stats['ReceiveAudio'] = session.isReceiveAudio
-            health_stats['ReceiveVideo'] = session.isReceiveVideo
-            health_stats['Video Quality'] = pixel
-            health_stats['Video Resolution'] = `${session.videoWidth} X ${session.videoHeight}`
-            health_stats['Bitrate'] = `${session.bitrate } Kbps`
-            health_stats['FPS'] = session.videoFps
-            health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} Kbps`
-            health_stats['Viewers'] = countViewers(session.publishStreamPath)
-            health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
-
-           // console.log(viewers)
-
-           // CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
-            comments = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
-            if (standard_properties['videoCodecName'] !== session.videoCodecName) {
-                comments.push('videoCodec should be ' + standard_properties['videoCodecName'])
-            }
-            if (standard_properties['AudioCodeName'] !== session.audioCodecName) {
-                comments.push('AudioCode should  be ' + standard_properties['AudioCodeName'])
-            }
-            if (standard_properties['audioProfileName'] !== session.audioProfileName) {
-                comments.push('audioProfileName should be ' + standard_properties['audioProfileName'])
-            }
-            if (standard_properties['audioChannels'] !== session.audioChannels) {
-                comments.push('audioChannels should  be ' + standard_properties['audioChannels'])
-            }
-            if (standard_properties['videoProfileName'] !== session.videoProfileName) {
-                comments.push('videoProfileName should be ' + standard_properties['videoProfileName'])
-            }
-
-
+            data = await collectStreamStats(session)
         }
 
 
         return res.status(200).json({
-            stats: health_stats,
-            comments: comments
+            stats: data.health_stats,
+            comments: data.comments
         })
     } catch (error) {
         console.log(error)

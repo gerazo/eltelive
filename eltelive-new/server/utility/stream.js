@@ -1,5 +1,6 @@
 const standard_map = require("../utility/StreamStandard");
 const nms_context = require('node-media-server/src/node_core_ctx.js')
+const {getCPUInfo, percentageMemory} = require("../utility/server");
 
 const resolution_standard_video_map ={
     'ULD':{'min':0,'max':350,'audio':64},
@@ -46,5 +47,51 @@ const countViewers  = (publishStreamPath)=>{
     });
     return viewers.length
 }
+async function collectStreamStats(session){
+    var health_stats = []
+    var comments = []
+    const bitrate = session.bitrate
+    // console.log(session.videoWidth,session.videoHeight)
+    const pixel = getVideoResolution(session.videoWidth, session.videoHeight)
 
-module.exports= {getVideoResolution,CheckBitrate,countViewers,getBandwidthInfo}
+
+    const standard_properties = standard_map[pixel]
+
+
+    health_stats['BANDWIDTH'] = getBandwidthInfo(standard_properties.bitrate, bitrate)
+    health_stats['CPU'] = (await getCPUInfo())
+    health_stats['RAM'] = (await percentageMemory()).usedMem
+    health_stats['ReceiveAudio'] = session.isReceiveAudio
+    health_stats['ReceiveVideo'] = session.isReceiveVideo
+    health_stats['Video Quality'] = pixel
+    health_stats['Video Resolution'] = `${session.videoWidth} X ${session.videoHeight}`
+    health_stats['Bitrate'] = `${session.bitrate } Kbps`
+    health_stats['FPS'] = session.videoFps
+    health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} Kbps`
+    health_stats['Viewers'] = countViewers(session.publishStreamPath)
+    health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
+
+    // console.log(viewers)
+
+    // CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
+    comments = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
+    if (standard_properties['videoCodecName'] !== session.videoCodecName) {
+        comments.push('videoCodec should be ' + standard_properties['videoCodecName'])
+    }
+    if (standard_properties['AudioCodeName'] !== session.audioCodecName) {
+        comments.push('AudioCode should  be ' + standard_properties['AudioCodeName'])
+    }
+    if (standard_properties['audioProfileName'] !== session.audioProfileName) {
+        comments.push('audioProfileName should be ' + standard_properties['audioProfileName'])
+    }
+    if (standard_properties['audioChannels'] !== session.audioChannels) {
+        comments.push('audioChannels should  be ' + standard_properties['audioChannels'])
+    }
+    if (standard_properties['videoProfileName'] !== session.videoProfileName) {
+        comments.push('videoProfileName should be ' + standard_properties['videoProfileName'])
+    }
+
+    return {health_stats,comments}
+}
+
+module.exports= {getVideoResolution,CheckBitrate,countViewers,getBandwidthInfo,collectStreamStats}
