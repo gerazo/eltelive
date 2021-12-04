@@ -170,14 +170,6 @@
 import Feedback from '../common/Feedback'
 
 
-const  connectionOptions =  {
-    "force new connection" : true,
-    "reconnectionAttempts": "3",
-    "timeout" : 10000,
-    "transports" : ["websocket"]
-};
-const url = "http://localhost:4000"
-const  socket = require("socket.io-client")(url,connectionOptions);
 export default {
   name: "active-streams",
     data(){
@@ -186,7 +178,6 @@ export default {
           health_stats:{'BANDWIDTH':87,'RAM':90,'CPU':55,'Video Quality':'ULD','Video Resolution':'100X200','isAudio':true,'isVideo':false,'bitrate':100,'audioSamplerate':48000,'fps':60},
           color:'rgb(255,255,0)',
           lastUpdate:  ((new Date())),
-          connection :null,
           comments:['a','b','c'],
 
       }
@@ -204,40 +195,10 @@ export default {
         }
     },
 
-    mounted(){
-
-        const getRealTimeData2=()=>{
-            console.log("STARTING CONNECTION TO WBS SERVER")
-            if(this.connection === null){
-              this.connection = new WebSocket('wss://localhost:4040')
-            }
-            this.connection.onopen = function(event){
-                console.log(event)
-                console.log("successfully connected to ws")
-            }
-
-            this.connection.onmessage = function (event){
-                console.log(event.data)
-            }
-        }
-
-        const getRealtimeData = (stream_key)=> {
-
-            socket.emit('join',stream_key);
-            console.log("key_stream",stream_key)
-            socket.on("updateData", (fetchedData) => {
-                //console.log('HELLO')
-                //console.log(fetchedData)
-                this.health_stats = JSON.parse(fetchedData.stats)
-                this.lastUpdate = (new Date(fetchedData.lastUpdate)).toString()
-                this.comments = fetchedData.comments
-                //console.log(this.health_stats)
-                // console.log(typeof(this.health_stats))
-                this.bandwidth = this.health_stats['BANDWIDTH']
-            })
-            }
-       const getStreamStats = async ()=>{
-            const result = await fetch(
+    mounted()
+    {
+        const getStreamStats = async ()=>{
+          const result = await fetch(
                 "http://" +
                 process.env.VUE_APP_HOST +
                 ":" +
@@ -250,16 +211,13 @@ export default {
                         Authorization: "Bearer " + localStorage.getItem("token")
                     }
                 }
-            ).then(res => res.json());
+          ).then(res => res.json());
 
-
-           this.health_stats =result.stats
-           this.comments = result.comments
-           this.bandwidth = this.health_stats['BANDWIDTH']
-
+          this.health_stats =result.stats
+          this.comments = result.comments
+          this.bandwidth = this.health_stats['BANDWIDTH']
 
         }
-
 
 
     const generateButton = this.$refs["keyGenerationStream"];
@@ -280,11 +238,9 @@ export default {
      * Promise fields used:[status,title]
      */
     const stream_key = localStorage.getItem("streamKey");
-    let fetching_interval =null;
     if(stream_key){
-      //  getRealtimeData(stream_key)
         this.intervalHandle=setInterval(getStreamStats,7000)
-        //fetching_interval=setInterval(fetchStreamData.bind(stream_key),5000)
+
     }
     async function generateStreamKey(event) {
       event.preventDefault();
@@ -311,14 +267,6 @@ export default {
 
       if (result.status === "ok") {
 
-
-          // if(!fetching_interval){
-          //     clearInterval(fetching_interval)
-          //     fetching_interval=setInterval(getRealtimeData.bind(stream_key),5000)
-          // }else{
-          //     clearInterval(fetching_interval)
-          //     fetching_interval=setInterval(getRealtimeData.bind(stream_key),5000)
-       //   }
          const  message="ok"
 
         //Success notification for generating a key
