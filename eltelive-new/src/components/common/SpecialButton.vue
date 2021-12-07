@@ -3,9 +3,8 @@
     <button  type="button"
              @click="showModal"
              :style="`background-color:${color}`"
-             class="btn btn-group-sm"
+             class="btn btn-group-sm">
 
-    >
         <div class="buttonText">
         {{value}}%
         </div>
@@ -13,18 +12,17 @@
         <transition  name="modal-fade">
         <Modal
                 v-show="isModalVisible"
-                @close="closeModal"
-        >
+                @close="closeModal">
+
             <template v-slot:header>
                 {{title}} Usage
             </template>
 
             <template v-slot:body>
                 <div v-if="isModalVisible">
-                    <LineChart :isModalVisible="isModalVisible" :title="title.toString()" :chartData="value"  />
-                </div>
-                <div v-else>
-                    This is Default Body
+                    <LineChart :isModalVisible="isModalVisible"
+                               :title="title.toString()"
+                               :chartData="value"  />
                 </div>
             </template>
             </Modal>

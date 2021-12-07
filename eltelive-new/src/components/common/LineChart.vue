@@ -45,15 +45,6 @@ export default {
                 }
         };
 
-        const getRandomInt= (max)=> {
-            return Math.floor(Math.random() * max);
-        }
-        const fakeRealTimeData = ()=>{
-            return {
-                data:getRandomInt(100),
-                time:(new Date()).getSeconds()
-            }
-        }
 
 
         function addData(chart, label, data) {
@@ -78,7 +69,7 @@ export default {
             chart.data.datasets.forEach((dataset) => {
                 if (dataset.data.length>7){
                     dataset.data.shift()
-                    console.log("DATA SHIFTED")
+                    //console.debug("DATA SHIFTED")
                     chart.data.labels.shift();
                 }
             });
@@ -100,19 +91,19 @@ export default {
         const ctx = document.getElementById('line-chart');
 
         if(this.isModalVisible){
-            console.log("I AM HERE")
+         //   console.debug("I AM HERE")
             if(this.myChart){
                 this.myChart.destroy();
             }
             this.myChart= new Chart(ctx, config);
         }
         if(this.myChart){
-            console.log("I AM HERE")
+          //  console.debug("I AM HERE")
           this.TimeOutHandle=  setInterval(()=>{
 
             updateChart(this.myChart,this.chartData,new Date())
 
-        },3000)
+        },1000)
         }
     },
     beforeDestroy(){

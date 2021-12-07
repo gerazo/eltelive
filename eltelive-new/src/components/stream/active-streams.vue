@@ -154,10 +154,9 @@
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
       ></script>
     </div>
-      <div v-if="bandwidth>0" class="d-flex justify-content-center pt-5 pl-5">
+      <div  class="d-flex justify-content-center pt-5 pl-5">
         <keep-alive>
-            <Feedback :stats="health_stats"   :lastUpdate="lastUpdate"  :comments ="comments"       :text="bandwidth.toString()"
-                      :color="getColor(bandwidth)"/>
+            <Feedback :health_stats="health_stats"   :lastUpdate="lastUpdate"  :warnings ="warnings"       />
         </keep-alive>
       </div>
 
@@ -174,25 +173,15 @@ export default {
   name: "active-streams",
     data(){
       return {
-          bandwidth:1,
+
           health_stats:{'BANDWIDTH':87,'RAM':90,'CPU':55,'Video Quality':'ULD','Video Resolution':'100X200','isAudio':true,'isVideo':false,'bitrate':100,'audioSamplerate':48000,'fps':60},
-          color:'rgb(255,255,0)',
           lastUpdate:  ((new Date())),
-          comments:['a','b','c'],
+          warnings:['a','b','c'],
 
       }
     },
     components:{
         Feedback
-    },
-    methods:{
-
-        getColor(bandwidth){
-          const  green = 255*(bandwidth/100)
-            const  red = 255-green
-
-            return `rgb(${red},${green},30)`
-        }
     },
 
     mounted()
@@ -212,10 +201,9 @@ export default {
                     }
                 }
           ).then(res => res.json());
-
-          this.health_stats =result.stats
-          this.comments = result.comments
-          this.bandwidth = this.health_stats['BANDWIDTH']
+          console.log(result)
+          this.health_stats =result['health_stats']
+          this.warnings = result['warnings']
 
         }
 

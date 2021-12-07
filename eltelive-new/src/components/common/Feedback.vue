@@ -5,16 +5,17 @@
             STREAM HEALTH FEEDBACK
         </div>
         <div class="card-body">
-            <div class="ant-table-wrapper">
-              <table class="table  table-primary ">
+            <div v-show="Object.keys(health_stats).length>0" class="ant-table-wrapper">
+
+                <table class="table  table-primary ">
                 <thead class="ant-table-column-title" >
-                <th v-for="(val,k) in stats" >
+                <th v-for="(val,k) in health_stats" >
                     {{k}}
                 </th>
                 </thead>
                 <tbody class=ant-table-body>
 
-                <th v-for="(value,key) in stats">
+                <td v-for="(value,key) in health_stats">
                     <div v-if="isButton(key)">
                       <Button
                               :value="value"
@@ -41,12 +42,12 @@
                         <div v-else-if="value===false">&#10060;</div>
                         <div v-else>{{value}}</div>
                     </div>
-                </th>
+                </td>
                 </tbody>
-            </table>
+              </table>
             </div>
             <div class="table-danger">
-                <div v-for="(value,key) in comments" class="text-dark">
+                <div v-for="(value,key) in warnings" class="text-dark">
                     {{value}}
                 </div>
             </div>
@@ -62,18 +63,16 @@
 
 
 <script>
-import Button from './Button'
+import Button from './SpecialButton'
 import Modal from "./Modal";
 import Guests from "./Guests";
 export default {
 
     name:'Feedback',
     props :{
-        stats: Object,
-        color:String,
-        bandwidth:Number,
+        health_stats: Object,
         lastUpdate:Date,
-        comments: Array,
+        warnings: Array,
     },
     components: {
         Modal,
