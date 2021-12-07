@@ -98,7 +98,7 @@ async function collectStreamStats(session){
 
     health_stats['Bitrate'] = `${session.bitrate } Kbps`
     health_stats['FPS'] = session.videoFps
-    health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} Khzs`
+    health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} kHz`
     health_stats['CPU'] = (await getCPUInfo())
     health_stats['RAM'] = (await percentageMemory()).usedMem
     health_stats['Viewers'] = countViewers(session.publishStreamPath)
