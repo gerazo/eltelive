@@ -1,15 +1,10 @@
 const standard_map = require("../utility/StreamStandard");
 const nms_context = require('node-media-server/src/node_core_ctx.js')
 const {getCPUInfo, percentageMemory} = require("../utility/server");
-
-const resolution_standard_video_map ={
-    'ULD':{'min':0,'max':350,'audio':64},
-    'LD':{'min':350,'max':800,'audio':64},
-    'SD':{'min':800,'max':1200,'audio':128},
-    'HD':{'min':1200,'max':1900,'audio':256},
-    'FHD':{'min':1900,'max':4500,'audio':256}
-}
+let videoHeight = 0;
+let videoWidth = 0;
 const getVideoResolution= (width,height)=>{
+
     if (width<640 && height<360){
         return 'ULD'
     }else if(width<854 && height<480){
@@ -41,15 +36,25 @@ const CheckBitrate =(cached_bitrate, std_bitrate,video_bitrate)=>{
 
 
 }
+const getStandards=(pixel)=>{
+
+    return standard_map[pixel]
+
+}
 const countViewers  = (publishStreamPath)=>{
     const viewers = Array.from(nms_context.sessions.values()).filter(session => {
         return session.playStreamPath === publishStreamPath;
     });
     return viewers.length
 }
-const collectWarnings = (session,standard_properties)=>{
-    let warnings = [];
-    warnings = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
+const collectWarnings = (session)=>{
+
+    const pixel = getVideoResolution(session.videoWidth, session.videoHeight)
+
+    const standard_properties = getStandards(pixel)
+
+    let warnings ;
+    warnings = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, session.bitrate)
     if (standard_properties['videoCodecName'] !== session.videoCodecName) {
         warnings.push('videoCodec should be ' + standard_properties['videoCodecName'])
     }
@@ -68,34 +73,42 @@ const collectWarnings = (session,standard_properties)=>{
     return warnings
 }
 async function collectStreamStats(session){
-    const health_stats = [];
 
-    const bitrate = session.bitrate
+    let warnings = []
+    let health_stats = {};
+    console.log(session)
+
     // console.log(session.videoWidth,session.videoHeight)
-    const pixel = getVideoResolution(session.videoWidth, session.videoHeight)
+    videoHeight = Math.max(videoHeight,session.videoHeight)
+    videoWidth  = Math.max(videoWidth,session.videoWidth)
+    const pixel = getVideoResolution(videoWidth, videoHeight)
 
+    const standard_properties = getStandards(pixel)
 
-    const standard_properties = standard_map[pixel]
+    if(videoWidth>0 && videoHeight>0) {
+        warnings = collectWarnings(session)
+        health_stats['BANDWIDTH'] = getBandwidthInfo(standard_properties.bitrate, session.bitrate)
+        health_stats['ReceiveAudio'] = session.isReceiveAudio
+        health_stats['ReceiveVideo'] = session.isReceiveVideo
+        health_stats['Video Quality'] = pixel
+        health_stats['Video Resolution'] = `${videoWidth} X ${videoHeight}`
+    }else{
+        warnings.push('No information available  on Video & Bandwidth , Change Encoder to x264 !')
+    }
 
-
-    health_stats['BANDWIDTH'] = getBandwidthInfo(standard_properties.bitrate, bitrate)
-    health_stats['CPU'] = (await getCPUInfo())
-    health_stats['RAM'] = (await percentageMemory()).usedMem
-    health_stats['ReceiveAudio'] = session.isReceiveAudio
-    health_stats['ReceiveVideo'] = session.isReceiveVideo
-    health_stats['Video Quality'] = pixel
-    health_stats['Video Resolution'] = `${session.videoWidth} X ${session.videoHeight}`
     health_stats['Bitrate'] = `${session.bitrate } Kbps`
     health_stats['FPS'] = session.videoFps
-    health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} Kbps`
+    health_stats['AudioSamplerate'] =  `${(session.audioSamplerate / 1000)} Khzs`
+    health_stats['CPU'] = (await getCPUInfo())
+    health_stats['RAM'] = (await percentageMemory()).usedMem
     health_stats['Viewers'] = countViewers(session.publishStreamPath)
     health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
 
-    // console.log(viewers)
 
-    // CheckBitrate(session.cached_bitrate,standard_properties.bitrate, bitrate)
-
-    return {health_stats,comments:collectWarnings(session,standard_properties)}
+    return{
+        health_stats,
+        warnings
+    }
 }
 
 module.exports= {collectStreamStats}

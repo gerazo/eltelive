@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const shortid = require('shortid');
 const md5 = require("md5");
 const {collectStreamStats} = require("../utility/stream");
+const {isObjectEmpty}  = require( "../utility/objects");
 
 const streaming_config = require('../config/config');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -84,17 +85,6 @@ router.get('/api/get_guests', auth, async (req, res) => {
     }
 
     try {
-        const isObjectEmpty = (obbj) => {
-            return Object.keys(obbj).length === 0
-        }
-        const flatten = (arr) => {
-            return arr.reduce(function (flat, toFlatten) {
-                return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-            }, []);
-        }
-        const objectsToArray = (objs) => {
-            return Object.keys(objs).map(key => objs[key] instanceof Object ? objectsToArray(objs[key]) : key + ":" + objs[key])
-        }
         const user = req.user
         const response = await fetchStreamData(user.stream_key)
         let stats = {}
@@ -118,10 +108,6 @@ router.get('/api/get_guests', auth, async (req, res) => {
            // stats["Live Time"] = new Date(new Date() - new Date(response["publisher"]["connectCreated"])).getMinutes()
 
         }
-        var test_data =
-            {
-                "subscribers": []
-            }
 
         const emptyObject = isObjectEmpty(stats)
         return res.status(200).json({
@@ -139,26 +125,27 @@ router.get('/api/get_stats', auth, async (req, res) => {
 
     try {
 
-      var data ;
+
         // Check if the stream key used to watch the stream exists in the database or not
 
         const id = key_id[req.user.stream_key]
         const session = nms.getSession(id)
         if (!session) {
             return res.status(200).json({
-                stats: {},
-                comments: ['NO LIVE DATA']
+                health_stats: {},
+                warnings: ['NO LIVE DATA']
             })
         }
-        if (session.isPublishing) {
-
-            data = await collectStreamStats(session)
-        }
 
 
+       const data = await collectStreamStats(session)
+
+
+
+        console.log(data)
         return res.status(200).json({
-            stats: data.health_stats,
-            comments: data.comments
+            health_stats: data['health_stats'],
+            warnings: data['warnings']
         })
     } catch (error) {
         console.log(error)
