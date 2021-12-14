@@ -8,7 +8,9 @@
     "lint": "vue-cli-service lint",
     "server": "node server/server.js",
     "watch": "nodemon server/server.js",
-    "test": "mocha server/test/test.js --exit"
+    "test:api": "mocha server/test/test_api/test.js --exit",
+    "test:utils": "mocha server/test/test_utils --recursive --exit",
+    "test-front": "nightwatch --tag feedback"
   },
   "dependencies": {
     "@vue/eslint-plugin": "^4.2.0",
@@ -52,8 +54,10 @@
     "@vue/cli-service": "^4.1.1",
     "babel-eslint": "^10.1.0",
     "bootstrap": "~4.6.0",
+    "chromedriver": "^96.0.0",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
+    "nightwatch": "^1.7.12",
     "node-sass": "^5.0.0",
     "ps-list": "^7.2.0",
     "sass": "^1.19.0",
