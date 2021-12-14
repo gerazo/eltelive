@@ -1,6 +1,8 @@
 const standard_map = require("../utility/StreamStandard");
 const nms_context = require('node-media-server/src/node_core_ctx.js')
 const {getCPUInfo, percentageMemory} = require("../utility/server");
+const serverController = require("node-media-server/src/api/controllers/server");
+
 let videoHeight = 0;
 let videoWidth = 0;
 const getVideoResolution= (width,height)=>{
@@ -72,13 +74,14 @@ const collectWarnings = (session)=>{
     }
     return warnings
 }
+
 async function collectStreamStats(session){
 
     let warnings = []
     let health_stats = {};
     console.log(session)
 
-    // console.log(session.videoWidth,session.videoHeight)
+    console.log(()=>{serverController.getInfo.bind(nms_context)})
     videoHeight = Math.max(videoHeight,session.videoHeight)
     videoWidth  = Math.max(videoWidth,session.videoWidth)
     const pixel = getVideoResolution(videoWidth, videoHeight)
@@ -104,6 +107,7 @@ async function collectStreamStats(session){
     health_stats['Viewers'] = countViewers(session.publishStreamPath)
     health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
 
+    // console.log(viewers)
 
     return{
         health_stats,

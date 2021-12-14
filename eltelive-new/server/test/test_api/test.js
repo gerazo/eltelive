@@ -2,6 +2,7 @@ require('./register');
 require('./login');
 require('./get_user');
 require('./get_users');
+require('./get_stats')
 require('./change_password');
 require('./generate_key');
 require('./get_key');
