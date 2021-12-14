@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const shortid = require('shortid');
 const md5 = require("md5");
-const {collectStreamStats} = require("../utility/stream");
-const {isObjectEmpty}  = require( "../utility/objects");
+const {collectStreamStats} = require("../utils/stream");
+const {isObjectEmpty}  = require( "../utils/objects");
 
 const streaming_config = require('../config/config');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -130,6 +130,7 @@ router.get('/api/get_stats', auth, async (req, res) => {
 
         const id = key_id[req.user.stream_key]
         const session = nms.getSession(id)
+        console.log(session)
         if (!session) {
             return res.status(200).json({
                 health_stats: {},
