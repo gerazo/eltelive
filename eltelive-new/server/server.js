@@ -24,4 +24,4 @@ app.listen(port, (err) => {
     if (err) return console.log(err);
     console.log('server running on port ' + port);
 })
-module.exports = { app};
+module.exports = app;
