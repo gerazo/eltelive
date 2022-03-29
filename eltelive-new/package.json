@@ -9,7 +9,8 @@
     "server": "node server/server.js",
     "watch": "nodemon server/server.js",
     "test:api": "mocha server/test/test_api/test.js --exit",
-    "test:utils": "mocha server/test/test_utils --exit"
+    "test:utils": "mocha server/test/test_utils --exit",
+    "test": "mocha server/test --exit"
   },
   "dependencies": {
     "@vue/eslint-plugin": "^4.2.0",
