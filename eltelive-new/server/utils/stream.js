@@ -1,17 +1,22 @@
-const standard_map = require("../utility/StreamStandard");
+const standard_map = require(".//StreamStandard");
 const nms_context = require('node-media-server/src/node_core_ctx.js')
-const {getCPUInfo, percentageMemory} = require("../utility/server");
+const {getCPUInfo, percentageMemory} = require(".//server");
+const serverController = require("node-media-server/src/api/controllers/server");
+const {error} = require("node-media-server/src/node_core_logger");
+
 let videoHeight = 0;
 let videoWidth = 0;
 const getVideoResolution= (width,height)=>{
-
-    if (width<640 && height<360){
+    if (width<=0 || height <=0 ){
+        throw  new Error('VIDEO HEIGHT OR WIDTH MUST BE POSITIVE number')
+    }
+    if (width<641 && height<361){
         return 'ULD'
-    }else if(width<854 && height<480){
+    }else if(width<855 && height<481){
         return 'LD'
-    }else if (width<1280 && height<720){
+    }else if (width<1281 && height<721){
         return 'SD'
-    }else if (width<1920 && height<1080){
+    }else if (width<1921 && height<1081){
         return 'HD'
     }else{
         return 'FHD'
@@ -53,8 +58,10 @@ const collectWarnings = (session)=>{
 
     const standard_properties = getStandards(pixel)
 
-    let warnings ;
-    warnings = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, session.bitrate)
+    let warnings=[] ;
+    if(session.cached_bitrate)  {
+        warnings = CheckBitrate(session.cached_bitrate,standard_properties.bitrate, session.bitrate)
+    }
     if (standard_properties['videoCodecName'] !== session.videoCodecName) {
         warnings.push('videoCodec should be ' + standard_properties['videoCodecName'])
     }
@@ -72,20 +79,21 @@ const collectWarnings = (session)=>{
     }
     return warnings
 }
+
 async function collectStreamStats(session){
 
     let warnings = []
     let health_stats = {};
-    console.log(session)
+    // console.log(session)
 
-    // console.log(session.videoWidth,session.videoHeight)
+    console.log(()=>{serverController.getInfo.bind(nms_context)})
     videoHeight = Math.max(videoHeight,session.videoHeight)
     videoWidth  = Math.max(videoWidth,session.videoWidth)
-    const pixel = getVideoResolution(videoWidth, videoHeight)
 
-    const standard_properties = getStandards(pixel)
 
     if(videoWidth>0 && videoHeight>0) {
+        const pixel = getVideoResolution(videoWidth, videoHeight)
+        const standard_properties = getStandards(pixel)
         warnings = collectWarnings(session)
         health_stats['BANDWIDTH'] = getBandwidthInfo(standard_properties.bitrate, session.bitrate)
         health_stats['ReceiveAudio'] = session.isReceiveAudio
@@ -104,6 +112,7 @@ async function collectStreamStats(session){
     health_stats['Viewers'] = countViewers(session.publishStreamPath)
     health_stats['Duration'] = session.isLive ? Math.ceil((Date.now() - session.startTimestamp) / 1000) : 0;
 
+    // console.log(viewers)
 
     return{
         health_stats,
@@ -111,4 +120,4 @@ async function collectStreamStats(session){
     }
 }
 
-module.exports= {collectStreamStats}
+module.exports= {collectStreamStats,collectWarnings,getStandards,getBandwidthInfo,getVideoResolution}
