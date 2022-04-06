@@ -2,10 +2,11 @@
   <div>
     <div class="pt-5 pb-3">
       <div class="text-center pt-5">
-        <h1 class="pb-3">Guest Portal</h1>
+        <h1 id="selenium_output_6" class="pb-3">Guest Portal</h1>
       </div>
       <div class="float-right mr-5">
         <button
+          id="selenium_24"
           type="button"
           class="btn btn-primary mr-5"
           data-toggle="modal"
@@ -30,6 +31,7 @@
               Streamer Guide
             </h4>
             <button
+              id="selenium_26"
               type="button"
               class="close"
               data-dismiss="modal"
@@ -52,6 +54,7 @@
           </div>
           <div class="modal-footer">
             <button
+              id="selenium_25"
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
@@ -98,7 +101,7 @@
           required
         />
         <div class="pt-4">
-          <button class="link-buttons mr-5" v-on:click="registerStreamKey(3)">
+          <button id="selenium_27" class="link-buttons mr-5" v-on:click="registerStreamKey(3)">
             - Listen in Browser -
           </button>
         </div>

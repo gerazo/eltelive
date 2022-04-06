@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-center pt-5">
-      <h1 class="pb-5">Create an Account</h1>
+      <h1 id="selenium_output_5" class="pb-5">Create an Account</h1>
     </div>
     <div class="container-sign-up">
       <div class="sign-up pt-4 pr-5">
@@ -43,6 +43,7 @@
           </div>
           <div>
             <input
+              id = "selenium_21"
               type="submit"
               value="Sign Up"
               class="btn btn-primary btn-block"
@@ -50,7 +51,7 @@
           </div>
           <div class="d-flex justify-content-center pt-3">
             <p class="existing-account">
-              <router-link to="/login"
+              <router-link id="selenium_22" to="/login"
                 >Already have an account? Login</router-link
               >
             </p>
@@ -64,7 +65,7 @@
           stream
         </p>
         <div class="guest-portal-btn">
-          <router-link to="/guest" class="btn btn-light btn-block"
+          <router-link id="selenium_23" to="/guest" class="btn btn-light btn-block"
             >Go to Guest Portal</router-link
           >
         </div>

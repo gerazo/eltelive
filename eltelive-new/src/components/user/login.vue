@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-center pt-5">
-      <h1 class="pb-5">Welcome Back</h1>
+      <h1 id="selenium_output_4" class="pb-5">Welcome Back</h1>
     </div>
     <div class="container-sign-in">
       <div class="sign-in pt-4 pr-5">
@@ -27,6 +27,7 @@
           </div>
           <div class="login-btn">
             <input
+              id="selenium_18"
               type="submit"
               value="Login"
               class="btn btn-primary btn-block"
@@ -34,7 +35,7 @@
           </div>
           <div class="d-flex justify-content-center pt-3">
             <p class="sign-up-btn">
-              <router-link to="/signup">Don't have an account? Sign Up</router-link>
+              <router-link id="selenium_19" to="/signup">Don't have an account? Sign Up</router-link>
             </p>
           </div>
         </form>
@@ -46,7 +47,7 @@
           stream
         </p>
         <div class="guest-portal-btn">
-          <router-link to="/guest" class="btn btn-light btn-block"
+          <router-link id="selenium_20" to="/guest" class="btn btn-light btn-block"
             >Go to Guest Portal</router-link
           >
         </div>

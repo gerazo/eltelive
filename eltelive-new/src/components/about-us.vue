@@ -1,7 +1,7 @@
 <template>
   <div class="About pt-5">
     <div class="text-center pt-5">
-      <h1 class="pb-5">About Us</h1>
+      <h1 id="selenium_output_2" class="pb-5">About Us</h1>
       <h4 class="pb-5">We help in easy access for live online sessions</h4>
     </div>
     <div class="d-flex pb-3">
@@ -88,7 +88,7 @@
         </div>
         <div class="contact-info">
           <h4>You can contact us since we like to communicate and socialize</h4>
-          <router-link to="/contact" class="btn btn-contact mt-3"
+          <router-link id="selenium_34" to="/contact" class="btn btn-contact mt-3"
             >Contact Us</router-link
           >
         </div>

@@ -4,11 +4,12 @@
     <div class="container mt-3">
       <form class="contact-form" v-on:submit.prevent="sendEmail">
         <label>Name</label>
-        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="text" id="selenium_14" name="name" placeholder="Your Name" required />
         <label>Email</label>
-        <input type="email" name="email" placeholder="Your Email" required />
+        <input type="email" id="selenium_15" name="email" placeholder="Your Email" required />
         <label>Message</label>
         <textarea
+          id="selenium_16"
           name="message"
           cols="30"
           rows="5"
@@ -16,7 +17,7 @@
           required
         >
         </textarea>
-        <input class="font-weight-bold" type="submit" value="Send" />
+        <input class="font-weight-bold" id="selenium_17" type="submit" value="Send" />
       </form>
     </div>
     <button

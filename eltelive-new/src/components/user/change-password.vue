@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="text-center pt-5">
-      <h1>Change Password</h1>
+      <h1 id="selenium_output_8">Change Password</h1>
   </div>
     <div class="d-flex justify-content-center pl-5">
     <div class="change-password pt-4 mt-5 pr-5">
@@ -18,6 +18,7 @@
         </div>
         <div>
           <input
+            id="selenium_33"
             type="submit"
             value="Change Password"
             class="btn btn-primary btn-lg btn-block"

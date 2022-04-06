@@ -3,10 +3,11 @@
   <div class="background">
     <div class="pt-5 pb-5">
       <div class="text-center pt-5">
-        <h1 class="pb-5">Active Streams</h1>
+        <h1 id="selenium_output_7" class="pb-5">Active Streams</h1>
       </div>
       <div class="float-right mr-5">
         <button
+          id="selenium_30"
           type="button"
           class="btn btn-primary mr-5"
           data-toggle="modal"
@@ -43,6 +44,7 @@
               Streamer Guide
             </h4>
             <button
+              id="selenium_32"
               type="button"
               class="close"
               data-dismiss="modal"
@@ -80,6 +82,7 @@
           </div>
           <div class="modal-footer">
             <button
+              id="selenium_31"
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
@@ -106,6 +109,7 @@
           </div>
           <div class="input-group-append">
             <input
+              id="selenium_28"
               class="btn btn-primary"
               ref="keyGenerationStream"
               type="button"
@@ -114,6 +118,7 @@
           </div>
           <div class="input-group-append">
             <input
+              id="selenium_29"
               class="btn btn-danger"
               ref="keyDeletionStream"
               type="button"

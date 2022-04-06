@@ -8,18 +8,22 @@
       </div>
       <div class="landing-gp">
       <div class="text-center pt-5">
-      <h1>ELTELive</h1>
+      <h1 id="selenium_output_1">ELTELive</h1>
     </div>
         <p>
           Welcome to ELTELive Live Streaming
         </p>
         <div class="home-btn mt-5">
-          <button @click="$router.push('login')" class="btn btn-primary mr-4">
+          <button @click="$router.push('login')" 
+          class="btn btn-primary mr-4"
+          id="selenium_12"
+          >
             Login
           </button>
           <button
             @click="$router.push('guest')"
             class="btn custom-btn btn-outline-secondary"
+            id="selenium_13"
           >
             Join Stream as Guest
           </button>
