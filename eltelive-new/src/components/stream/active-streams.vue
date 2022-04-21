@@ -1,4 +1,3 @@
-<script src="flv.min.js"></script>
 <template>
   <div class="background">
     <div class="pt-5 pb-5">
@@ -155,12 +154,60 @@
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
       ></script>
     </div>
+      <div  class="d-flex justify-content-center pt-5 pl-5">
+        <keep-alive>
+            <Feedback :health_stats="health_stats"   :lastUpdate="lastUpdate"  :warnings ="warnings"       />
+        </keep-alive>
+      </div>
+
   </div>
+
 </template>
+
 <script>
+
+import Feedback from '../common/Feedback'
+
+
 export default {
   name: "active-streams",
-  mounted() {
+    data(){
+      return {
+
+          health_stats:{'BANDWIDTH':87,'RAM':90,'CPU':55,'Video Quality':'ULD','Video Resolution':'100X200','isAudio':true,'isVideo':false,'bitrate':100,'audioSamplerate':48000,'fps':60},
+          lastUpdate:  ((new Date())),
+          warnings:['a','b','c'],
+
+      }
+    },
+    components:{
+        Feedback
+    },
+
+    mounted()
+    {
+        const getStreamStats = async ()=>{
+          const result = await fetch(
+                "http://" +
+                process.env.VUE_APP_HOST +
+                ":" +
+                process.env.VUE_APP_NODE_JS_PORT +
+                "/api/get_stats",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                }
+          ).then(res => res.json());
+          console.log(result)
+          this.health_stats =result['health_stats']
+          this.warnings = result['warnings']
+
+        }
+
+
     const generateButton = this.$refs["keyGenerationStream"];
     generateButton.addEventListener("click", generateStreamKey);
 
@@ -170,6 +217,7 @@ export default {
     document.getElementById("key_textfield").innerHTML =
       localStorage.getItem("streamKey") || "";
 
+
     document.getElementById("server_textfield").innerHTML =
       localStorage.getItem("server") || "";
 
@@ -177,6 +225,11 @@ export default {
      * Returns a promise from the backend with the result.
      * Promise fields used:[status,title]
      */
+    const stream_key = localStorage.getItem("streamKey");
+    if(stream_key){
+        this.intervalHandle=setInterval(getStreamStats,7000)
+
+    }
     async function generateStreamKey(event) {
       event.preventDefault();
 
@@ -201,6 +254,9 @@ export default {
       document.location.reload();
 
       if (result.status === "ok") {
+
+         const  message="ok"
+
         //Success notification for generating a key
         document.getElementById("notificationSuccessG").style.display = "block";
         document.getElementById("notificationSuccessG").innerHTML =
@@ -208,6 +264,7 @@ export default {
         setTimeout(function() {
           $("#notificationSuccessG").fadeOut("fast");
         }, 4000);
+
       } else if (!localStorage.getItem("token")) {
         //Error notification for deletion in case user is not logged in
         document.getElementById("notificationErrorD").style.display = "block";
@@ -278,6 +335,12 @@ export default {
         }, 4000);
       }
     }
+
+  },
+
+  beforeDestroy(){
+    if(this.intervalHandle !==null)
+        clearInterval(this.intervalHandle)
   }
 };
 </script>

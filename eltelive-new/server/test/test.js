@@ -1,9 +1,2 @@
-require('./register');
-require('./login');
-require('./get_user');
-require('./get_users');
-require('./change_password');
-require('./generate_key');
-require('./get_key');
-require('./delete_key');
-require('./delete_user');
+require('./test_api/test.js');
+require('./test_utils/test.js')

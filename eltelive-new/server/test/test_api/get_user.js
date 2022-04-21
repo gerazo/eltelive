@@ -1,16 +1,16 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
-const mongoose = require('../db_connections/test');
-const User = require('../model/user');
-const server = require('../server');
+const mongoose = require('../../db_connections/test');
+const User = require('../../model/user');
+const server = require('../../server');
 const temp_data = require('./temp_data')
 
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('/DELETE delete_key', async () => {
-    it('should delete the stream key of the logged-in user', async () => {
+describe('/GET get_user', async () => {
+    it('should return the details of the user', async () => {
         const user = await User.findOne({ email: temp_data.TEST1_USER.email }).lean()
         const token = jwt.sign(
             {
@@ -20,38 +20,43 @@ describe('/DELETE delete_key', async () => {
             process.env.JWT_SECRET
         )
         chai.request(server)
-            .delete('/api/delete_key')
+            .get('/api/get_user')
             .set({ "Authorization": `Bearer ${token}` })
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(200);
-                res.body.title.should.be.eql('Stream key deleted successfully');
+                res.body.title.should.be.eql('User details are retrieved successfully');
+                res.body.should.have.property('user');
+                res.body.user.should.have.property('givenName');
+                res.body.user.should.have.property('familyName');
+                res.body.user.should.have.property('email');
+                res.body.user.should.have.property('email').eql(user.email);
             });
-    })
+    });
 
-    it('should return "JWT Token not provided" error', async () => {
+    it('should return "JWT Token not provided" error, if the token is missing', async () => {
         const token = temp_data.EMPTY_STRING
         chai.request(server)
-            .delete('/api/delete_key')
+            .get('/api/get_user')
             .set({ "Authorization": `Bearer ${token}` })
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(401);
                 res.body.title.should.be.eql('JWT Token not provided');
             });
-    })
+    });
 
-    it('should return "Unexpected error" error', async () => {
+    it('should return "Unexpected error" error, if the token is not in the correct format', async () => {
         const token = temp_data.DUMMY_STRING
         chai.request(server)
-            .delete('/api/delete_key')
+            .get('/api/get_user')
             .set({ "Authorization": `Bearer ${token}` })
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(400);
                 res.body.title.should.be.eql('Unexpected error');
             });
-    })
+    });
 
     it('should return "User with this token does not exist" error', async () => {
         const token = jwt.sign(
@@ -62,12 +67,12 @@ describe('/DELETE delete_key', async () => {
             process.env.JWT_SECRET
         )
         chai.request(server)
-            .delete('/api/delete_key')
+            .get('/api/get_user')
             .set({ "Authorization": `Bearer ${token}` })
             .end((err, res) => {
                 res.body.should.be.a('object');
                 res.should.have.status(404);
                 res.body.title.should.be.eql('User with this token does not exist');
             });
-    })
+    });
 });
