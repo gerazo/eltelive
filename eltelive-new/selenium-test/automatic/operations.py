@@ -36,6 +36,11 @@ def set_up():
     driver.get("http://localhost:8080/")
     driver.maximize_window()
 
+def tear_down():
+    global driver
+    sleep(1)
+    driver.quit()
+
 def give_input(number):
     print("Input " + str(number))
     clickable = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 22, 23, 24, 25, 26, 28, 29, 30, 31, 32,  34]
@@ -78,7 +83,8 @@ def give_input(number):
             print("No such input as " + str(number))
             driver.quit()
 
-    get_output()
+    sleep(0.25)
+    return get_output()
 
 def click_on(id_value):
     try:
